@@ -3,7 +3,7 @@ library constants;
 import 'package:flutter/material.dart';
 
 const FINISHED_ON_BOARDING = 'finishedOnBoarding';
-const COLOR_ACCENT = 0xFF3d8ddb;
+const COLOR_ACCENT = 0xFF008940;
 const COLOR_PRIMARY_DARK = 0xFF1976D2;
 const COLOR_BACKGROUND = 0xFFFFFFFF;
 const COLOR_BACKGROUND_OPPOSITE = 0xFF000000;
