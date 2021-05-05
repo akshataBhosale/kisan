@@ -19,6 +19,7 @@ class ScreenHeader extends StatelessWidget {
           child: Icon(
             iconData,
             color: Colors.white,
+            size: getProportionateScreenWidth(25),
           ),
         ),
         SizedBox(width: getProportionateScreenWidth(16),),

@@ -22,6 +22,8 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
   String phoneNo;
   String errorMessage = '';
 
+  bool _isChecked = false;
+
   void _onCountryChange(CountryCode countryCode) {
     //TODO : manipulate the selected country code here
     print("New Country selected: " + countryCode.toString());
@@ -68,7 +70,6 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
     //     .width;
 
     SizeConfig().init(context);
-    bool _isChecked = true;
     return Scaffold(
       backgroundColor: Color(COLOR_ACCENT),
       body: Column(
@@ -131,12 +132,16 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
                     children: [
                       Container(
                         height: getProportionateScreenHeight(40),
-                        width: getProportionateScreenWidth(80),
                         child: CountryCodePicker(
                           onChanged: _onCountryChange,
                           // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
                           initialSelection: 'IN',
                           favorite: ['+91', 'IN'],
+                          textStyle: TextStyle(
+                              fontSize: getProportionateScreenHeight(17),
+                              fontWeight: FontWeight.w800,
+                              color: Color(COLOR_TEXT_BLACK)
+                          ),
                           // optional. Shows only country name and flag
                           showCountryOnly: false,
                           // optional. Shows only country name and flag when popup is closed.
@@ -151,13 +156,19 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
                         child: TextField(
                           keyboardType: TextInputType.phone,
                           maxLength: 10,
+                          style: TextStyle(
+                            fontSize: getProportionateScreenHeight(18),
+                            fontWeight: FontWeight.w800,
+                            color: Color(COLOR_ACCENT)
+                          ),
                           decoration: new InputDecoration(
                               filled: true,
                               counterText: "",
                               hintStyle:
                                   new TextStyle(color: Color(COLOR_TEXT_BLACK)),
                               hintText: "Mobile Number",
-                              fillColor: Color(COLOR_WHITE)),
+                              fillColor: Color(COLOR_WHITE)
+                          ),
                           onChanged: (value) {
                             this.phoneNo = value;
                           },
@@ -165,33 +176,42 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
                       ),
                     ],
                   ),
-                  // SizedBox(height: getProportionateScreenHeight(25),),
-                  // Container(
-                  //   child: Column(
-                  //     children: [
-                  //       CheckboxListTile(
-                  //           value: _isChecked,
-                  //           title: Row(
-                  //             crossAxisAlignment: CrossAxisAlignment.start,
-                  //             children: [
-                  //               Text("Receive OTP & update in Whatsapp")
-                  //             ],
-                  //           ),
-                  //           onChanged: (val) {
-                  //             setState(() {
-                  //               _isChecked = val;
-                  //               if (val == true) {
-                  //                 _isChecked = false;
-                  //               } else {
-                  //                 _isChecked = true;
-                  //               }
-                  //             });
-                  //           }),
-                  //     ],
-                  //   ),
-                  // ),
                   SizedBox(
-                    height: getProportionateScreenHeight(42.5),
+                    height: getProportionateScreenHeight(15),
+                  ),
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Checkbox(
+                            activeColor: Color(COLOR_ACCENT),
+                            checkColor: Colors.white,
+                            value: _isChecked,
+                            onChanged: (value) {
+                              setState(() {
+                                _isChecked = !_isChecked;
+                              });
+                            }),
+                        Text("Receive updates & get updates on"),
+                        SizedBox(
+                          width: getProportionateScreenWidth(5),
+                        ),
+                        Image.asset(
+                          "assets/images/whatsapp.png",
+                          width: getProportionateScreenWidth(17),
+                        ),
+                        SizedBox(
+                          width: getProportionateScreenWidth(5),
+                        ),
+                        Text(
+                          "WhatsApp",
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: getProportionateScreenHeight(25),
                   ),
                   ConstrainedBox(
                     constraints: BoxConstraints.tightFor(
@@ -224,6 +244,36 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: getProportionateScreenHeight(10),
+                  ),
+                  Text.rich(
+                    TextSpan(
+                      text: 'By clicking on this button, you agree with the ',
+                      style: TextStyle(
+                          fontSize: getProportionateScreenHeight(12),
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey[300]),
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: 'Terms & Conditions',
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                            )),
+                        TextSpan(
+                            text: '\nand Privacy policy',
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                            )),
+                        TextSpan(
+                          text: 'of KISAN',
+                        ),
+                        // can add more TextSpans here...
+                      ],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  Spacer()
                 ],
               ),
             ),
