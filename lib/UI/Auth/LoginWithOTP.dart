@@ -44,7 +44,12 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
           //for code 200
           errorMessage = value;
           //can be use to push to next screen
-          push(context, LoginWithOTPVerfy());
+          push(
+              context,
+              LoginWithOTPVerify(
+                phoneNo: this.phoneNo,
+                countryCode: this.countryCode,
+              ));
         } else {
           //for expected errors
           errorMessage = value;
@@ -140,8 +145,7 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
                           textStyle: TextStyle(
                               fontSize: getProportionateScreenHeight(17),
                               fontWeight: FontWeight.w800,
-                              color: Color(COLOR_TEXT_BLACK)
-                          ),
+                              color: Color(COLOR_TEXT_BLACK)),
                           // optional. Shows only country name and flag
                           showCountryOnly: false,
                           // optional. Shows only country name and flag when popup is closed.
@@ -157,18 +161,16 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
                           keyboardType: TextInputType.phone,
                           maxLength: 10,
                           style: TextStyle(
-                            fontSize: getProportionateScreenHeight(18),
-                            fontWeight: FontWeight.w800,
-                            color: Color(COLOR_ACCENT)
-                          ),
+                              fontSize: getProportionateScreenHeight(18),
+                              fontWeight: FontWeight.w800,
+                              color: Color(COLOR_ACCENT)),
                           decoration: new InputDecoration(
                               filled: true,
                               counterText: "",
                               hintStyle:
                                   new TextStyle(color: Color(COLOR_TEXT_BLACK)),
                               hintText: "Mobile Number",
-                              fillColor: Color(COLOR_WHITE)
-                          ),
+                              fillColor: Color(COLOR_WHITE)),
                           onChanged: (value) {
                             this.phoneNo = value;
                           },
@@ -215,33 +217,30 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
                   ),
                   ConstrainedBox(
                     constraints: BoxConstraints.tightFor(
-                        width: getProportionateScreenWidth(288),
-                        height: getProportionateScreenHeight(60)),
+                        width: getProportionateScreenWidth(316),
+                        height: getProportionateScreenHeight(65)),
                     child: ElevatedButton(
                       onPressed: () {
                         this.phoneNo == null
                             ? setState(() {
-                                errorMessage = 'Phone number field required!';
-                              })
+                          errorMessage = 'Phone number field required!';
+                        })
                             : setState(() {
-                                errorMessage = 'Please wait...';
-                                // sendotp();
-                                _sendOTP();
-                              });
+                          errorMessage = 'Please wait...';
+                          // sendotp();
+                          _sendOTP();
+                        });
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFFFE44E),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: Text(
-                        "CONTINUE",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17.0,
-                            fontWeight: FontWeight.bold),
-                      ),
+                          primary: Color(0xFFFFE44E),
+                          onPrimary: Colors.black,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15)),
+                          textStyle: TextStyle(
+                            fontSize: getProportionateScreenHeight(20),
+                            fontFamily: "Poppins Bold",
+                          )),
+                      child: Text("CONTINUE"),
                     ),
                   ),
                   SizedBox(

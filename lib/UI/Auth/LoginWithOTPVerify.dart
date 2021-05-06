@@ -8,15 +8,22 @@ import 'dart:async';
 
 import 'package:kisan/Helpers/constants.dart';
 import 'package:kisan/Helpers/helper.dart';
+import 'package:kisan/Helpers/size_config.dart';
+import 'package:kisan/UI/Widgets/ScreenHeader.dart';
 import 'package:kisan/View%20Models/CustomViewModel.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 
-class LoginWithOTPVerfy extends StatefulWidget {
+class LoginWithOTPVerify extends StatefulWidget {
+  final String phoneNo,countryCode;
+
+  LoginWithOTPVerify({this.phoneNo, this.countryCode});
+
   @override
-  _LoginWithOTPVerfyState createState() => _LoginWithOTPVerfyState();
+  _LoginWithOTPVerifyState createState() => _LoginWithOTPVerifyState();
 }
 
-class _LoginWithOTPVerfyState extends State<LoginWithOTPVerfy> {
+class _LoginWithOTPVerifyState extends State<LoginWithOTPVerify> {
   String countryCode = '+91';
   String verification_code;
   String errorMessage = '';
@@ -54,87 +61,126 @@ class _LoginWithOTPVerfyState extends State<LoginWithOTPVerfy> {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-
+    SizeConfig().init(context);
     return Scaffold(
-      backgroundColor: Color(COLOR_BACKGROUND),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
-              height: 50,
+      backgroundColor: Color(COLOR_ACCENT),
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+              top: 36,
+              left: 36,
+              right: 36,
+              bottom: 30.5,
             ),
-            Container(
-              margin: EdgeInsets.all(16.0),
-              child: Text(
-                errorMessage,
-                style: TextStyle(
-                    color: Color(COLOR_PRIMARY),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0),
-              ),
+            child: ScreenHeader(
+              iconData: Icons.mobile_friendly,
+              title: "Verify",
             ),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              margin: EdgeInsets.all(16.0),
-              child: TextField(
-                keyboardType: TextInputType.phone,
-                decoration: new InputDecoration(
-                    border: new OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(
-                        const Radius.circular(5),
-                      ),
-                    ),
-                    filled: true,
-                    prefixIcon: Icon(
-                      Icons.sms,
-                      color: Color(COLOR_TEXT_BLACK),
-                    ),
-                    hintStyle: new TextStyle(color: Color(COLOR_TEXT_BLACK)),
-                    hintText: "Enter OTP",
-                    fillColor: Color(COLOR_WHITE)),
-                onChanged: (value) {
-                  this.verification_code = value;
-                },
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.all(20.0),
+          ),
+          Expanded(
+            child: Container(
               width: double.infinity,
-              height: 45.0,
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5)),
-                onPressed: () {
-                  if (this.verification_code == null) {
-                    setState(() {
-                      errorMessage = 'OTP Filed field required!';
-                    });
-                  } else {
-                    //verify otp
-                    _verifyOTP();
-                  }
-                },
-                child: Text(
-                  "Verify",
-                  style: TextStyle(
-                      color: Color(COLOR_BACKGROUND),
-                      fontSize: 17.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                elevation: 7.0,
-                color: Color(COLOR_PRIMARY),
+              padding: EdgeInsets.symmetric(
+                  horizontal: getProportionateScreenWidth(20)),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(35),
+                      topLeft: Radius.circular(35)),
+                  color: Colors.white),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: getProportionateScreenHeight(47),
+                  ),
+                  Text(
+                    "Please enter the code we sent on",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "Poppins Regular",
+                        fontSize: getProportionateScreenHeight(20)),
+                  ),
+                  SizedBox(
+                    height: getProportionateScreenHeight(15),
+                  ),
+                  Text(
+                    widget.countryCode +" "+ widget.phoneNo,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Color(COLOR_ACCENT),
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "Poppins Bold",
+                        fontSize: getProportionateScreenHeight(25)),
+                  ),
+                  SizedBox(
+                    height: getProportionateScreenHeight(16),
+                  ),
+                  PinCodeTextField(
+                    appContext: context,
+                    length: 6,
+                    obscureText: false,
+                    keyboardType: TextInputType.number,
+                    animationType: AnimationType.fade,
+                    pinTheme: PinTheme(
+                      shape: PinCodeFieldShape.box,
+                      borderRadius: BorderRadius.circular(10),
+                      activeColor: Color(COLOR_ACCENT),
+                      fieldHeight: 54,
+                      fieldWidth: 53,
+                      inactiveFillColor: Colors.grey,
+                    ),
+                    textStyle:
+                        TextStyle(fontSize: getProportionateScreenHeight(15)),
+                    onChanged: (value) {
+                      this.verification_code = value;
+                    },
+                  ),
+                  InkWell(
+                    onTap: (){},
+                    child: Text(
+                      "I did'nt get the code",
+                      style: TextStyle(
+                          color: Color(COLOR_TEXT_GREY),
+                          fontSize: getProportionateScreenHeight(16)),
+                    ),
+                  ),
+                  SizedBox(
+                    height: getProportionateScreenHeight(40),
+                  ),
+                  ConstrainedBox(
+                    constraints: BoxConstraints.tightFor(
+                        width: getProportionateScreenWidth(316),
+                        height: getProportionateScreenHeight(65)),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (this.verification_code == null) {
+                          setState(() {
+                            errorMessage = 'OTP Filed field required!';
+                          });
+                        } else {
+                          //verify otp
+                          _verifyOTP();
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFFFE44E),
+                          onPrimary: Colors.black,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15)),
+                          textStyle: TextStyle(
+                            fontSize: getProportionateScreenHeight(20),
+                            fontFamily: "Poppins Bold",
+                          )),
+                      child: Text("CONTINUE"),
+                    ),
+                  )
+                ],
               ),
             ),
-            SizedBox(
-              height: 100,
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
