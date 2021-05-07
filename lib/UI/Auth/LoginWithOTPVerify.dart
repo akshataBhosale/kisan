@@ -1,13 +1,11 @@
 import 'dart:io';
 
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 
 import 'package:kisan/Helpers/constants.dart';
-import 'package:kisan/Helpers/helper.dart';
 import 'package:kisan/Helpers/size_config.dart';
 import 'package:kisan/UI/Widgets/ScreenHeader.dart';
 import 'package:kisan/View%20Models/CustomViewModel.dart';
