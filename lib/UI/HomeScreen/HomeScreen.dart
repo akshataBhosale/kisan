@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kisan/Helpers/constants.dart';
 import 'package:kisan/Helpers/size_config.dart';
-import 'package:kisan/UI/HomeScreen/Widgets/TopBar.dart';
 import 'package:kisan/UI/HomeScreen/Widgets/bottom_tabs.dart';
 import 'package:kisan/UI/Tabs/HomeTab.dart';
 
@@ -13,6 +12,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   PageController _tabPageController;
   int _selectedTab = 0;
+  GlobalKey<ScaffoldState> _key = GlobalKey();
+
 
   @override
   void initState() {
@@ -29,33 +30,56 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    final GlobalKey<ScaffoldState> _scaffoldKey =
-        new GlobalKey<ScaffoldState>();
 
     return Scaffold(
+      key: _key,
       appBar: PreferredSize(
-        preferredSize: Size(double.infinity, getProportionateScreenHeight(96)),
-        child: TopBar(),
-      ),
-      endDrawer: Drawer(
-        child: Container(
-            color: Color(COLOR_ACCENT),
-            padding: EdgeInsets.symmetric(
-                horizontal: getProportionateScreenHeight(30),
-                vertical: getProportionateScreenHeight(50)),
-            child: ListView(
+        preferredSize: Size(double.infinity,getProportionateScreenHeight(90)),
+        child: AppBar(
+          titleSpacing: 20,
+          title: Container(
+            child: Row(
               children: [
-                DrawerHeader(),
-                DrawerItem(icon: Icons.calendar_today,text: "My Webinars",),
-                DrawerItem(icon: Icons.language,text: "Language",),
-                DrawerItem(icon: Icons.contact_support,text: "Support",),
-                DrawerItem(icon: Icons.error,text: "About App",),
-                DrawerItem(icon: Icons.subscriptions,text: "My Pass",),
-                DrawerItem(icon: Icons.privacy_tip_rounded,text: "Terms & Privacy Policy",),
-                DrawerItem(icon: Icons.logout,text: "Sign out",),
+                Image.asset(
+                  "assets/images/KISAN-logo.png",
+                  width: getProportionateScreenWidth(57),
+                ),
+                SizedBox(
+                  width: getProportionateScreenWidth(10),
+                ),
+                Image.asset(
+                  "assets/images/KISAN.png",
+                  width: getProportionateScreenWidth(57),
+                ),
               ],
-            )),
+            ),
+          ),
+          backgroundColor: Colors.white,
+          elevation: 0,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.search,size: 30,),
+              color: Colors.black,
+              onPressed: (){},
+            ),
+            SizedBox(width: getProportionateScreenWidth(10),),
+            IconButton(
+              onPressed: (){},
+              icon: Icon(Icons.notifications,size: 30,),
+              color: Colors.black,
+            ),
+            SizedBox(width: getProportionateScreenWidth(10),),
+            IconButton(
+              onPressed: (){
+                _key.currentState.openEndDrawer();
+              },
+              icon: Icon(Icons.menu,size: 30,),
+              color: Colors.black,
+            ),
+          ],
+        ),
       ),
+      endDrawer: CustomDrawer(),
       bottomNavigationBar: BottomTabs(
         selectedTab: _selectedTab,
         tabPressed: (num) {
@@ -79,9 +103,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   HomeTab(),
                   Center(
-                    child: Text("Webinar"),
-                  ),
-                  Center(
                     child: Text("Bookmarks"),
                   ),
                   Center(
@@ -97,36 +118,82 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
+class CustomDrawer extends StatelessWidget {
+  const CustomDrawer({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: Container(
+          color: Color(COLOR_ACCENT),
+          padding: EdgeInsets.symmetric(
+              horizontal: getProportionateScreenHeight(30),
+              vertical: getProportionateScreenHeight(50)),
+          child: Column(
+            children: [
+              DrawerHeader(),
+              Container(
+                height: getProportionateScreenHeight(500),
+                child: ListView.builder(
+                  itemCount: drawerItems.length,
+                  itemBuilder: (context, index) {
+                    return DrawerItem(
+                      icon: drawerItems[index]['icon'],
+                      text: drawerItems[index]['text'],
+                      onPressed: drawerItems[index]['onPressed'],
+                    );
+                  },
+                ),
+              ),
+            ],
+          )),
+    );
+  }
+}
+
 class DrawerItem extends StatelessWidget {
   const DrawerItem({
-    Key key, this.icon, this.text,
+    Key key,
+    this.icon,
+    this.text,
+    this.onPressed,
   }) : super(key: key);
 
   final IconData icon;
   final String text;
+  final Function onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-        title: Row(
-      children: <Widget>[
-        Icon(
-          icon,
-          color: Colors.white,
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 8.0),
-          child: Text(
-            text,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 12,
-              fontFamily: 'Poppins Medium'
-            ),
-          ),
-        )
-      ],
-    ));
+    return InkWell(
+      onTap: onPressed,
+      child: Column(
+        children: [
+          ListTile(
+              title: Row(
+            children: <Widget>[
+              Icon(
+                icon,
+                color: Colors.white,
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 8.0),
+                child: Text(
+                  text,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontFamily: 'Poppins Medium'),
+                ),
+              )
+            ],
+          )),
+          Divider(color: Colors.white.withOpacity(0.4),thickness: 2,height: 1,)
+        ],
+      ),
+    );
   }
 }
 
@@ -144,6 +211,7 @@ class DrawerHeader extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 25,
+
               ),
               Spacer(),
               Column(
@@ -176,33 +244,50 @@ class DrawerHeader extends StatelessWidget {
           Container(
             width: getProportionateScreenWidth(282),
             height: getProportionateScreenHeight(117),
-            padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
+                image: DecorationImage(
+                    image: AssetImage(
+                      "assets/images/tileOrange.png",
+                    ),
+                    fit: BoxFit.cover),
                 color: Color(0xFFE17628),
                 border: Border.all(color: Colors.white, width: 2)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Stack(
               children: [
-                Text(
-                  "Become a member.",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontFamily: 'Poppins Bold'),
+                Opacity(
+                  opacity: 0.2,
+                  child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Image.asset("assets/images/days.png")),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                        "Subscribe to KISAN membership\nUncloc all the features for 1 year",
+                Container(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Become a member.",
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: 9,
-                            fontFamily: 'Poppins Medium')),
-                  ],
-                )
+                            fontSize: 18,
+                            fontFamily: 'Poppins Bold'),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                              "Subscribe to KISAN membership\nUncloc all the features for 1 year",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 9,
+                                  fontFamily: 'Poppins Medium')),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

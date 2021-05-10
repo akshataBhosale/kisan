@@ -32,6 +32,38 @@ const currencySymbl = "\₹";
 const client_id = "1c714eee-0db2-431a-a941-9b27b2c4d64b";
 const client_secret = "61678097-4baa-472c-9fa7-ea628a5d2675";
 
+List<Map<String, dynamic>> drawerItems = [
+  {
+    "icon": Icons.calendar_today_rounded,
+    "text": "My Webinars",
+    "onPressed": () {},
+  },
+  {
+    "icon": Icons.settings,
+    "text": "Settings",
+    "onPressed": () {},
+  },
+  {"icon": Icons.share, "text": "Invite Friends", "onPressed": () {}},
+  {"icon": Icons.error, "text": "FAQ & Support", "onPressed": () {}},
+  {"icon": Icons.error, "text": "About App", "onPressed": () {}},
+  {
+    "icon": Icons.privacy_tip_rounded,
+    "text": "Terms & Privacy Policy",
+    "onPressed": () {}
+  },
+  {"icon": Icons.logout, "text": "Logout", "onPressed": () {}}
+];
+
+List<Map<String,String>> imgSlider = [
+  {
+    "imgPath": "assets/images/ruralfirst.jpg",
+
+  },
+  {
+    "imgPayh": "assets/images/tractor2.jpg",
+  },
+];
+
 
 // mainurl
 const apiUrl = "https://id.kisanlab.com";

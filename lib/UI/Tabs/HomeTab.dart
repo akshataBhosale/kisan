@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:kisan/Helpers/constants.dart';
 import 'package:kisan/Helpers/size_config.dart';
 import 'package:kisan/UI/HomeScreen/Widgets/SubTile.dart';
-import 'package:kisan/UI/HomeScreen/Widgets/TopBar.dart';
 
 class HomeTab extends StatelessWidget {
   @override
@@ -16,13 +15,7 @@ class HomeTab extends StatelessWidget {
           child: Column(
             children: [
               SubTile(),
-              SizedBox(
-                height: getProportionateScreenHeight(34),
-              ),
               ImageSlider(),
-              SizedBox(
-                height: getProportionateScreenHeight(34),
-              ),
               Container(
                 padding: EdgeInsets.symmetric(
                     horizontal: getProportionateScreenWidth(22)),
@@ -51,7 +44,7 @@ class HomeTab extends StatelessWidget {
                       iconData: Icons.star,
                     ),
                     Container(
-                      height: getProportionateScreenHeight(250),
+                      height: getProportionateScreenHeight(260),
                       child: ListView.builder(
                           itemCount: 9,
                           scrollDirection: Axis.horizontal,
@@ -132,7 +125,7 @@ class HomeTab extends StatelessWidget {
                       iconData: Icons.bookmark,
                     ),
                     Container(
-                      height: getProportionateScreenHeight(180),
+                      height: getProportionateScreenHeight(200),
                       child: ListView.builder(
                           itemCount: 9,
                           scrollDirection: Axis.horizontal,
@@ -162,9 +155,10 @@ class HomeTab extends StatelessWidget {
                       title: "Upcoming Webinars",
                     ),
                     Container(
-                      height: getProportionateScreenHeight(260),
+                      height: getProportionateScreenHeight(280),
                       child: ListView.builder(
                           itemCount: 5,
+                          clipBehavior: Clip.none,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             return WebinarTile();
@@ -634,7 +628,9 @@ class LatestOfferTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15), color: Color(0xFF08A796)),
+          borderRadius: BorderRadius.circular(15), color: Color(0xFF08A796),
+      ),
+
       margin: EdgeInsets.only(
           top: getProportionateScreenHeight(20),
           right: getProportionateScreenHeight(20),
@@ -691,6 +687,17 @@ class FeaturesWebinar extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: Colors.grey,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey[200],
+              offset: const Offset(
+                2.0,
+                3.0,
+              ),
+              blurRadius: 5.0,
+              spreadRadius: 2.0,
+            )
+          ],
           image: DecorationImage(
               image: AssetImage("assets/images/farm.jpg"), fit: BoxFit.cover)),
       margin: EdgeInsets.only(
@@ -788,11 +795,20 @@ class WebinarTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: getProportionateScreenWidth(364),
+      width: getProportionateScreenWidth(365),
       margin: EdgeInsets.only(
           top: getProportionateScreenHeight(20),
           bottom: getProportionateScreenHeight(20),
           right: getProportionateScreenWidth(20)),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey[200],
+            blurRadius: 2.0,
+            spreadRadius: 2.0,
+          )
+        ]
+      ),
       child: Column(
         children: [
           Expanded(
@@ -924,9 +940,9 @@ class FeaturedBrands extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-          top: getProportionateScreenHeight(20),
-          bottom: getProportionateScreenHeight(20),
-          right: getProportionateScreenWidth(15)),
+          top: getProportionateScreenHeight(10),
+          bottom: getProportionateScreenHeight(10),
+      ),
       padding: EdgeInsets.all(getProportionateScreenWidth(10)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -941,13 +957,14 @@ class FeaturedBrands extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 primary: Colors.white,
                 elevation: 3,
+                shadowColor: Colors.grey[100],
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25)),
               ),
               child: Image.asset("assets/images/sample_featured_brands.png"),
             ),
           ),
-          Spacer(),
+          SizedBox(height: getProportionateScreenHeight(20),),
           Text(
             "Name",
             style: TextStyle(
@@ -966,58 +983,75 @@ class FeaturedProducts extends StatelessWidget {
     Key key,
     this.name,
     this.desc,
-    this.image,
+    this.image, this.onPressed,
   }) : super(key: key);
 
   final String name, desc, image;
+  final Function onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: getProportionateScreenWidth(135),
-      margin: EdgeInsets.only(
-          top: getProportionateScreenHeight(20),
-          bottom: getProportionateScreenHeight(20),
-          right: getProportionateScreenWidth(20)),
-      child: Column(
-        children: [
-          Expanded(
-              flex: 3,
-              child: Container(
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(image ?? "assets/images/farm.jpg"),
-                        fit: BoxFit.cover),
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(15),
-                        topLeft: Radius.circular(15))),
-              )),
-          Expanded(
-              child: Container(
-            padding: EdgeInsets.all(6),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(15),
-                  bottomLeft: Radius.circular(15)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 11),
-                ),
-                Text(
-                  desc,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 9),
-                ),
-              ],
-            ),
-          ))
-        ],
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        width: getProportionateScreenWidth(135),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey[200],
+              offset: const Offset(
+                2.0,
+                3.0,
+              ),
+              blurRadius: 5.0,
+              spreadRadius: 2.0,
+            )
+          ]
+        ),
+        margin: EdgeInsets.only(
+            top: getProportionateScreenHeight(20),
+            bottom: getProportionateScreenHeight(20),
+            right: getProportionateScreenWidth(20)),
+        child: Column(
+          children: [
+            Expanded(
+                flex: 3,
+                child: Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(image ?? "assets/images/farm.jpg"),
+                          fit: BoxFit.cover),
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(15),
+                          topLeft: Radius.circular(15))),
+                )),
+            Expanded(
+                child: Container(
+              padding: EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(15),
+                    bottomLeft: Radius.circular(15)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 11),
+                  ),
+                  Text(
+                    desc,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 9),
+                  ),
+                ],
+              ),
+            ))
+          ],
+        ),
       ),
     );
   }
@@ -1052,7 +1086,8 @@ class CategoryTiles extends StatelessWidget {
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
             primary: Colors.white,
-            elevation: 3,
+            elevation: 5,
+            shadowColor: Colors.grey[100],
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
           ),
@@ -1111,31 +1146,38 @@ class SubCatTitles extends StatelessWidget {
 }
 
 class ImageSlider extends StatelessWidget {
-  const ImageSlider({
-    Key key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return CarouselSlider(
       options: CarouselOptions(
-          height: getProportionateScreenHeight(178),
-          autoPlay: false,
+          height: getProportionateScreenHeight(250),
+          autoPlay: true,
           viewportFraction: 1,
           autoPlayAnimationDuration: Duration(milliseconds: 700)),
       items: [1, 2, 3, 4, 5].map((i) {
         return Builder(
           builder: (BuildContext context) {
             return Container(
-                width: getProportionateScreenWidth(378),
-                margin: EdgeInsets.symmetric(horizontal: 8),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.amber),
-                child: Text(
-                  'text $i',
-                  style: TextStyle(fontSize: 16.0),
-                ));
+              width: getProportionateScreenWidth(378),
+              margin: EdgeInsets.symmetric(horizontal: 8,vertical: 20),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  image: DecorationImage(
+                      image: AssetImage("assets/images/ruralfirst.jpg"),
+                      fit: BoxFit.cover),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey[200],
+                      offset: const Offset(
+                        2.0,
+                        3.0,
+                      ),
+                      blurRadius: 5.0,
+                      spreadRadius: 2.0,
+                    )
+                  ],
+                  color: Colors.amber),
+            );
           },
         );
       }).toList(),
