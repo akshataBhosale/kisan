@@ -34,6 +34,7 @@ class HomeTab extends StatelessWidget {
                     }),
               ),
               CustomDivider(),
+              //----------Featured Products-------
               Container(
                 padding: EdgeInsets.symmetric(
                     horizontal: getProportionateScreenWidth(22)),
@@ -43,22 +44,23 @@ class HomeTab extends StatelessWidget {
                       title: "Featured Products",
                       iconData: Icons.star,
                     ),
-                    Container(
-                      height: getProportionateScreenHeight(260),
-                      child: ListView.builder(
-                          itemCount: 9,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return FeaturedProducts(
-                              name: "Great Indian Farms",
-                              desc: "What can i say it just great in every way",
-                            );
-                          }),
-                    ),
                   ],
                 ),
               ),
+              Container(
+                height: getProportionateScreenHeight(260),
+                child: ListView.builder(
+                    itemCount: 9,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return FeaturedProducts(
+                        name: "Great Indian Farms",
+                        desc: "What can i say it just great in every way",
+                      );
+                    }),
+              ),
               CustomDivider(),
+              //---------Featured Brands------
               Container(
                 padding: EdgeInsets.symmetric(
                     horizontal: getProportionateScreenWidth(22)),
@@ -68,20 +70,17 @@ class HomeTab extends StatelessWidget {
                       title: "Featured Brands",
                       iconData: Icons.bookmark,
                     ),
-                    Container(
-                      height: getProportionateScreenHeight(180),
-                      child: ListView.builder(
-                          itemCount: 9,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return FeaturedBrands();
-                          }),
-                    ),
                   ],
                 ),
               ),
-              SizedBox(
-                height: getProportionateScreenHeight(30),
+              Container(
+                height: getProportionateScreenHeight(180),
+                child: ListView.builder(
+                    itemCount: 9,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return FeaturedBrands();
+                    }),
               ),
               AdTile(),
 
@@ -99,20 +98,20 @@ class HomeTab extends StatelessWidget {
                       title: "Newly Added Products",
                       iconData: Icons.flag_rounded,
                     ),
-                    Container(
-                      height: getProportionateScreenHeight(250),
-                      child: ListView.builder(
-                          itemCount: 9,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return FeaturedProducts(
-                              name: "Great Indian Farms",
-                              desc: "What can i say it just great in every way",
-                            );
-                          }),
-                    ),
                   ],
                 ),
+              ),
+              Container(
+                height: getProportionateScreenHeight(250),
+                child: ListView.builder(
+                    itemCount: 9,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return FeaturedProducts(
+                        name: "Great Indian Farms",
+                        desc: "What can i say it just great in every way",
+                      );
+                    }),
               ),
               CustomDivider(),
               Container(
@@ -124,17 +123,17 @@ class HomeTab extends StatelessWidget {
                       title: "Newly Added Brands",
                       iconData: Icons.bookmark,
                     ),
-                    Container(
-                      height: getProportionateScreenHeight(200),
-                      child: ListView.builder(
-                          itemCount: 9,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return FeaturedBrands();
-                          }),
-                    ),
                   ],
                 ),
+              ),
+              Container(
+                height: getProportionateScreenHeight(161),
+                child: ListView.builder(
+                    itemCount: 9,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return FeaturedBrands();
+                    }),
               ),
               SizedBox(
                 height: getProportionateScreenHeight(30),
@@ -229,17 +228,18 @@ class HomeTab extends StatelessWidget {
                     SubCatTitles(
                       title: "Latest Demo",
                     ),
-                    Container(
-                      height: getProportionateScreenHeight(263),
-                      child: ListView.builder(
-                          itemCount: 5,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return LatestDemo();
-                          }),
-                    ),
                   ],
                 ),
+              ),
+              //Webinar
+              Container(
+                height: getProportionateScreenHeight(263),
+                child: ListView.builder(
+                    itemCount: 5,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return LatestDemo();
+                    }),
               ),
               CustomDivider(),
               Container(
@@ -250,18 +250,19 @@ class HomeTab extends StatelessWidget {
                     SubCatTitles(
                       title: "Latest Product Launch",
                     ),
-                    Container(
-                      height: getProportionateScreenHeight(522),
-                      child: ListView.builder(
-                          itemCount: 5,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return LatestProductLaunch();
-                          }),
-                    ),
                   ],
                 ),
               ),
+              Container(
+                height: getProportionateScreenHeight(522),
+                child: ListView.builder(
+                    itemCount: 5,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return LatestProductLaunch();
+                    }),
+              ),
+              //Featured Webinar
               CustomDivider(),
               Container(
                 padding: EdgeInsets.symmetric(
@@ -518,7 +519,7 @@ class LatestProductLaunch extends StatelessWidget {
         width: getProportionateScreenWidth(364),
         margin: EdgeInsets.only(
             top: getProportionateScreenHeight(20),
-            bottom: getProportionateScreenHeight(30),
+            bottom: getProportionateScreenHeight(20),
             right: getProportionateScreenWidth(20)),
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -526,9 +527,7 @@ class LatestProductLaunch extends StatelessWidget {
                 fit: BoxFit.cover),
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(color: Colors.grey[200], blurRadius: 2, spreadRadius: 2)
-            ]),
+            ),
         child: Container(
           child: Column(
             children: [
@@ -628,9 +627,9 @@ class LatestOfferTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15), color: Color(0xFF08A796),
+        borderRadius: BorderRadius.circular(15),
+        color: Color(0xFF08A796),
       ),
-
       margin: EdgeInsets.only(
           top: getProportionateScreenHeight(20),
           right: getProportionateScreenHeight(20),
@@ -800,15 +799,13 @@ class WebinarTile extends StatelessWidget {
           top: getProportionateScreenHeight(20),
           bottom: getProportionateScreenHeight(20),
           right: getProportionateScreenWidth(20)),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey[200],
-            blurRadius: 2.0,
-            spreadRadius: 2.0,
-          )
-        ]
-      ),
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(
+          color: Colors.grey[200],
+          blurRadius: 10.0,
+          spreadRadius: 2.0,
+        )
+      ]),
       child: Column(
         children: [
           Expanded(
@@ -942,7 +939,7 @@ class FeaturedBrands extends StatelessWidget {
       margin: EdgeInsets.only(
           top: getProportionateScreenHeight(10),
           bottom: getProportionateScreenHeight(10),
-      ),
+          left: getProportionateScreenWidth(20)),
       padding: EdgeInsets.all(getProportionateScreenWidth(10)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -956,7 +953,7 @@ class FeaturedBrands extends StatelessWidget {
               onPressed: () {},
               style: ElevatedButton.styleFrom(
                 primary: Colors.white,
-                elevation: 3,
+                elevation: 0,
                 shadowColor: Colors.grey[100],
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25)),
@@ -964,7 +961,9 @@ class FeaturedBrands extends StatelessWidget {
               child: Image.asset("assets/images/sample_featured_brands.png"),
             ),
           ),
-          SizedBox(height: getProportionateScreenHeight(20),),
+          SizedBox(
+            height: getProportionateScreenHeight(10),
+          ),
           Text(
             "Name",
             style: TextStyle(
@@ -983,7 +982,8 @@ class FeaturedProducts extends StatelessWidget {
     Key key,
     this.name,
     this.desc,
-    this.image, this.onPressed,
+    this.image,
+    this.onPressed,
   }) : super(key: key);
 
   final String name, desc, image;
@@ -995,23 +995,22 @@ class FeaturedProducts extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         width: getProportionateScreenWidth(135),
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey[200],
-              offset: const Offset(
-                2.0,
-                3.0,
-              ),
-              blurRadius: 5.0,
-              spreadRadius: 2.0,
-            )
-          ]
-        ),
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(
+            color: Colors.grey[200],
+            offset: const Offset(
+              2.0,
+              3.0,
+            ),
+            blurRadius: 10.0,
+            spreadRadius: 2.0,
+          )
+        ]),
         margin: EdgeInsets.only(
-            top: getProportionateScreenHeight(20),
-            bottom: getProportionateScreenHeight(20),
-            right: getProportionateScreenWidth(20)),
+          top: getProportionateScreenHeight(20),
+          bottom: getProportionateScreenHeight(20),
+          left: getProportionateScreenWidth(20),
+        ),
         child: Column(
           children: [
             Expanded(
@@ -1086,7 +1085,7 @@ class CategoryTiles extends StatelessWidget {
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
             primary: Colors.white,
-            elevation: 5,
+            elevation: 1,
             shadowColor: Colors.grey[100],
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
@@ -1159,7 +1158,7 @@ class ImageSlider extends StatelessWidget {
           builder: (BuildContext context) {
             return Container(
               width: getProportionateScreenWidth(378),
-              margin: EdgeInsets.symmetric(horizontal: 8,vertical: 20),
+              margin: EdgeInsets.symmetric(horizontal: 8, vertical: 20),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   image: DecorationImage(

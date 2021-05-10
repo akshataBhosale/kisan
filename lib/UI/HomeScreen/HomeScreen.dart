@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kisan/Helpers/constants.dart';
 import 'package:kisan/Helpers/size_config.dart';
 import 'package:kisan/UI/HomeScreen/Widgets/bottom_tabs.dart';
@@ -58,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
           elevation: 0,
           actions: [
             IconButton(
-              icon: Icon(Icons.search,size: 30,),
+              icon: SvgPicture.asset("assets/icons/searchIcon.svg",height: getProportionateScreenHeight(30),),
               color: Colors.black,
               onPressed: (){},
             ),
@@ -73,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: (){
                 _key.currentState.openEndDrawer();
               },
-              icon: Icon(Icons.menu,size: 30,),
+              icon: SvgPicture.asset("assets/icons/menuIcon.svg",height: getProportionateScreenHeight(30),),
               color: Colors.black,
             ),
           ],
