@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kisan/UI/Intro/InitialScreen.dart';
 import 'package:provider/provider.dart';
 
 import 'UI/Auth/LoginWithOTP.dart';
@@ -13,9 +14,9 @@ void main() async {
           ChangeNotifierProvider(
               create: (context) => CustomViewModel(),
               child: MaterialApp(
-                  debugShowCheckedModeBanner: false, home: LoginWithOTP())),
+                  debugShowCheckedModeBanner: false, home: InitialScreen())),
         ],
         child: MaterialApp(
-            debugShowCheckedModeBanner: false, home: LoginWithOTP())),
+            debugShowCheckedModeBanner: false, home: InitialScreen())),
   );
 }
