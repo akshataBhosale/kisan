@@ -2,7 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kisan/Helpers/constants.dart';
+import 'package:kisan/Helpers/helper.dart';
 import 'package:kisan/Helpers/size_config.dart';
+import 'package:kisan/UI/DetailedScreens/DetailedFeaturedProdScreen.dart';
 import 'package:kisan/UI/HomeScreen/Widgets/SubTile.dart';
 
 class HomeTab extends StatelessWidget {
@@ -56,6 +58,9 @@ class HomeTab extends StatelessWidget {
                       return FeaturedProducts(
                         name: "Great Indian Farms",
                         desc: "What can i say it just great in every way",
+                        onPressed: (){
+                          push(context, DetailedFeaturedProducts());
+                        },
                       );
                     }),
               ),
