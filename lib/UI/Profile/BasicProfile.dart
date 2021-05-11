@@ -23,7 +23,6 @@ class BasicProfile extends StatefulWidget {
 }
 
 class _BasicProfileState extends State<BasicProfile> {
-
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -35,33 +34,42 @@ class _BasicProfileState extends State<BasicProfile> {
   var first;
   var lat;
   var long;
-  var city; var state;
+  var city;
+  var state;
 
   bool permission = true;
   final picker = ImagePicker();
+
   Future getImageOne() async {
     Navigator.of(context).pop();
-    var pickedFile = await picker.getImage(source: ImageSource.camera, imageQuality: 25,);
-    setState(() {
-      imageOne = File(pickedFile.path);
-      //enableSave = true;
-    });
-  }
-  Future getImageOneGallery() async {
-    Navigator.of(context).pop();
-    final pickedFile = await picker.getImage(source: ImageSource.gallery, imageQuality: 25,);
+    var pickedFile = await picker.getImage(
+      source: ImageSource.camera,
+      imageQuality: 25,
+    );
     setState(() {
       imageOne = File(pickedFile.path);
       //enableSave = true;
     });
   }
 
-  void _settingModalBottomSheetOne(context){
+  Future getImageOneGallery() async {
+    Navigator.of(context).pop();
+    final pickedFile = await picker.getImage(
+      source: ImageSource.gallery,
+      imageQuality: 25,
+    );
+    setState(() {
+      imageOne = File(pickedFile.path);
+      //enableSave = true;
+    });
+  }
+
+  void _settingModalBottomSheetOne(context) {
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
-        builder: (BuildContext bc){
+        builder: (BuildContext bc) {
           return Container(
             decoration: BoxDecoration(
               color: Colors.grey.shade200,
@@ -77,7 +85,7 @@ class _BasicProfileState extends State<BasicProfile> {
                   Padding(
                     padding: const EdgeInsets.only(top: 20, bottom: 10),
                     child: InkWell(
-                      onTap: (){
+                      onTap: () {
                         getImageOne();
                       },
                       child: Row(
@@ -87,15 +95,18 @@ class _BasicProfileState extends State<BasicProfile> {
                           Padding(
                             padding: const EdgeInsets.only(right: 20),
                             child: Container(
-                              //width: 100,
-                                child: Icon(Icons.camera_alt, color: Color(0xff007105),)),
+                                //width: 100,
+                                child: Icon(
+                              Icons.camera_alt,
+                              color: Color(0xff007105),
+                            )),
                           ),
                           Container(
                               width: 150,
-                              child: Text("Open using camera",
-                                style: GoogleFonts.nunitoSans(
-                                    letterSpacing: 0.5
-                                ),
+                              child: Text(
+                                "Open using camera",
+                                style:
+                                    GoogleFonts.nunitoSans(letterSpacing: 0.5),
                               ))
                         ],
                       ),
@@ -105,7 +116,7 @@ class _BasicProfileState extends State<BasicProfile> {
                   Padding(
                     padding: const EdgeInsets.only(top: 10, bottom: 20),
                     child: InkWell(
-                      onTap: (){
+                      onTap: () {
                         getImageOneGallery();
                       },
                       child: Row(
@@ -115,15 +126,18 @@ class _BasicProfileState extends State<BasicProfile> {
                           Padding(
                             padding: const EdgeInsets.only(right: 20),
                             child: Container(
-                              //width: 100,
-                                child: Icon(Icons.image, color: Color(0xff007105),)),
+                                //width: 100,
+                                child: Icon(
+                              Icons.image,
+                              color: Color(0xff007105),
+                            )),
                           ),
                           Container(
                               width: 150,
-                              child: Text("Open using gallery",
-                                style: GoogleFonts.nunitoSans(
-                                    letterSpacing: 0.5
-                                ),
+                              child: Text(
+                                "Open using gallery",
+                                style:
+                                    GoogleFonts.nunitoSans(letterSpacing: 0.5),
                               ))
                         ],
                       ),
@@ -133,8 +147,7 @@ class _BasicProfileState extends State<BasicProfile> {
               ),
             ),
           );
-        }
-    );
+        });
   }
 
   @override
@@ -144,20 +157,20 @@ class _BasicProfileState extends State<BasicProfile> {
     setState(() {
       fetched = false;
       imageOne = null;
-      city = null; state = null;
+      city = null;
+      state = null;
     });
     firstNameController = TextEditingController(text: "  Shreyas");
   }
 
   @override
   Widget build(BuildContext context) {
-
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
 
-    buildTopWidget(BuildContext context){
+    buildTopWidget(BuildContext context) {
       return Container(
-          height: screenHeight/3,
+          height: screenHeight / 3,
           width: screenWidth,
           decoration: BoxDecoration(
             color: Color(0xff08763F),
@@ -166,31 +179,39 @@ class _BasicProfileState extends State<BasicProfile> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(margin: EdgeInsets.only(left: screenWidth/15),
+              Container(
+                margin: EdgeInsets.only(left: screenWidth / 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      height: 50,width: 50,
+                      height: 50,
+                      width: 50,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(50)),
                         color: Color(0xff1F8F4E),
                       ),
-                      child: Center(child:
-                      Icon(Icons.person,color: Color(constants.COLOR_WHITE),)),
+                      child: Center(
+                          child: Icon(
+                        Icons.person,
+                        color: Color(constants.COLOR_WHITE),
+                      )),
                     ),
-                    SizedBox(width: 20,),
-                    Text("Your details",
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text(
+                      "Your details",
                       style: GoogleFonts.poppins(
-                          fontSize: 22,
-                          color: Color(constants.COLOR_WHITE)
-                      ),
+                          fontSize: 22, color: Color(constants.COLOR_WHITE)),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 30,),
+              SizedBox(
+                height: 30,
+              ),
               GestureDetector(
                 onTap: () => _settingModalBottomSheetOne(context),
                 child: Stack(
@@ -200,7 +221,9 @@ class _BasicProfileState extends State<BasicProfile> {
                       child: CircleAvatar(
                         radius: 60,
                         backgroundColor: Colors.white,
-                        backgroundImage: imageOne == null ? AssetImage("assets/images/google.jpg") : FileImage(imageOne),
+                        backgroundImage: imageOne == null
+                            ? AssetImage("assets/images/google.jpg")
+                            : FileImage(imageOne),
                       ),
                     ),
                     Padding(
@@ -208,67 +231,64 @@ class _BasicProfileState extends State<BasicProfile> {
                       child: Align(
                         alignment: Alignment.center,
                         child: Container(
-                          height: 30, width: 30,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(50)),
-                            color: Colors.yellow,
-                            border: Border.all(color: Colors.black),
-                          ),
-                          child: Center(
-                            child: Icon(Icons.edit, color: Colors.black, size: 15),
-                          )
-                        ),
+                            height: 30,
+                            width: 30,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50)),
+                              color: Colors.yellow,
+                              border: Border.all(color: Colors.black),
+                            ),
+                            child: Center(
+                              child: Icon(Icons.edit,
+                                  color: Colors.black, size: 15),
+                            )),
                       ),
                     ),
                   ],
                 ),
               ),
             ],
-          )
-      );
+          ));
     }
 
-    buildProfileForm(BuildContext context){
+    buildProfileForm(BuildContext context) {
       return SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 30,),
+            SizedBox(
+              height: 30,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  width: screenWidth/2.5,
+                  width: screenWidth / 2.5,
                   child: Theme(
-                    data: ThemeData(
-                      primaryColor: Color(0xff08763F)
-                    ),
+                    data: ThemeData(primaryColor: Color(0xff08763F)),
                     child: TextFormField(
                       controller: firstNameController,
                       decoration: InputDecoration(
-                        hintText: 'First Name',
+                          hintText: 'First Name',
                           hintStyle: GoogleFonts.poppins(
                             color: Colors.grey,
                             fontWeight: FontWeight.w300,
                             letterSpacing: 1,
                             fontSize: 14,
-                          )
-                      ),
+                          )),
                       style: GoogleFonts.poppins(
-                        color: Color(0xff08763F),
-                          fontWeight: FontWeight.bold
-                      ),
+                          color: Color(0xff08763F),
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
                 Container(
-                  width: screenWidth/2.5,
+                  width: screenWidth / 2.5,
                   child: Theme(
-                    data: ThemeData(
-                        primaryColor: Color(0xff08763F)
-                    ),
+                    data: ThemeData(primaryColor: Color(0xff08763F)),
                     child: TextFormField(
                       controller: lastNameController,
                       decoration: InputDecoration(
@@ -277,206 +297,265 @@ class _BasicProfileState extends State<BasicProfile> {
                             color: Colors.grey,
                             fontWeight: FontWeight.w300,
                             fontSize: 14,
-                          )
-                      ),
+                          )),
                       style: GoogleFonts.poppins(
                           color: Color(0xff08763F),
-                          fontWeight: FontWeight.bold
-                      ),
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
               ],
             ),
-            fetched == true ? SizedBox(height: 30,) : Container(),
-            fetched == true ? Padding(
-              padding: EdgeInsets.only(left: screenWidth/15, right: screenWidth/15),
-              child: Center(
-                child: Container(
-                  child: Theme(
-                    data: ThemeData(
-                        primaryColor: Color(0xff08763F)
-                    ),
-                    child: TextFormField(
-                      controller: emailController,
-                      decoration: InputDecoration(
-                          hintText: '  Email',
-                          hintStyle: GoogleFonts.poppins(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w300,
-                            fontSize: 14,
-                          )
+            fetched == true
+                ? SizedBox(
+                    height: 30,
+                  )
+                : Container(),
+            fetched == true
+                ? Padding(
+                    padding: EdgeInsets.only(
+                        left: screenWidth / 15, right: screenWidth / 15),
+                    child: Center(
+                      child: Container(
+                        child: Theme(
+                          data: ThemeData(primaryColor: Color(0xff08763F)),
+                          child: TextFormField(
+                            controller: emailController,
+                            decoration: InputDecoration(
+                                hintText: '  Email',
+                                hintStyle: GoogleFonts.poppins(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 14,
+                                )),
+                            style: GoogleFonts.poppins(
+                                color: Color(0xff08763F),
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ),
-                      style: GoogleFonts.poppins(
-                          color: Color(0xff08763F),
-                          fontWeight: FontWeight.bold
-                      ),
                     ),
-                  ),
-                ),
-              ),
-            ) : Container(),
-            SizedBox(height: 30,),
+                  )
+                : Container(),
+            SizedBox(
+              height: 30,
+            ),
             Container(
-              margin: EdgeInsets.only(left: screenWidth/15, right: screenWidth/15),
+              margin: EdgeInsets.only(
+                  left: screenWidth / 15, right: screenWidth / 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("Location/Address",
+                  Text(
+                    "Location/Address",
                     style: GoogleFonts.poppins(
-                        fontSize: 18,
-                        color: Color(0xff696969),
+                      fontSize: 18,
+                      color: Color(0xff696969),
                     ),
                   ),
-                  fetched == true ? Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                      border: Border.all(color: Color(0xffCCCCCC))
-                    ),
-                    child: Center(
-                      child: Icon(Icons.edit, color: Color(0xff696969),),
-                    ),
-                  ) : Container(),
+                  fetched == true
+                      ? Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50)),
+                              border: Border.all(color: Color(0xffCCCCCC))),
+                          child: Center(
+                            child: Icon(
+                              Icons.edit,
+                              color: Color(0xff696969),
+                            ),
+                          ),
+                        )
+                      : Container(),
                 ],
               ),
             ),
-            fetched == true ? Container() : SizedBox(height: 30,),
-            fetched == true ? Container() : InkWell(
-              onTap: (){
-                showAlertDialog(context);
-              },
-              child: Center(
-                child: Container(
-                  margin: EdgeInsets.only(left: screenWidth/15, right: screenWidth/15),
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Color(0xffEBEBEB),
+            fetched == true
+                ? Container()
+                : SizedBox(
+                    height: 30,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(Icons.location_searching, color: Colors.black,),
-                      SizedBox(width: 10,),
-                      Text("Use my device location",
-                        style: GoogleFonts.poppins(
-                          fontSize: 18,
-                          color: Colors.black,
+            fetched == true
+                ? Container()
+                : InkWell(
+                    onTap: () {
+                      showAlertDialog(context);
+                    },
+                    child: Center(
+                      child: Container(
+                        margin: EdgeInsets.only(
+                            left: screenWidth / 15, right: screenWidth / 15),
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Color(0xffEBEBEB),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.location_searching,
+                              color: Colors.black,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "Use my device location",
+                              style: GoogleFonts.poppins(
+                                fontSize: 18,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
-            fetched == true ? SizedBox(height: 30,) : Container(),
-            fetched == true ? Center(
-              child: Container(
-                margin: EdgeInsets.only(left: screenWidth/15, right: screenWidth/15),
-                height: 50,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Color(0xff007105)),
-                  color: Color(0xff60C164),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(Icons.check, color: Colors.white,),
-                    SizedBox(width: 10,),
-                    Text("Location fetched successfully",
-                      style: GoogleFonts.poppins(
-                        fontSize: 18,
-                        color: Colors.white,
+            fetched == true
+                ? SizedBox(
+                    height: 30,
+                  )
+                : Container(),
+            fetched == true
+                ? Center(
+                    child: Container(
+                      margin: EdgeInsets.only(
+                          left: screenWidth / 15, right: screenWidth / 15),
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Color(0xff007105)),
+                        color: Color(0xff60C164),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.check,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "Location fetched successfully",
+                            style: GoogleFonts.poppins(
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ) : Container(),
-            SizedBox(height: 30,),
+                  )
+                : Container(),
+            SizedBox(
+              height: 30,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  width: screenWidth/5,
+                  width: screenWidth / 5,
                   height: 1,
                   color: Color(0xff08763F),
                 ),
-                SizedBox(width: 10,),
-                Text("OR",
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  "OR",
                   style: GoogleFonts.poppins(color: Color(0xff08763F)),
                 ),
-                SizedBox(width: 10,),
+                SizedBox(
+                  width: 10,
+                ),
                 Container(
-                  width: screenWidth/5,
+                  width: screenWidth / 5,
                   height: 1,
                   color: Color(0xff08763F),
                 ),
               ],
             ),
-            SizedBox(height: 30,),
+            SizedBox(
+              height: 30,
+            ),
             Center(
-              child: Text("Enter Manually",
+              child: Text(
+                "Enter Manually",
                 style: GoogleFonts.poppins(
-                    color: Color(0xff696969),
+                  color: Color(0xff696969),
                   fontSize: 17,
                 ),
               ),
             ),
-            SizedBox(height: 3,),
+            SizedBox(
+              height: 3,
+            ),
             Center(
-              child: Text("Applicable for India only",
+              child: Text(
+                "Applicable for India only",
                 style: GoogleFonts.poppins(
                   color: Color(0xffBCBCBC),
                   fontSize: 10,
                 ),
               ),
             ),
-            SizedBox(height: 30,),
+            SizedBox(
+              height: 30,
+            ),
             Padding(
-              padding: EdgeInsets.only(left: screenWidth/15, right: screenWidth/15),
+              padding: EdgeInsets.only(
+                  left: screenWidth / 15, right: screenWidth / 15),
               child: SearchableDropdown.single(
-                  isExpanded: true,
-                  onChanged: (val){
-                    setState(() {
-                      state = val.toString();
-                    });print("State : " + state);
-                  },
-                  items: ['Maharashtra','Karnataka'].map((String value) {
-                    return new DropdownMenuItem<String>(
-                      value: value,
-                      child: new Text(
-                        value,
-                      ),
-                    );
-                  }).toList(),
-                  value: state == null ? "Select state" : state,
-                  hint: Text("Select state",
-                    style: GoogleFonts.poppins(color: Color(0xff696969)),
-                  ),
-                  searchHint: Text("Select state",
-                    style: GoogleFonts.poppins(color: Color(0xff696969),
+                isExpanded: true,
+                onChanged: (val) {
+                  setState(() {
+                    state = val.toString();
+                  });
+                  print("State : " + state);
+                },
+                items: ['Maharashtra', 'Karnataka'].map((String value) {
+                  return new DropdownMenuItem<String>(
+                    value: value,
+                    child: new Text(
+                      value,
+                    ),
+                  );
+                }).toList(),
+                value: state == null ? "Select state" : state,
+                hint: Text(
+                  "Select state",
+                  style: GoogleFonts.poppins(color: Color(0xff696969)),
+                ),
+                searchHint: Text(
+                  "Select state",
+                  style: GoogleFonts.poppins(
+                    color: Color(0xff696969),
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Padding(
-              padding: EdgeInsets.only(left: screenWidth/15, right: screenWidth/15),
+              padding: EdgeInsets.only(
+                  left: screenWidth / 15, right: screenWidth / 15),
               child: SearchableDropdown.single(
                 isExpanded: true,
-                onChanged: (val){
+                onChanged: (val) {
                   setState(() {
                     city = val.toString();
                   });
                   print("City : " + city);
                 },
-                items: ['Pune','Satara'].map((String value) {
+                items: ['Pune', 'Satara'].map((String value) {
                   return new DropdownMenuItem<String>(
                     value: value,
                     child: new Text(
@@ -485,21 +564,25 @@ class _BasicProfileState extends State<BasicProfile> {
                   );
                 }).toList(),
                 value: city == null ? "Select city" : city,
-                hint: Text("Select city",
+                hint: Text(
+                  "Select city",
                   style: GoogleFonts.poppins(color: Color(0xff696969)),
                 ),
-                searchHint: Text("Select city",
-                  style: GoogleFonts.poppins(color: Color(0xff696969),
+                searchHint: Text(
+                  "Select city",
+                  style: GoogleFonts.poppins(
+                    color: Color(0xff696969),
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 30,),
+            SizedBox(
+              height: 30,
+            ),
             Center(
               child: ConstrainedBox(
                 constraints: BoxConstraints.tightFor(
-                    width: getProportionateScreenWidth(258),
-                    height: 55),
+                    width: getProportionateScreenWidth(258), height: 55),
                 child: ElevatedButton(
                   onPressed: () {
                     push(context, HomeScreen());
@@ -521,7 +604,9 @@ class _BasicProfileState extends State<BasicProfile> {
                 ),
               ),
             ),
-            SizedBox(height: 30,),
+            SizedBox(
+              height: 30,
+            ),
           ],
         ),
       );
@@ -532,11 +617,13 @@ class _BasicProfileState extends State<BasicProfile> {
       body: Stack(
         children: [
           Positioned(
-            top: 0,left: 0,right: 0,
+            top: 0,
+            left: 0,
+            right: 0,
             child: buildTopWidget(context),
           ),
           Padding(
-            padding: EdgeInsets.only(top: screenHeight/3),
+            padding: EdgeInsets.only(top: screenHeight / 3),
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -553,7 +640,6 @@ class _BasicProfileState extends State<BasicProfile> {
   }
 
   showAlertDialog(BuildContext context) {
-
     fetchLocation() async {
       try {
         _locationData = await location.getLocation();
@@ -578,12 +664,13 @@ class _BasicProfileState extends State<BasicProfile> {
       });
 
       final coordinates = new Coordinates(lat, long);
-      addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+      addresses =
+          await Geocoder.local.findAddressesFromCoordinates(coordinates);
 
       first = addresses.first;
 
       setState(() {
-        city ='${first.locality}';
+        city = '${first.locality}';
         state = '${first.adminArea}';
         fetched = true;
       });
@@ -594,7 +681,6 @@ class _BasicProfileState extends State<BasicProfile> {
       print("State : " + state);
 
       Navigator.of(context).pop();
-
     }
 
     // Create button
@@ -607,18 +693,22 @@ class _BasicProfileState extends State<BasicProfile> {
 
     // Create AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Center(child: Container(
-          height: 50, width: 50,
-          child: Center(child: Image.asset("assets/images/loader.png")))),
+      title: Center(
+          child: Container(
+              height: 50,
+              width: 50,
+              child: Center(child: Image.asset("assets/images/loader.png")))),
       content: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(Icons.location_on, color: Color(0xff08763F), size: 15),
-          Text("Fetching your location",
+          Text(
+            "Fetching your location",
             style: GoogleFonts.poppins(
               color: Color(0xff08763F),
-              fontSize: 18,fontWeight: FontWeight.w500,
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ],
@@ -634,5 +724,4 @@ class _BasicProfileState extends State<BasicProfile> {
       },
     );
   }
-
 }

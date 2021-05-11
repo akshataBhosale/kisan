@@ -42,7 +42,8 @@ class CustomViewModel extends ChangeNotifier {
       notifyListeners();
       return responseDecodedMsg;
     } else if (responseDecodedSuccess == "true") {
-      if (responseDecodedMsg == "This is signup") {
+      print("response" + responseDecodedMsg.toString());
+      if (responseDecodedMsg == "This is signup.") {
         registration_token = responseDecoded['registration_token'].toString();
       } else {
         token = responseDecoded['token'].toString();
@@ -54,4 +55,32 @@ class CustomViewModel extends ChangeNotifier {
       return "error";
     }
   }
+
+
+  Future Register(String verification_code) async {
+    final response =
+    await WebService().verifyOTP(verification_token, verification_code);
+
+    var responseDecoded = jsonDecode(response.body);
+    var responseDecodedSuccess = responseDecoded['success'];
+    var responseDecodedMsg = responseDecoded['message'].toString();
+
+    if (responseDecodedSuccess == "false") {
+      notifyListeners();
+      return responseDecodedMsg;
+    } else if (responseDecodedSuccess == "true") {
+      print("response" + responseDecodedMsg.toString());
+      if (responseDecodedMsg == "This is signup.") {
+        registration_token = responseDecoded['registration_token'].toString();
+      } else {
+        token = responseDecoded['token'].toString();
+      }
+      notifyListeners();
+      return responseDecodedMsg;
+    } else {
+      notifyListeners();
+      return "error";
+    }
+  }
+
 }

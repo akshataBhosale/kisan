@@ -8,11 +8,11 @@ import 'package:kisan/Helpers/constants.dart';
 import 'package:kisan/Helpers/helper.dart';
 import 'package:kisan/Helpers/size_config.dart';
 import 'package:kisan/UI/Auth/SuccessOTP.dart';
+import 'package:kisan/UI/HomeScreen/HomeScreen.dart';
 import 'package:kisan/UI/Widgets/ScreenHeader.dart';
 import 'package:kisan/UI/Widgets/countdown_timer_widget.dart';
 import 'package:kisan/View%20Models/CustomViewModel.dart';
 import 'package:provider/provider.dart';
-import 'package:kisan/UI/Auth/LoginWithOTPVerify.dart';
 import 'package:kisan/Helpers/constants.dart' as constants;
 
 import '../../Helpers/helper.dart';
@@ -20,8 +20,8 @@ import '../../Helpers/helper.dart';
 bool startTimings = false;
 
 class EnterOTP extends StatefulWidget {
-
   final phoneNo;
+
   EnterOTP(this.phoneNo) : super();
 
   @override
@@ -40,27 +40,31 @@ class _EnterOTPState extends State<EnterOTP> {
   FocusNode focus5 = FocusNode();
   FocusNode focus6 = FocusNode();
 
-  void _onCountryChange(CountryCode countryCode) {
-    //TODO : manipulate the selected country code here
-    print("New Country selected: " + countryCode.toString());
-    setState(() {
-      this.countryCode = countryCode.toString();
-    });
-  }
+  TextEditingController oneController = TextEditingController();
+  TextEditingController twoController = TextEditingController();
+  TextEditingController threeController = TextEditingController();
+  TextEditingController fourController = TextEditingController();
+  TextEditingController fiveController = TextEditingController();
+  TextEditingController sixController = TextEditingController();
 
-  Future<void> _sendOTP() async {
+  Future<void> _verifyOTP() async {
     Provider.of<CustomViewModel>(context, listen: false)
-        .sendOTP(this.countryCode + this.phoneNo, _isChecked ? "OTP_IN" : "OTP_OUT")
+        .verifyOTP(oneController.text +
+            twoController.text +
+            threeController.text +
+            fourController.text +
+            fiveController.text +
+            sixController.text)
         .then((value) {
       setState(() {
         if (value == "error") {
           //for unexpected error
-          errorMessage = value;
-        } else if (value == "Verification code sent") {
-          //for code 200
-          errorMessage = value;
-          //can be use to push to next screen
-          push(context, LoginWithOTPVerfy());
+          errorMessage = "Check internet or try after sometime";
+        } else if (value == "This is signup.") {
+          pushReplacement(context, SuccessOTP());
+        } else if (value == "User authenticated successfully.") {
+          pop(context);
+          pushReplacement(context, HomeScreen());
         } else {
           //for expected errors
           errorMessage = value;
@@ -86,42 +90,46 @@ class _EnterOTPState extends State<EnterOTP> {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
 
-    buildTopWidget(BuildContext context){
+    buildTopWidget(BuildContext context) {
       return Container(
-          height: screenHeight/6,
+          height: screenHeight / 6,
           width: screenWidth,
           decoration: BoxDecoration(
             color: Color(0xff08763F),
           ),
           child: Container(
               alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(left: screenWidth/15),
+              margin: EdgeInsets.only(left: screenWidth / 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    height: 50,width: 50,
+                    height: 50,
+                    width: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(50)),
                       color: Color(0xff1F8F4E),
                     ),
-                    child: Center(child:
-                    Icon(Icons.chat,color: Color(constants.COLOR_WHITE),)),
+                    child: Center(
+                        child: Icon(
+                      Icons.chat,
+                      color: Color(constants.COLOR_WHITE),
+                    )),
                   ),
-                  SizedBox(width: 20,),
-                  Text("Verify",
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text(
+                    "Verify",
                     style: GoogleFonts.poppins(
-                        fontSize: 22,
-                        color: Color(constants.COLOR_WHITE)
-                    ),
+                        fontSize: 22, color: Color(constants.COLOR_WHITE)),
                   ),
                 ],
-              ))
-      );
+              )));
     }
 
-    buildTimerWidget(BuildContext context){
+    buildTimerWidget(BuildContext context) {
       return CountDownTimer(
         secondsRemaining: 90,
         whenTimeExpires: () {
@@ -142,11 +150,13 @@ class _EnterOTPState extends State<EnterOTP> {
       body: Stack(
         children: [
           Positioned(
-            top: 0,left: 0,right: 0,
+            top: 0,
+            left: 0,
+            right: 0,
             child: buildTopWidget(context),
           ),
           Padding(
-            padding: EdgeInsets.only(top: screenHeight/6),
+            padding: EdgeInsets.only(top: screenHeight / 6),
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -166,8 +176,8 @@ class _EnterOTPState extends State<EnterOTP> {
                       "Please enter the code that was sent to",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
-                          fontSize: 22,
-                          color: Color(0xff696969),
+                        fontSize: 22,
+                        color: Color(0xff696969),
                       ),
                     ),
                   ),
@@ -177,7 +187,10 @@ class _EnterOTPState extends State<EnterOTP> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
                     child: Text(
-                      "+91  "+widget.phoneNo.toString().substring(0,5)+"  "+widget.phoneNo.toString().substring(5),
+                      "+91  " +
+                          widget.phoneNo.toString().substring(0, 5) +
+                          "  " +
+                          widget.phoneNo.toString().substring(5),
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
                         letterSpacing: 1,
@@ -197,7 +210,8 @@ class _EnterOTPState extends State<EnterOTP> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                          height: 50,width: 50,
+                          height: 50,
+                          width: 50,
                           decoration: BoxDecoration(
                             color: Color(0xffEFEFEF),
                             border: Border.all(color: Color(0xffE5E5E5)),
@@ -208,15 +222,19 @@ class _EnterOTPState extends State<EnterOTP> {
                               padding: const EdgeInsets.only(left: 20),
                               child: TextFormField(
                                 keyboardType: TextInputType.number,
+                                controller: oneController,
+                                inputFormatters: [
+                                  new LengthLimitingTextInputFormatter(1),
+                                  // for mobile
+                                ],
                                 focusNode: focus1,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                 ),
                                 style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.bold
-                                ),
-                                onChanged: (value){
-                                  if(value.length == 1){
+                                    fontWeight: FontWeight.bold),
+                                onChanged: (value) {
+                                  if (value.length == 1) {
                                     focus1.unfocus();
                                     focus2.requestFocus();
                                   }
@@ -226,7 +244,8 @@ class _EnterOTPState extends State<EnterOTP> {
                           ),
                         ),
                         Container(
-                          height: 50,width: 50,
+                          height: 50,
+                          width: 50,
                           decoration: BoxDecoration(
                             color: Color(0xffEFEFEF),
                             border: Border.all(color: Color(0xffE5E5E5)),
@@ -237,15 +256,19 @@ class _EnterOTPState extends State<EnterOTP> {
                               padding: const EdgeInsets.only(left: 20),
                               child: TextFormField(
                                 focusNode: focus2,
+                                controller: twoController,
+                                inputFormatters: [
+                                  new LengthLimitingTextInputFormatter(1),
+                                  // for mobile
+                                ],
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                 ),
                                 style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.bold
-                                ),
-                                onChanged: (value){
-                                  if(value.length == 1){
+                                    fontWeight: FontWeight.bold),
+                                onChanged: (value) {
+                                  if (value.length == 1) {
                                     focus2.unfocus();
                                     focus3.requestFocus();
                                   }
@@ -255,7 +278,8 @@ class _EnterOTPState extends State<EnterOTP> {
                           ),
                         ),
                         Container(
-                          height: 50,width: 50,
+                          height: 50,
+                          width: 50,
                           decoration: BoxDecoration(
                             color: Color(0xffEFEFEF),
                             border: Border.all(color: Color(0xffE5E5E5)),
@@ -266,15 +290,19 @@ class _EnterOTPState extends State<EnterOTP> {
                               padding: const EdgeInsets.only(left: 20),
                               child: TextFormField(
                                 focusNode: focus3,
+                                controller: threeController,
+                                inputFormatters: [
+                                  new LengthLimitingTextInputFormatter(1),
+                                  // for mobile
+                                ],
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                 ),
                                 style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.bold
-                                ),
-                                onChanged: (value){
-                                  if(value.length == 1){
+                                    fontWeight: FontWeight.bold),
+                                onChanged: (value) {
+                                  if (value.length == 1) {
                                     focus3.unfocus();
                                     focus4.requestFocus();
                                   }
@@ -284,7 +312,8 @@ class _EnterOTPState extends State<EnterOTP> {
                           ),
                         ),
                         Container(
-                          height: 50,width: 50,
+                          height: 50,
+                          width: 50,
                           decoration: BoxDecoration(
                             color: Color(0xffEFEFEF),
                             border: Border.all(color: Color(0xffE5E5E5)),
@@ -294,15 +323,20 @@ class _EnterOTPState extends State<EnterOTP> {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 20),
                               child: TextFormField(
-                                focusNode: focus4,keyboardType: TextInputType.number,
+                                focusNode: focus4,
+                                controller: fourController,
+                                inputFormatters: [
+                                  new LengthLimitingTextInputFormatter(1),
+                                  // for mobile
+                                ],
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                 ),
                                 style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.bold
-                                ),
-                                onChanged: (value){
-                                  if(value.length == 1){
+                                    fontWeight: FontWeight.bold),
+                                onChanged: (value) {
+                                  if (value.length == 1) {
                                     focus4.unfocus();
                                     focus5.requestFocus();
                                   }
@@ -312,7 +346,8 @@ class _EnterOTPState extends State<EnterOTP> {
                           ),
                         ),
                         Container(
-                          height: 50,width: 50,
+                          height: 50,
+                          width: 50,
                           decoration: BoxDecoration(
                             color: Color(0xffEFEFEF),
                             border: Border.all(color: Color(0xffE5E5E5)),
@@ -322,15 +357,20 @@ class _EnterOTPState extends State<EnterOTP> {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 20),
                               child: TextFormField(
-                                focusNode: focus5,keyboardType: TextInputType.number,
+                                focusNode: focus5,
+                                controller: fiveController,
+                                inputFormatters: [
+                                  new LengthLimitingTextInputFormatter(1),
+                                  // for mobile
+                                ],
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                 ),
                                 style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.bold
-                                ),
-                                onChanged: (value){
-                                  if(value.length == 1){
+                                    fontWeight: FontWeight.bold),
+                                onChanged: (value) {
+                                  if (value.length == 1) {
                                     focus5.unfocus();
                                     focus6.requestFocus();
                                   }
@@ -340,7 +380,8 @@ class _EnterOTPState extends State<EnterOTP> {
                           ),
                         ),
                         Container(
-                          height: 50,width: 50,
+                          height: 50,
+                          width: 50,
                           decoration: BoxDecoration(
                             color: Color(0xffEFEFEF),
                             border: Border.all(color: Color(0xffE5E5E5)),
@@ -350,15 +391,20 @@ class _EnterOTPState extends State<EnterOTP> {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 20),
                               child: TextFormField(
-                                focusNode: focus6,keyboardType: TextInputType.number,
+                                focusNode: focus6,
+                                controller: sixController,
+                                inputFormatters: [
+                                  new LengthLimitingTextInputFormatter(1),
+                                  // for mobile
+                                ],
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                 ),
                                 style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.bold
-                                ),
-                                onChanged: (value){
-                                  if(value.length == 1){
+                                    fontWeight: FontWeight.bold),
+                                onChanged: (value) {
+                                  if (value.length == 1) {
                                     focus6.unfocus();
                                   }
                                 },
@@ -372,8 +418,8 @@ class _EnterOTPState extends State<EnterOTP> {
                   SizedBox(
                     height: 20,
                   ),
-                  InkWell(
-                    onTap: (){
+                  /*InkWell(
+                    onTap: () {
                       setState(() {
                         startTimings = true;
                       });
@@ -382,24 +428,40 @@ class _EnterOTPState extends State<EnterOTP> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        startTimings == true ? Text(
-                          "Resend code",
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            color: Colors.grey[300],
-                          ),
-                        ) : Text(
-                          "I didn't get the code",
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            color: Color(0xff838383),
-                          ),
-                        ),
-                        startTimings == true ? SizedBox(width: 10,) : Container(),
-                        startTimings == true ? buildTimerWidget(context) : Container(),
+                        startTimings == true
+                            ? Text(
+                                "Resend code",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                  color: Colors.grey[300],
+                                ),
+                              )
+                            : Text(
+                                "I didn't get the code",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                  color: Color(0xff838383),
+                                ),
+                              ),
+                        startTimings == true
+                            ? SizedBox(
+                                width: 10,
+                              )
+                            : Container(),
+                        startTimings == true
+                            ? buildTimerWidget(context)
+                            : Container(),
                       ],
+                    ),
+                  ),*/
+                  Text(
+                    errorMessage,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      color: Colors.red[300],
                     ),
                   ),
                   SizedBox(
@@ -411,7 +473,8 @@ class _EnterOTPState extends State<EnterOTP> {
                         height: getProportionateScreenHeight(60)),
                     child: ElevatedButton(
                       onPressed: () {
-                        push(context, SuccessOTP());
+                        _verifyOTP();
+                        //push(context, SuccessOTP());
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Color(0xFFFFE44E),

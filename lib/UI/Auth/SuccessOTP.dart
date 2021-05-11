@@ -13,10 +13,9 @@ class SuccessOTP extends StatefulWidget {
 }
 
 class _SuccessOTPState extends State<SuccessOTP> {
-
-  jumpScreen(){
-    Future.delayed(const Duration(seconds: 2),(){
-      push(context, BasicProfile());
+  jumpScreen() {
+    Future.delayed(const Duration(seconds: 2), () {
+      pushReplacement(context, BasicProfile());
     });
   }
 
@@ -34,39 +33,43 @@ class _SuccessOTPState extends State<SuccessOTP> {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
 
-    buildTopWidget(BuildContext context){
+    buildTopWidget(BuildContext context) {
       return Container(
-          height: screenHeight/6,
+          height: screenHeight / 6,
           width: screenWidth,
           decoration: BoxDecoration(
             color: Color(0xff08763F),
           ),
           child: Container(
               alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(left: screenWidth/15),
+              margin: EdgeInsets.only(left: screenWidth / 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    height: 50,width: 50,
+                    height: 50,
+                    width: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(50)),
                       color: Color(0xff1F8F4E),
                     ),
-                    child: Center(child:
-                    Icon(Icons.chat,color: Color(constants.COLOR_WHITE),)),
+                    child: Center(
+                        child: Icon(
+                      Icons.chat,
+                      color: Color(constants.COLOR_WHITE),
+                    )),
                   ),
-                  SizedBox(width: 20,),
-                  Text("Verify",
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text(
+                    "Verify",
                     style: GoogleFonts.poppins(
-                        fontSize: 22,
-                        color: Color(constants.COLOR_WHITE)
-                    ),
+                        fontSize: 22, color: Color(constants.COLOR_WHITE)),
                   ),
                 ],
-              ))
-      );
+              )));
     }
 
     return Scaffold(
@@ -74,11 +77,13 @@ class _SuccessOTPState extends State<SuccessOTP> {
       body: Stack(
         children: [
           Positioned(
-            top: 0,left: 0,right: 0,
+            top: 0,
+            left: 0,
+            right: 0,
             child: buildTopWidget(context),
           ),
           Padding(
-            padding: EdgeInsets.only(top: screenHeight/6),
+            padding: EdgeInsets.only(top: screenHeight / 6),
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -104,18 +109,24 @@ class _SuccessOTPState extends State<SuccessOTP> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Icon(
                     Icons.check_circle_outline,
                     size: 200,
                     color: Color(0xff008940),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   JumpingDotsProgressIndicator(
                     fontSize: 50.0,
                     color: Color(0xff008940),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
                     child: Text(

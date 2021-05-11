@@ -12,7 +12,6 @@ import 'package:kisan/UI/Auth/EnterOTP.dart';
 import 'package:kisan/UI/Widgets/ScreenHeader.dart';
 import 'package:kisan/View%20Models/CustomViewModel.dart';
 import 'package:provider/provider.dart';
-import 'package:kisan/UI/Auth/LoginWithOTPVerify.dart';
 import 'package:kisan/Helpers/constants.dart' as constants;
 
 import '../../Helpers/helper.dart';
@@ -24,7 +23,6 @@ class LoginWithOTP extends StatefulWidget {
 
 class _LoginWithOTPState extends State<LoginWithOTP> {
   String countryCode = '+91';
-  String phoneNo;
   String errorMessage = '';
   bool _isChecked = false;
   TextEditingController phoneController = TextEditingController();
@@ -39,19 +37,16 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
 
   Future<void> _sendOTP() async {
     Provider.of<CustomViewModel>(context, listen: false)
-        .sendOTP(this.countryCode + this.phoneNo, _isChecked ? "OTP_IN" : "OTP_OUT")
+        .sendOTP(this.countryCode + phoneController.text.toString(),
+            _isChecked ? "OTP_IN" : "OTP_OUT")
         .then((value) {
       setState(() {
         if (value == "error") {
           //for unexpected error
-          errorMessage = value;
+          errorMessage = "Check internet or try after sometime";
         } else if (value == "Verification code sent") {
-          //for code 200
-          errorMessage = value;
-          //can be use to push to next screen
-          push(context, LoginWithOTPVerfy());
+          push(context, EnterOTP(phoneController.text.toString()));
         } else {
-          //for expected errors
           errorMessage = value;
         }
       });
@@ -73,39 +68,43 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
 
-    buildTopWidget(BuildContext context){
+    buildTopWidget(BuildContext context) {
       return Container(
-          height: screenHeight/6,
+          height: screenHeight / 6,
           width: screenWidth,
           decoration: BoxDecoration(
             color: Color(0xff08763F),
           ),
           child: Container(
               alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(left: screenWidth/15),
+              margin: EdgeInsets.only(left: screenWidth / 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    height: 50,width: 50,
+                    height: 50,
+                    width: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(50)),
                       color: Color(0xff1F8F4E),
                     ),
-                    child: Center(child:
-                    Icon(Icons.mobile_friendly_outlined,color: Color(constants.COLOR_WHITE),)),
+                    child: Center(
+                        child: Icon(
+                      Icons.mobile_friendly_outlined,
+                      color: Color(constants.COLOR_WHITE),
+                    )),
                   ),
-                  SizedBox(width: 20,),
-                  Text("Enter Mobile",
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text(
+                    "Enter Mobile",
                     style: GoogleFonts.poppins(
-                        fontSize: 22,
-                        color: Color(constants.COLOR_WHITE)
-                    ),
+                        fontSize: 22, color: Color(constants.COLOR_WHITE)),
                   ),
                 ],
-              ))
-      );
+              )));
     }
 
     return Scaffold(
@@ -113,11 +112,13 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
       body: Stack(
         children: [
           Positioned(
-            top: 0,left: 0,right: 0,
+            top: 0,
+            left: 0,
+            right: 0,
             child: buildTopWidget(context),
           ),
           Padding(
-            padding: EdgeInsets.only(top: screenHeight/6),
+            padding: EdgeInsets.only(top: screenHeight / 6),
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -137,8 +138,8 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
                       "Please enter your mobile number\nWe will send a 6 digit code\non this number for verification",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
-                          fontSize: 22,
-                          color: Color(0xff696969),
+                        fontSize: 22,
+                        color: Color(0xff696969),
                       ),
                     ),
                   ),
@@ -157,10 +158,9 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
                             // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
                             initialSelection: 'IN',
                             favorite: ['+91', 'IN'],
+                            enabled: false,
                             textStyle: GoogleFonts.poppins(
-                                fontSize: 14,
-                                color: Color(COLOR_TEXT_BLACK)
-                            ),
+                                fontSize: 14, color: Color(COLOR_TEXT_BLACK)),
                             // optional. Shows only country name and flag
                             showCountryOnly: false,
                             // optional. Shows only country name and flag when popup is closed.
@@ -178,8 +178,8 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
                           maxLength: 10,
                           controller: phoneController,
                           style: GoogleFonts.poppins(
-                              fontSize: getProportionateScreenHeight(18),
-                              color: Colors.black,
+                            fontSize: getProportionateScreenHeight(18),
+                            color: Colors.black,
                           ),
                           decoration: new InputDecoration(
                               filled: true,
@@ -189,17 +189,21 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
                                 color: Colors.grey,
                               ),
                               hintText: "Mobile Number",
-                              fillColor: Color(COLOR_WHITE)
-                          ),
-                          onChanged: (value) {
-                            this.phoneNo = value;
-                          },
+                              fillColor: Color(COLOR_WHITE)),
                         ),
                       ),
                     ],
                   ),
                   SizedBox(
                     height: 30,
+                  ),
+                  Text(
+                    errorMessage,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      color: Colors.red[300],
+                    ),
                   ),
                   Container(
                     child: Row(
@@ -227,7 +231,8 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
                         ),
                         Text(
                           "WhatsApp",
-                          style: GoogleFonts.poppins(fontWeight: FontWeight.w700),
+                          style:
+                              GoogleFonts.poppins(fontWeight: FontWeight.w700),
                         )
                       ],
                     ),
@@ -241,17 +246,22 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
                         height: getProportionateScreenHeight(60)),
                     child: ElevatedButton(
                       onPressed: () {
-                      if(phoneController.text.toString() == ""){
-                        Fluttertoast.showToast(msg: 'Phone number is required!',
-                          backgroundColor: Colors.white,
-                          textColor: Colors.red[800],);
-                      }else if(phoneController.text.length > 10 || phoneController.text.length < 10){
-                        Fluttertoast.showToast(msg: 'Phone number must be 10 digits!',
-                          backgroundColor: Colors.white,
-                          textColor: Colors.red[800],);
-                      }else{
-                        push(context, EnterOTP(phoneController.text.toString()));
-                      }
+                        if (phoneController.text.toString() == "") {
+                          Fluttertoast.showToast(
+                            msg: 'Phone number is required!',
+                            backgroundColor: Colors.white,
+                            textColor: Colors.red[800],
+                          );
+                        } else if (phoneController.text.length > 10 ||
+                            phoneController.text.length < 10) {
+                          Fluttertoast.showToast(
+                            msg: 'Phone number must be 10 digits!',
+                            backgroundColor: Colors.white,
+                            textColor: Colors.red[800],
+                          );
+                        } else {
+                          _sendOTP();
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Color(0xFFFFE44E),
@@ -284,10 +294,7 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
                             style: GoogleFonts.poppins(
                               decoration: TextDecoration.underline,
                             )),
-                        TextSpan(
-                            text: '\nand',
-                            style: GoogleFonts.poppins(
-                            )),
+                        TextSpan(text: '\nand', style: GoogleFonts.poppins()),
                         TextSpan(
                             text: ' Privacy policy',
                             style: GoogleFonts.poppins(
