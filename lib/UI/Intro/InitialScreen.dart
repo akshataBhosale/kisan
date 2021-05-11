@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kisan/Helpers/images.dart' as images;
+import 'package:kisan/Helpers/size_config.dart';
 import '../../Helpers/helper.dart';
 import 'LanguageScreen.dart';
 import 'package:kisan/Helpers/constants.dart' as constants;
@@ -21,11 +22,13 @@ class _InitialScreenState extends State<InitialScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    //SizeConfig().init(context);
     jumpScreen();
   }
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Color(constants.COLOR_BACKGROUND),
       body: Center(

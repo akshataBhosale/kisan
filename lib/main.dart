@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kisan/UI/Intro/InitialScreen.dart';
 import 'package:provider/provider.dart';
-
-import 'UI/Auth/LoginWithOTP.dart';
 import 'View Models/CustomViewModel.dart';
 
 void main() async {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.white
+  ));
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
@@ -19,4 +21,5 @@ void main() async {
         child: MaterialApp(
             debugShowCheckedModeBanner: false, home: InitialScreen())),
   );
+
 }

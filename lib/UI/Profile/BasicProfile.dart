@@ -6,6 +6,9 @@ import 'package:geocoder/geocoder.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kisan/Helpers/constants.dart' as constants;
+import 'package:kisan/Helpers/helper.dart';
+import 'package:kisan/UI/HomeScreen/HomeScreen.dart';
+import 'package:kisan/UI/HomeScreen/Widgets/bottom_tabs.dart';
 import 'package:kisan/UI/Widgets/jumping_dots.dart';
 import 'package:location/location.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
@@ -499,7 +502,7 @@ class _BasicProfileState extends State<BasicProfile> {
                     height: 55),
                 child: ElevatedButton(
                   onPressed: () {
-
+                    push(context, HomeScreen());
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Color(0xFF008940),

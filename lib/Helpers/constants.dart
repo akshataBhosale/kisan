@@ -19,6 +19,9 @@ const COLOR_YELLOW = 0xFFFBBC05;
 const COLOR_GREEN = 0xFF34A853;
 const COLOR_YELLO_GREEN = 0xFFBEC100;
 const COLOR_YELLO_LEMON = 0xFFfff44f;
+const COLOR_TEXT_GREEN = 0xffFF094409;
+
+const ANIMATION_DURATION = 260;
 
 const APP_TITLE = 'Kisan';
 const APP_SUBTITLE = 'Kisan App';
@@ -34,3 +37,36 @@ const client_secret = "61678097-4baa-472c-9fa7-ea628a5d2675";
 const apiUrl = "https://id.kisanlab.com";
 const send_custom_otp_mobile = apiUrl + "/profiles/send_custom_otp_mobile/";
 const api_token_custom_otp_auth = apiUrl + "/api-token-custom-otp-auth/";
+
+
+List<Map<String, dynamic>> drawerItems = [
+  {
+    "icon": Icons.calendar_today_rounded,
+    "text": "My Webinars",
+    "onPressed": () {},
+  },
+  {
+    "icon": Icons.settings,
+    "text": "Settings",
+    "onPressed": () {},
+  },
+  {"icon": Icons.share, "text": "Invite Friends", "onPressed": () {}},
+  {"icon": Icons.error, "text": "FAQ & Support", "onPressed": () {}},
+  {"icon": Icons.error, "text": "About App", "onPressed": () {}},
+  {
+    "icon": Icons.privacy_tip_rounded,
+    "text": "Terms & Privacy Policy",
+    "onPressed": () {}
+  },
+  {"icon": Icons.logout, "text": "Logout", "onPressed": () {}}
+];
+
+List<Map<String,String>> imgSlider = [
+  {
+    "imgPath": "assets/images/ruralfirst.jpg",
+
+  },
+  {
+    "imgPayh": "assets/images/tractor2.jpg",
+  },
+];
