@@ -1,17 +1,7 @@
-class ProfileParser {
-  String customerID,
-      customerAuthType,
-      customerFullname,
-      customerEmail,
-      customerMobileno,
-      customerFCM;
+import 'UserProfileParser.dart';
 
-  ProfileParser(
-    this.customerID,
-    this.customerAuthType,
-    this.customerFullname,
-    this.customerEmail,
-    this.customerMobileno,
-    this.customerFCM,
-  );
+class UserDataParser {
+  String email, username, first_name, last_name;
+
+  UserDataParser(this.email, this.username, this.first_name, this.last_name);
 }

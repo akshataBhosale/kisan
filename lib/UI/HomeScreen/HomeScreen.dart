@@ -1,9 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:kisan/Helpers/constants.dart';
+import 'package:kisan/Helpers/helper.dart';
 import 'package:kisan/Helpers/size_config.dart';
+import 'package:kisan/Models/UserDataParser.dart';
 import 'package:kisan/UI/HomeScreen/Widgets/bottom_tabs.dart';
+import 'package:kisan/UI/Intro/InitialScreen.dart';
+import 'package:kisan/UI/Profile/BasicProfile.dart';
 import 'package:kisan/UI/Tabs/HomeTab.dart';
 import 'package:kisan/UI/Tabs/ShortListedTab.dart';
+import 'package:kisan/View%20Models/CustomViewModel.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -12,14 +21,44 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   PageController _tabPageController;
+  bool _isloaded = false;
   int _selectedTab = 0;
   GlobalKey<ScaffoldState> _key = GlobalKey();
 
+  Future<void> initTask() async {
+    Provider.of<CustomViewModel>(context, listen: false)
+        .GetProfileData()
+        .then((value) {
+      setState(() {
+        if (value == "error") {
+          //for unexpected error
+          // errorMessage = "Error in fetching data";
+          //logout user
+          LogOut();
+        } else if (value == "success") {
+          _isloaded = true;
+          //  push(context, EnterOTP(phoneController.text.toString()));
+          //
+        } else {
+          // errorMessage = value;
+          LogOut();
+        }
+      });
+    });
+  }
+
+  Future LogOut() async {
+    SharedPreferences prefs =
+        await SharedPreferences.getInstance();
+    await prefs.clear();
+    pushReplacement(context, InitialScreen());
+  }
 
   @override
   void initState() {
     _tabPageController = PageController();
     super.initState();
+    initTask();
   }
 
   @override
@@ -32,111 +71,138 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
 
-    return Scaffold(
-      key: _key,
-      appBar: PreferredSize(
-        preferredSize: Size(MediaQuery.of(context).size.width,80),
-        child: AppBar(
-          titleSpacing: 20,
-          title: Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Container(
-              child: Row(
-                children: [
-                  Image.asset(
-                    "assets/images/KISAN-logo.png",
-                    width: getProportionateScreenWidth(57),
+    return _isloaded == true
+        ? Scaffold(
+            key: _key,
+            appBar: PreferredSize(
+              preferredSize: Size(MediaQuery.of(context).size.width, 80),
+              child: AppBar(
+                titleSpacing: 20,
+                title: Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Container(
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          "assets/images/KISAN-logo.png",
+                          width: getProportionateScreenWidth(57),
+                        ),
+                        SizedBox(
+                          width: getProportionateScreenWidth(10),
+                        ),
+                        Image.asset(
+                          "assets/images/KISAN.png",
+                          width: getProportionateScreenWidth(57),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                backgroundColor: Colors.white,
+                elevation: 0,
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.search,
+                        size: 30,
+                      ),
+                      color: Colors.black,
+                      onPressed: () {},
+                    ),
                   ),
                   SizedBox(
                     width: getProportionateScreenWidth(10),
                   ),
-                  Image.asset(
-                    "assets/images/KISAN.png",
-                    width: getProportionateScreenWidth(57),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.notifications,
+                        size: 30,
+                      ),
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(
+                    width: getProportionateScreenWidth(10),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: IconButton(
+                      onPressed: () {
+                        _key.currentState.openEndDrawer();
+                      },
+                      icon: Icon(
+                        Icons.menu,
+                        size: 30,
+                      ),
+                      color: Colors.black,
+                    ),
                   ),
                 ],
               ),
             ),
-          ),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: IconButton(
-                icon: Icon(Icons.search,size: 30,),
-                color: Colors.black,
-                onPressed: (){},
+            endDrawer: CustomDrawer(),
+            bottomNavigationBar: Container(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: BottomTabs(
+                  selectedTab: _selectedTab,
+                  tabPressed: (num) {
+                    _tabPageController.animateToPage(num,
+                        duration: Duration(milliseconds: ANIMATION_DURATION),
+                        curve: Curves.easeOutCubic);
+                  },
+                ),
               ),
             ),
-            SizedBox(width: getProportionateScreenWidth(10),),
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: IconButton(
-                onPressed: (){},
-                icon: Icon(Icons.notifications,size: 30,),
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(width: getProportionateScreenWidth(10),),
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: IconButton(
-                onPressed: (){
-                  _key.currentState.openEndDrawer();
-                },
-                icon: Icon(Icons.menu,size: 30,),
-                color: Colors.black,
-              ),
-            ),
-          ],
-        ),
-      ),
-      endDrawer: CustomDrawer(),
-      bottomNavigationBar: Container(
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 20),
-          child: BottomTabs(
-            selectedTab: _selectedTab,
-            tabPressed: (num) {
-              _tabPageController.animateToPage(num,
-                  duration: Duration(milliseconds: ANIMATION_DURATION),
-                  curve: Curves.easeOutCubic);
-            },
-          ),
-        ),
-      ),
-      body: Container(
-        color: Colors.white,
-        width: double.infinity,
-        child: Column(
-          children: [
-            Expanded(
-              child: PageView(
-                controller: _tabPageController,
-                onPageChanged: (num) {
-                  setState(() {
-                    _selectedTab = num;
-                  });
-                },
+            body: Container(
+              color: Colors.white,
+              width: double.infinity,
+              child: Column(
                 children: [
-                  HomeTab(),
-                  ShortListedTab(),
-                  Center(
-                    child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: Image.asset("",
-                          fit: BoxFit.fill,
-                        )),
+                  Expanded(
+                    child: PageView(
+                      controller: _tabPageController,
+                      onPageChanged: (num) {
+                        setState(() {
+                          _selectedTab = num;
+                        });
+                      },
+                      children: [
+                        HomeTab(),
+                        ShortListedTab(),
+                        Center(
+                          child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              child: Image.asset(
+                                "",
+                                fit: BoxFit.fill,
+                              )),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          )
+        : Container(
+            height: SizeConfig.screenHeight,
+            color: Color(COLOR_BACKGROUND),
+            child: Center(
+              child: new CircularProgressIndicator(
+                strokeWidth: 1,
+                backgroundColor: Color(COLOR_WHITE),
+                valueColor:
+                    AlwaysStoppedAnimation<Color>(Color(COLOR_BACKGROUND)),
+              ),
+            ),
+          );
   }
 }
 
@@ -156,9 +222,10 @@ class CustomDrawer extends StatelessWidget {
           child: Column(
             children: [
               DrawerHeader(),
-              Container(
+              /*Container(
                 height: getProportionateScreenHeight(500),
-                child: ListView.builder(
+                child:
+                ListView.builder(
                   itemCount: drawerItems.length,
                   itemBuilder: (context, index) {
                     return DrawerItem(
@@ -168,6 +235,47 @@ class CustomDrawer extends StatelessWidget {
                     );
                   },
                 ),
+              ),*/
+              DrawerItem(
+                icon: Icons.calendar_today_rounded,
+                text: "My Webinars",
+                onPressed: () {},
+              ),
+              DrawerItem(
+                icon: Icons.settings,
+                text: "Settings",
+                onPressed: () {},
+              ),
+              DrawerItem(
+                icon: Icons.share,
+                text: "Invite Friends",
+                onPressed: () {},
+              ),
+              DrawerItem(
+                icon: Icons.info,
+                text: "FAQ & Support",
+                onPressed: () {},
+              ),
+              DrawerItem(
+                icon: Icons.info,
+                text: "About App",
+                onPressed: () {},
+              ),
+              DrawerItem(
+                icon: Icons.privacy_tip_rounded,
+                text: "Terms & Privacy Policy",
+                onPressed: () {},
+              ),
+              DrawerItem(
+                icon: Icons.logout,
+                text: "Logout",
+                onPressed: () async {
+                  //TODO: remove if not needed
+                  SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+                  await prefs.clear();
+                  pushReplacement(context, InitialScreen());
+                },
               ),
             ],
           )),
@@ -186,6 +294,7 @@ class DrawerItem extends StatelessWidget {
   final IconData icon;
   final String text;
   final Function onPressed;
+
 
   @override
   Widget build(BuildContext context) {
@@ -212,7 +321,11 @@ class DrawerItem extends StatelessWidget {
               )
             ],
           )),
-          Divider(color: Colors.white.withOpacity(0.4),thickness: 2,height: 1,)
+          Divider(
+            color: Colors.white.withOpacity(0.4),
+            thickness: 2,
+            height: 1,
+          )
         ],
       ),
     );
@@ -226,39 +339,59 @@ class DrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final providerListener = Provider.of<CustomViewModel>(context);
+
     return Container(
       child: Column(
         children: [
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 25,
-
-              ),
-              Spacer(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Sidharth Joshi",
-                    style: TextStyle(
-                        fontSize: getProportionateScreenHeight(18),
-                        fontFamily: 'Poppins Bold',
-                        color: Colors.white),
-                  ),
-                  Text("+91 7741971506 | Pune, Maharashtra",
+          InkWell(
+            onTap: () {
+              push(
+                  context,
+                  BasicProfile(
+                      providerListener.userData.first_name,
+                      providerListener.userData.last_name,
+                      providerListener.userData.email,
+                      providerListener.userprofileData.image_url));
+            },
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 25,
+                  backgroundImage: providerListener
+                              .userprofileData.image_smallthumb_url !=
+                          null
+                      ? NetworkImage(
+                          providerListener.userprofileData.image_smallthumb_url)
+                      : AssetImage('assets/images/google.jpg'),
+                ),
+                Spacer(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      providerListener.userData.first_name +
+                          " " +
+                          providerListener.userData.last_name,
                       style: TextStyle(
-                          fontSize: getProportionateScreenHeight(9),
-                          fontFamily: 'Poppins Medium',
-                          color: Colors.white)),
-                ],
-              ),
-              Spacer(),
-              Icon(
-                Icons.edit,
-                color: Colors.white,
-              )
-            ],
+                          fontSize: getProportionateScreenHeight(18),
+                          fontFamily: 'Poppins Bold',
+                          color: Colors.white),
+                    ),
+                    Text(providerListener.userprofileData.mobile1+ " | "+providerListener.userprofileData.address1,
+                        style: TextStyle(
+                            fontSize: getProportionateScreenHeight(9),
+                            fontFamily: 'Poppins Medium',
+                            color: Colors.white)),
+                  ],
+                ),
+                Spacer(),
+                Icon(
+                  Icons.edit,
+                  color: Colors.white,
+                )
+              ],
+            ),
           ),
           SizedBox(
             height: getProportionateScreenHeight(27),

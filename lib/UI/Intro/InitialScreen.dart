@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kisan/Helpers/images.dart' as images;
 import 'package:kisan/Helpers/size_config.dart';
+import 'package:kisan/UI/HomeScreen/HomeScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../Helpers/helper.dart';
 import 'LanguageScreen.dart';
 import 'package:kisan/Helpers/constants.dart' as constants;
@@ -11,10 +13,16 @@ class InitialScreen extends StatefulWidget {
 }
 
 class _InitialScreenState extends State<InitialScreen> {
+  jumpScreen() {
+    Future.delayed(const Duration(seconds: 2), () async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  jumpScreen(){
-    Future.delayed(const Duration(seconds: 2),(){
-      push(context, LanguageScreen());
+      String token = prefs.getString('token') ?? "";
+      if (token != "") {
+        push(context, HomeScreen());
+      } else {
+        push(context, LanguageScreen());
+      }
     });
   }
 
@@ -33,7 +41,8 @@ class _InitialScreenState extends State<InitialScreen> {
       backgroundColor: Color(constants.COLOR_BACKGROUND),
       body: Center(
         child: Container(
-          child: Image.asset(images.kisanLogo,
+          child: Image.asset(
+            images.kisanLogo,
             scale: 1.5,
           ),
         ),

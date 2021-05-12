@@ -7,17 +7,22 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kisan/Helpers/constants.dart' as constants;
 import 'package:kisan/Helpers/helper.dart';
-import 'package:kisan/UI/HomeScreen/HomeScreen.dart';
-import 'package:kisan/UI/HomeScreen/Widgets/bottom_tabs.dart';
-import 'package:kisan/UI/Widgets/jumping_dots.dart';
-import 'package:location/location.dart';
-import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:kisan/Helpers/size_config.dart';
+import 'package:kisan/UI/HomeScreen/HomeScreen.dart';
+import 'package:kisan/View%20Models/CustomViewModel.dart';
+import 'package:location/location.dart';
+import 'package:provider/provider.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 File imageOne;
 bool fetched = false;
 
 class BasicProfile extends StatefulWidget {
+  String first_name, last_name, email, image_url;
+
+  BasicProfile(this.first_name, this.last_name, this.email, this.image_url);
+
   @override
   _BasicProfileState createState() => _BasicProfileState();
 }
@@ -26,19 +31,82 @@ class _BasicProfileState extends State<BasicProfile> {
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  String pincode;
 
   Location location = new Location();
   LocationData _locationData;
 
   var addresses;
   var first;
+  var second;
   var lat;
   var long;
   var city;
   var state;
+  var address1;
 
   bool permission = true;
   final picker = ImagePicker();
+
+  Future Register() {
+    Provider.of<CustomViewModel>(context, listen: false)
+        .Register(
+        firstNameController.text,
+        lastNameController.text,
+        address1,
+        city,
+        state,
+        long.toString(),
+        lat.toString(),
+        pincode,
+        "otp",
+        emailController.text,
+        "manual",
+        false,
+        "mobile")
+        .then((value) {
+      setState(() {
+        if (value == "error") {
+          toastCommon(context, "something went wrong");
+        } else if (value == "success") {
+          push(context, HomeScreen());
+        } else {
+          toastCommon(context, value);
+        }
+      });
+    });
+  }
+
+  Future UpdateProfileData() {
+    Provider.of<CustomViewModel>(context, listen: false)
+        .UpdateProfileData(
+      firstNameController.text,
+      lastNameController.text,
+      pincode,
+      "otp",
+      emailController.text,
+      "manual",
+      false,
+      address1,
+      city,
+      state,
+      long.toString(),
+      lat.toString(),
+    )
+        .then((value) {
+      setState(() {
+        if (value == "error") {
+          toastCommon(context, "something went wrong");
+        } else if (value == "success") {
+          toastCommon(context, "Profile Updated");
+          pop(context);
+          pop(context);
+        } else {
+          toastCommon(context, value);
+        }
+      });
+    });
+  }
 
   Future getImageOne() async {
     Navigator.of(context).pop();
@@ -50,6 +118,7 @@ class _BasicProfileState extends State<BasicProfile> {
       imageOne = File(pickedFile.path);
       //enableSave = true;
     });
+    ImageUpload();
   }
 
   Future getImageOneGallery() async {
@@ -61,6 +130,25 @@ class _BasicProfileState extends State<BasicProfile> {
     setState(() {
       imageOne = File(pickedFile.path);
       //enableSave = true;
+    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(prefs.getString("token"));
+    ImageUpload();
+  }
+
+  Future ImageUpload() async {
+    Provider.of<CustomViewModel>(context, listen: false)
+        .ImageUpload(imageOne)
+        .then((value) async {
+      setState(() {
+        if (value == "error") {
+          toastCommon(context, "Please try again");
+        } else if (value == "success") {
+          Provider.of<CustomViewModel>(context, listen: false).GetProfileData();
+        } else {
+          toastCommon(context, value);
+        }
+      });
     });
   }
 
@@ -95,18 +183,18 @@ class _BasicProfileState extends State<BasicProfile> {
                           Padding(
                             padding: const EdgeInsets.only(right: 20),
                             child: Container(
-                                //width: 100,
+                              //width: 100,
                                 child: Icon(
-                              Icons.camera_alt,
-                              color: Color(0xff007105),
-                            )),
+                                  Icons.camera_alt,
+                                  color: Color(0xff007105),
+                                )),
                           ),
                           Container(
                               width: 150,
                               child: Text(
                                 "Open using camera",
                                 style:
-                                    GoogleFonts.nunitoSans(letterSpacing: 0.5),
+                                GoogleFonts.nunitoSans(letterSpacing: 0.5),
                               ))
                         ],
                       ),
@@ -126,18 +214,18 @@ class _BasicProfileState extends State<BasicProfile> {
                           Padding(
                             padding: const EdgeInsets.only(right: 20),
                             child: Container(
-                                //width: 100,
+                              //width: 100,
                                 child: Icon(
-                              Icons.image,
-                              color: Color(0xff007105),
-                            )),
+                                  Icons.image,
+                                  color: Color(0xff007105),
+                                )),
                           ),
                           Container(
                               width: 150,
                               child: Text(
                                 "Open using gallery",
                                 style:
-                                    GoogleFonts.nunitoSans(letterSpacing: 0.5),
+                                GoogleFonts.nunitoSans(letterSpacing: 0.5),
                               ))
                         ],
                       ),
@@ -154,19 +242,29 @@ class _BasicProfileState extends State<BasicProfile> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     setState(() {
       fetched = false;
       imageOne = null;
       city = null;
       state = null;
+      firstNameController.text = widget.first_name;
+      lastNameController.text = widget.last_name;
+      emailController.text = widget.email;
     });
-    firstNameController = TextEditingController(text: "  Shreyas");
   }
 
   @override
   Widget build(BuildContext context) {
-    var screenHeight = MediaQuery.of(context).size.height;
-    var screenWidth = MediaQuery.of(context).size.width;
+    var screenHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
+    var screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final providerListener = Provider.of<CustomViewModel>(context);
 
     buildTopWidget(BuildContext context) {
       return Container(
@@ -194,9 +292,9 @@ class _BasicProfileState extends State<BasicProfile> {
                       ),
                       child: Center(
                           child: Icon(
-                        Icons.person,
-                        color: Color(constants.COLOR_WHITE),
-                      )),
+                            Icons.person,
+                            color: Color(constants.COLOR_WHITE),
+                          )),
                     ),
                     SizedBox(
                       width: 20,
@@ -222,7 +320,9 @@ class _BasicProfileState extends State<BasicProfile> {
                         radius: 60,
                         backgroundColor: Colors.white,
                         backgroundImage: imageOne == null
-                            ? AssetImage("assets/images/google.jpg")
+                            ? widget.image_url != ""
+                            ? NetworkImage(widget.image_url)
+                            : AssetImage('assets/images/google.jpg')
                             : FileImage(imageOne),
                       ),
                     ),
@@ -235,7 +335,7 @@ class _BasicProfileState extends State<BasicProfile> {
                             width: 30,
                             decoration: BoxDecoration(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(50)),
+                              BorderRadius.all(Radius.circular(50)),
                               color: Colors.yellow,
                               border: Border.all(color: Colors.black),
                             ),
@@ -306,37 +406,30 @@ class _BasicProfileState extends State<BasicProfile> {
                 ),
               ],
             ),
-            fetched == true
-                ? SizedBox(
-                    height: 30,
-                  )
-                : Container(),
-            fetched == true
-                ? Padding(
-                    padding: EdgeInsets.only(
-                        left: screenWidth / 15, right: screenWidth / 15),
-                    child: Center(
-                      child: Container(
-                        child: Theme(
-                          data: ThemeData(primaryColor: Color(0xff08763F)),
-                          child: TextFormField(
-                            controller: emailController,
-                            decoration: InputDecoration(
-                                hintText: '  Email',
-                                hintStyle: GoogleFonts.poppins(
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 14,
-                                )),
-                            style: GoogleFonts.poppins(
-                                color: Color(0xff08763F),
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
+            Padding(
+              padding: EdgeInsets.only(
+                  left: screenWidth / 15, right: screenWidth / 15),
+              child: Center(
+                child: Container(
+                  child: Theme(
+                    data: ThemeData(primaryColor: Color(0xff08763F)),
+                    child: TextFormField(
+                      controller: emailController,
+                      decoration: InputDecoration(
+                          hintText: '  Email',
+                          hintStyle: GoogleFonts.poppins(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w300,
+                            fontSize: 14,
+                          )),
+                      style: GoogleFonts.poppins(
+                          color: Color(0xff08763F),
+                          fontWeight: FontWeight.bold),
                     ),
-                  )
-                : Container(),
+                  ),
+                ),
+              ),
+            ),
             SizedBox(
               height: 30,
             ),
@@ -355,20 +448,27 @@ class _BasicProfileState extends State<BasicProfile> {
                     ),
                   ),
                   fetched == true
-                      ? Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50)),
-                              border: Border.all(color: Color(0xffCCCCCC))),
-                          child: Center(
-                            child: Icon(
-                              Icons.edit,
-                              color: Color(0xff696969),
-                            ),
-                          ),
-                        )
+                      ? InkWell(
+                    child: Container(
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(50)),
+                          border: Border.all(color: Color(0xffCCCCCC))),
+                      child: Center(
+                        child: Icon(
+                          Icons.edit,
+                          color: Color(0xff696969),
+                        ),
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        fetched = false;
+                      });
+                    },
+                  )
                       : Container(),
                 ],
               ),
@@ -376,82 +476,82 @@ class _BasicProfileState extends State<BasicProfile> {
             fetched == true
                 ? Container()
                 : SizedBox(
-                    height: 30,
-                  ),
+              height: 30,
+            ),
             fetched == true
                 ? Container()
                 : InkWell(
-                    onTap: () {
-                      showAlertDialog(context);
-                    },
-                    child: Center(
-                      child: Container(
-                        margin: EdgeInsets.only(
-                            left: screenWidth / 15, right: screenWidth / 15),
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Color(0xffEBEBEB),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.location_searching,
-                              color: Colors.black,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "Use my device location",
-                              style: GoogleFonts.poppins(
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
+              onTap: () {
+                showAlertDialog(context);
+              },
+              child: Center(
+                child: Container(
+                  margin: EdgeInsets.only(
+                      left: screenWidth / 15, right: screenWidth / 15),
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Color(0xffEBEBEB),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.location_searching,
+                        color: Colors.black,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "Use my device location",
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          color: Colors.black,
                         ),
                       ),
-                    ),
+                    ],
                   ),
+                ),
+              ),
+            ),
             fetched == true
                 ? SizedBox(
-                    height: 30,
-                  )
+              height: 30,
+            )
                 : Container(),
             fetched == true
                 ? Center(
-                    child: Container(
-                      margin: EdgeInsets.only(
-                          left: screenWidth / 15, right: screenWidth / 15),
-                      height: 50,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xff007105)),
-                        color: Color(0xff60C164),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.check,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "Location fetched successfully",
-                            style: GoogleFonts.poppins(
-                              fontSize: 18,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
+              child: Container(
+                margin: EdgeInsets.only(
+                    left: screenWidth / 15, right: screenWidth / 15),
+                height: 50,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Color(0xff007105)),
+                  color: Color(0xff60C164),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.check,
+                      color: Colors.white,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "Location fetched successfully",
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        color: Colors.white,
                       ),
                     ),
-                  )
+                  ],
+                ),
+              ),
+            )
                 : Container(),
             SizedBox(
               height: 30,
@@ -585,7 +685,16 @@ class _BasicProfileState extends State<BasicProfile> {
                     width: getProportionateScreenWidth(258), height: 55),
                 child: ElevatedButton(
                   onPressed: () {
-                    push(context, HomeScreen());
+                    if (firstNameController.text.length > 0 &&
+                        lastNameController.text.length > 0 &&
+                        emailController.text.length > 0 &&
+                        fetched == true) {
+                      providerListener.userData == null
+                          ? Register()
+                          : UpdateProfileData();
+                    } else {
+                      toastCommon(context, "Please fill all the details");
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Color(0xFF008940),
@@ -665,13 +774,18 @@ class _BasicProfileState extends State<BasicProfile> {
 
       final coordinates = new Coordinates(lat, long);
       addresses =
-          await Geocoder.local.findAddressesFromCoordinates(coordinates);
+      await Geocoder.local.findAddressesFromCoordinates(coordinates);
 
       first = addresses.first;
 
       setState(() {
+        pincode = first.addressLine.substring(first.addressLine.length - 13);
+        pincode = pincode.replaceAll(", India", "");
+        print(pincode);
         city = '${first.locality}';
         state = '${first.adminArea}';
+        address1 = '${first.addressLine}';
+
         fetched = true;
       });
 
