@@ -37,8 +37,15 @@ class _HomeScreenState extends State<HomeScreen> {
           LogOut();
         } else if (value == "success") {
           _isloaded = true;
-          //  push(context, EnterOTP(phoneController.text.toString()));
-          //
+          Provider.of<CustomViewModel>(context, listen: false).GetCategories();
+          Provider.of<CustomViewModel>(context, listen: false).GetAds();
+          Provider.of<CustomViewModel>(context, listen: false).GetProducts();
+          Provider.of<CustomViewModel>(context, listen: false).GetCompanies();
+          Provider.of<CustomViewModel>(context, listen: false).GetEvents();
+          Provider.of<CustomViewModel>(context, listen: false).GetOffers();
+          Provider.of<CustomViewModel>(context, listen: false).GetDemos();
+          Provider.of<CustomViewModel>(context, listen: false)
+              .GetLatestLaunch();
         } else {
           // errorMessage = value;
           LogOut();
@@ -48,8 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future LogOut() async {
-    SharedPreferences prefs =
-        await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
     pushReplacement(context, InitialScreen());
   }
@@ -272,7 +278,7 @@ class CustomDrawer extends StatelessWidget {
                 onPressed: () async {
                   //TODO: remove if not needed
                   SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
+                      await SharedPreferences.getInstance();
                   await prefs.clear();
                   pushReplacement(context, InitialScreen());
                 },
@@ -294,7 +300,6 @@ class DrawerItem extends StatelessWidget {
   final IconData icon;
   final String text;
   final Function onPressed;
-
 
   @override
   Widget build(BuildContext context) {
@@ -349,15 +354,20 @@ class DrawerHeader extends StatelessWidget {
               push(
                   context,
                   BasicProfile(
-                      providerListener.userData.first_name,
-                      providerListener.userData.last_name,
-                      providerListener.userData.email,
-                      providerListener.userprofileData.image_url));
+                    providerListener.userData.first_name ?? "",
+                    providerListener.userData.last_name ?? "",
+                    providerListener.userData.email ?? "",
+                    providerListener.userprofileData.image_url ?? "",
+                    providerListener.userprofileData.state,
+                    providerListener.userprofileData.city,
+                    providerListener.userprofileData.pin,
+                  ));
             },
             child: Row(
               children: [
                 CircleAvatar(
                   radius: 25,
+                  backgroundColor: Colors.white,
                   backgroundImage: providerListener
                               .userprofileData.image_smallthumb_url !=
                           null
@@ -370,15 +380,15 @@ class DrawerHeader extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      providerListener.userData.first_name +
+                      (providerListener.userData.first_name ?? "") +
                           " " +
-                          providerListener.userData.last_name,
+                          (providerListener.userData.last_name ?? ""),
                       style: TextStyle(
                           fontSize: getProportionateScreenHeight(18),
                           fontFamily: 'Poppins Bold',
                           color: Colors.white),
                     ),
-                    Text(providerListener.userprofileData.mobile1+ " | "+providerListener.userprofileData.address1,
+                    Text(providerListener.userprofileData.mobile1 ?? "",
                         style: TextStyle(
                             fontSize: getProportionateScreenHeight(9),
                             fontFamily: 'Poppins Medium',

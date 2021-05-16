@@ -28,7 +28,6 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
   TextEditingController phoneController = TextEditingController();
 
   void _onCountryChange(CountryCode countryCode) {
-    //TODO : manipulate the selected country code here
     print("New Country selected: " + countryCode.toString());
     setState(() {
       this.countryCode = countryCode.toString();

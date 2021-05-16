@@ -18,10 +18,10 @@ void main() async {
               create: (context) => CustomViewModel(),
               child: MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  home: InitialScreen())),
+                  home: /*SocialAuth() */InitialScreen())),
         ],
         child: MaterialApp(
             debugShowCheckedModeBanner: false,
-            home: InitialScreen())),
+            home: /*SocialAuth() */InitialScreen())),
   );
 }

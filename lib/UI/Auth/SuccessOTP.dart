@@ -15,13 +15,12 @@ class SuccessOTP extends StatefulWidget {
 class _SuccessOTPState extends State<SuccessOTP> {
   jumpScreen() {
     Future.delayed(const Duration(seconds: 2), () {
-      pushReplacement(context, BasicProfile("", "", "", ""));
+      pushReplacement(context, BasicProfile("", "", "", "", null, null, null));
     });
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     jumpScreen();
   }

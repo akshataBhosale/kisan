@@ -24,23 +24,26 @@ dependencies:
   flutter:
     sdk: flutter
   progress_dialog: ^1.0.4
-  provider: ^4.0.1
-  http: ^0.12.2
-  country_code_picker: ^1.7.0
+  provider: ^5.0.0
+  http: ^0.13.3
+  country_code_picker: ^2.0.1
   google_fonts: any
   carousel_slider: any
   intro_slider: ^2.4.1
   progress_indicators: ^1.0.0
   searchable_dropdown: any
   fluttertoast: any
-  image_picker: ^0.6.7+8
-  location: ^3.2.4
+  image_picker: ^0.7.5
+  location: ^4.1.1
   geocoder: ^0.2.1
-  google_maps_place_picker: ^1.0.1
-  google_sign_in: ^4.5.1
+  google_maps_place_picker: ^2.0.0-nullsafety.3
+  firebase_core: ^1.0.1
+  firebase_auth: ^1.0.1
+  google_sign_in: ^5.0.0
+  oauth2_client: ^2.1.0
   pin_code_fields: ^7.0.0
   shared_preferences: ^2.0.5
-  cached_network_image: ^2.5.1
+  cached_network_image: ^3.0.0
   popup_menu: ^1.0.5
 
   # The following adds the Cupertino Icons font to your application.

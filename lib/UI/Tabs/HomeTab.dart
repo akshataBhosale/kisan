@@ -5,6 +5,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kisan/Helpers/constants.dart';
 import 'package:kisan/Helpers/size_config.dart';
 import 'package:kisan/UI/HomeScreen/Widgets/SubTile.dart';
+import 'package:kisan/View%20Models/CustomViewModel.dart';
+import 'package:kisan/Models/DemoListParser.dart';
+import 'package:kisan/Models/OfferListParser.dart';
+import 'package:kisan/Models/LaunchListParser.dart';
+import 'package:kisan/Models/EventListParser.dart';
+import 'package:kisan/Models/CategoryListParser.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class HomeTab extends StatefulWidget {
   @override
@@ -14,6 +22,8 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   @override
   Widget build(BuildContext context) {
+    final providerListener = Provider.of<CustomViewModel>(context);
+
     return Scaffold(
       body: Container(
         color: Colors.white,
@@ -26,264 +36,344 @@ class _HomeTabState extends State<HomeTab> {
                 child: SubTile(),
               ),
               ImageSlider(),
-              Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: 20),
-                child: SubCatTitles(title: "Categories",),
-              ),
-              Container(
-                height: 130,
-                child: ListView.builder(
-                    itemCount: 9,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return CategoryTiles(
-                        iconPath: Icons.title,
-                        onPressed: () {},
-                      );
-                    }),
-              ),
+              providerListener.categoryList.length > 0
+                  ? Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: SubCatTitles(
+                            title: "Categories",
+                          ),
+                        ),
+                        Container(
+                          height: 130,
+                          child: ListView.builder(
+                              itemCount: providerListener.categoryList.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return CategoryTiles(context,
+                                    providerListener.categoryList[index]);
+                              }),
+                        )
+                      ],
+                    )
+                  : SizedBox(
+                      height: 1,
+                    ),
               //Divider(),
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: Container(
-                  child: Column(
-                    children: [
-                      SubCatTitles(
-                        title: "Featured Products",
-                        image: "assets/images/star.png",
+              providerListener.featuredproductsList.length > 0
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Container(
+                        child: Column(
+                          children: [
+                            SubCatTitles(
+                              title: "Featured Products",
+                              image: "assets/images/star.png",
+                            ),
+                            Container(
+                              height: 300,
+                              child: ListView.builder(
+                                  itemCount: providerListener
+                                      .featuredproductsList.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    return FeaturedProducts(
+                                      name: providerListener
+                                          .featuredproductsList[index]
+                                          .title_english,
+                                      desc: providerListener
+                                          .featuredproductsList[index]
+                                          .desc_english,
+                                      image: providerListener
+                                          .featuredproductsList[index]
+                                          .bigthumb_url,
+                                    );
+                                  }),
+                            ),
+                          ],
+                        ),
                       ),
-                      Container(
-                        height: 250,
-                        child: ListView.builder(
-                            itemCount: 9,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return FeaturedProducts(
-                                name: "Great Indian Farms",
-                                desc: "Sonalika Tractors",
-                              );
-                            }),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                    )
+                  : SizedBox(
+                      height: 1,
+                    ),
               //CustomDivider(),
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: Container(
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      SubCatTitles(
-                        title: "Featured Brands",
-                        iconData: Icons.bookmark,
-                      ),
-                      Container(
-                        height: 165,
+              providerListener.companiesList.length > 0
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Container(
                         color: Colors.white,
-                        child: ListView.builder(
-                            itemCount: 9,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return FeaturedBrands();
-                            }),
+                        child: Column(
+                          children: [
+                            SubCatTitles(
+                              title: "Featured Brands",
+                              iconData: Icons.bookmark,
+                            ),
+                            Container(
+                              height: 165,
+                              color: Colors.white,
+                              child: ListView.builder(
+                                  itemCount:
+                                      providerListener.companiesList.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    return FeaturedBrands(
+                                      organisation_name: providerListener
+                                          .companiesList[index]
+                                          .organisation_name,
+                                      image: providerListener
+                                          .companiesList[index]
+                                          .image_bigthumb_url,
+                                    );
+                                  }),
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
+                    )
+                  : SizedBox(
+                      height: 1,
+                    ),
               SizedBox(
                 height: getProportionateScreenHeight(30),
               ),
-              AdTile(),
+              AdTile(context, 0),
 
               //---------------"Newly Adds" Section---------------------
 
               SizedBox(
                 height: getProportionateScreenHeight(30),
               ),
-              Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(22)),
-                child: Column(
-                  children: [
-                    SubCatTitles(
-                      title: "Newly Added Products",
-                      iconData: Icons.flag_rounded,
+              providerListener.productsList.length > 0
+                  ? Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: getProportionateScreenWidth(22)),
+                      child: Column(
+                        children: [
+                          SubCatTitles(
+                            title: "Newly Added Products",
+                            iconData: Icons.flag_rounded,
+                          ),
+                          Container(
+                            height: 300,
+                            child: ListView.builder(
+                                itemCount: providerListener.productsList.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return FeaturedProducts(
+                                    name: providerListener
+                                        .productsList[index].title_english,
+                                    desc: providerListener
+                                        .productsList[index].desc_english,
+                                    image: providerListener
+                                        .productsList[index].bigthumb_url,
+                                  );
+                                }),
+                          ),
+                        ],
+                      ),
+                    )
+                  : SizedBox(
+                      height: 1,
                     ),
-                    Container(
-                      height: 250,
-                      child: ListView.builder(
-                          itemCount: 9,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return FeaturedProducts(
-                              name: "ST-7845TB12",
-                              desc: "Sonalika Tractors",
-                            );
-                          }),
-                    ),
-                  ],
-                ),
-              ),
               //CustomDivider(),
-              Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(22)),
-                child: Column(
-                  children: [
-                    SubCatTitles(
-                      title: "Newly Added Brands",
-                      iconData: Icons.bookmark,
+              providerListener.companiesList.length > 0
+                  ? Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: getProportionateScreenWidth(22)),
+                      child: Column(
+                        children: [
+                          SubCatTitles(
+                            title: "Newly Added Brands",
+                            iconData: Icons.bookmark,
+                          ),
+                          Container(
+                            height: 158,
+                            child: ListView.builder(
+                                itemCount:
+                                    providerListener.companiesList.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return FeaturedBrands(
+                                    organisation_name: providerListener
+                                        .companiesList[index].organisation_name,
+                                    image: providerListener.companiesList[index]
+                                        .image_bigthumb_url,
+                                  );
+                                }),
+                          ),
+                        ],
+                      ),
+                    )
+                  : SizedBox(
+                      height: 1,
                     ),
-                    Container(
-                      height: 158,
-                      child: ListView.builder(
-                          itemCount: 9,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return FeaturedBrands();
-                          }),
-                    ),
-                  ],
-                ),
-              ),
               SizedBox(
                 height: getProportionateScreenHeight(30),
               ),
-              AdTile(),
+              AdTile(context, 1),
 
               //-------------Webinars Sections--------------
 
               SizedBox(
                 height: getProportionateScreenHeight(30),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: Container(
-                  child: Column(
-                    children: [
-                      SubCatTitles(
-                        title: "Upcoming Webinars",
+              providerListener.eventList.length > 0
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Container(
+                        child: Column(
+                          children: [
+                            SubCatTitles(
+                              title: "Upcoming Webinars",
+                            ),
+                            Container(
+                              height: 250,
+                              child: ListView.builder(
+                                  itemCount: providerListener.eventList.length,
+                                  clipBehavior: Clip.none,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    return WebinarTile(context,
+                                        providerListener.eventList[index]);
+                                  }),
+                            ),
+                          ],
+                        ),
                       ),
-                      Container(
-                        height: 250,
-                        child: ListView.builder(
-                            itemCount: 5,
-                            clipBehavior: Clip.none,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return WebinarTile();
-                            }),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                    )
+                  : SizedBox(
+                      height: 1,
+                    ),
               SizedBox(
                 height: 20,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: Container(
-                  child: Column(
-                    children: [
-                      SubCatTitles(
-                        title: "Featured Webinars",
+              providerListener.featuredeventList.length > 0
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Container(
+                        child: Column(
+                          children: [
+                            SubCatTitles(
+                              title: "Featured Webinars",
+                            ),
+                            Container(
+                              height: 220,
+                              child: ListView.builder(
+                                  itemCount:
+                                      providerListener.featuredeventList.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    return FeaturesWebinar(
+                                        context,
+                                        providerListener
+                                            .featuredeventList[index]);
+                                  }),
+                            ),
+                          ],
+                        ),
                       ),
-                      Container(
-                        height: 220,
-                        child: ListView.builder(
-                            itemCount: 5,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return FeaturesWebinar();
-                            }),
-                      ),
-                    ],
-                  ),
-                ),
+                    )
+                  : SizedBox(
+                      height: 1,
+                    ),
+              SizedBox(
+                height: 10,
               ),
-              SizedBox(height: 10,),
               //CustomDivider(),
-              Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(22)),
-                child: Column(
-                  children: [
-                    SubCatTitles(
-                      title: "Latest Offers",
+              providerListener.offersList.length > 0
+                  ? Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: getProportionateScreenWidth(22)),
+                      child: Column(
+                        children: [
+                          SubCatTitles(
+                            title: "Latest Offers",
+                          ),
+                          Container(
+                            height: getProportionateScreenHeight(263),
+                            child: ListView.builder(
+                                itemCount: providerListener.offersList.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return LatestOfferTile(
+                                      providerListener.offersList[index]);
+                                }),
+                          ),
+                        ],
+                      ),
+                    )
+                  : SizedBox(
+                      height: 1,
                     ),
-                    Container(
-                      height: getProportionateScreenHeight(263),
-                      child: ListView.builder(
-                          itemCount: 5,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return LatestOfferTile();
-                          }),
-                    ),
-                  ],
-                ),
-              ),
               SizedBox(
                 height: getProportionateScreenHeight(30),
               ),
-              AdTile(),
+              AdTile(context, 2),
               SizedBox(
                 height: getProportionateScreenHeight(30),
               ),
 
               //-------------Webinars Sections--------------
 
-              Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(22)),
-                child: Column(
-                  children: [
-                    SubCatTitles(
-                      title: "Latest Demo",
+              providerListener.demosList.length > 0
+                  ? Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: getProportionateScreenWidth(22)),
+                      child: Column(
+                        children: [
+                          SubCatTitles(
+                            title: "Latest Demo",
+                          ),
+                          Container(
+                            height: getProportionateScreenHeight(263),
+                            child: ListView.builder(
+                                itemCount: providerListener.demosList.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return LatestDemo(context,
+                                      providerListener.demosList[index]);
+                                }),
+                          ),
+                        ],
+                      ),
+                    )
+                  : SizedBox(
+                      height: 1,
                     ),
-                    Container(
-                      height: getProportionateScreenHeight(263),
-                      child: ListView.builder(
-                          itemCount: 5,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return LatestDemo();
-                          }),
-                    ),
-                  ],
-                ),
+              SizedBox(
+                height: 30,
               ),
-              SizedBox(height: 30,),
               //CustomDivider(),
-              Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(22)),
-                child: Column(
-                  children: [
-                    SubCatTitles(
-                      title: "Latest Product Launch",
+              providerListener.launchList.length > 0
+                  ? Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: getProportionateScreenWidth(22)),
+                      child: Column(
+                        children: [
+                          SubCatTitles(
+                            title: "Latest Product Launch",
+                          ),
+                          Container(
+                            height: 450,
+                            child: ListView.builder(
+                                itemCount: providerListener.launchList.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return LatestProductLaunch(context,
+                                      providerListener.launchList[index]);
+                                }),
+                          ),
+                        ],
+                      ),
+                    )
+                  : SizedBox(
+                      height: 1,
                     ),
-                    Container(
-                      height: 450,
-                      child: ListView.builder(
-                          itemCount: 5,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return LatestProductLaunch();
-                          }),
-                    ),
-                  ],
-                ),
-              ),
               CustomDivider(),
               Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
                     SubCatTitles(
@@ -301,15 +391,17 @@ class _HomeTabState extends State<HomeTab> {
                       height: getProportionateScreenHeight(30),
                     ),
                     InvitationTile(),
-                    SizedBox(height: 15,),
+                    SizedBox(
+                      height: 15,
+                    ),
                     TextButton(
                       onPressed: () {},
                       child: Text(
                         "View all Notification",
                         style: GoogleFonts.poppins(
-                            fontSize: 18,
-                            color: Color(COLOR_ACCENT),
-                            ),
+                          fontSize: 18,
+                          color: Color(COLOR_ACCENT),
+                        ),
                       ),
                     ),
                   ],
@@ -362,6 +454,67 @@ class _HomeTabState extends State<HomeTab> {
       ),
     );
   }
+
+  Widget LatestOfferTile(OfferListParser offerOBJ) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: Color(0xFF08A796),
+      ),
+      margin: EdgeInsets.only(
+          top: getProportionateScreenHeight(20),
+          right: getProportionateScreenHeight(20),
+          bottom: getProportionateScreenHeight(20)),
+      width: getProportionateScreenWidth(172),
+      child: Stack(
+        children: [
+          Center(
+            child: Container(
+                child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                image: DecorationImage(
+                    image: NetworkImage(offerOBJ.bigthumb_url ?? ""),
+                    fit: BoxFit.fill),
+              ),
+            )),
+          ),
+          Positioned(
+              top: 10,
+              left: 10,
+              child: CompanyName(
+                smallthumb_url: offerOBJ.smallthumb_url,
+                organisation_name: offerOBJ.organisation_name,
+              )),
+          Positioned(
+            bottom: 10,
+            left: 10,
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    (offerOBJ.percentage_discount ?? "0") + "%",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 35,
+                        fontFamily: 'Poppins Bold'),
+                  ),
+                  Text(
+                    "Discount",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontFamily: 'Poppins Bold'),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class ColouredCustomButtons extends StatelessWidget {
@@ -384,8 +537,7 @@ class ColouredCustomButtons extends StatelessWidget {
       padding: const EdgeInsets.only(left: 20, right: 20),
       child: ConstrainedBox(
         constraints: BoxConstraints.tightFor(
-            width: getProportionateScreenWidth(370),
-            height: 60),
+            width: getProportionateScreenWidth(370), height: 60),
         child: ElevatedButton(
             onPressed: onPressed,
             style: ElevatedButton.styleFrom(
@@ -441,7 +593,8 @@ class InvitationTile extends StatelessWidget {
         height: getProportionateScreenHeight(522),
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(20),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
               color: Colors.grey[300],
@@ -488,7 +641,8 @@ class CompanyInvitationHeader extends StatelessWidget {
             text: TextSpan(
                 text: "Sonalika Tractors",
                 style: GoogleFonts.poppins(
-                    fontSize: 14,fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
                     color: Colors.black),
                 children: [
                   TextSpan(
@@ -501,7 +655,8 @@ class CompanyInvitationHeader extends StatelessWidget {
                   TextSpan(
                       text: "Tiger series tractor",
                       style: GoogleFonts.poppins(
-                          fontSize: 14,fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
                           color: Colors.black)),
                 ]),
           ),
@@ -536,299 +691,374 @@ class CustomDivider extends StatelessWidget {
   }
 }
 
-class LatestProductLaunch extends StatelessWidget {
-  const LatestProductLaunch({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Container(
-        padding: EdgeInsets.all(13),
-        width: MediaQuery.of(context).size.width/1.3,
-        margin: EdgeInsets.only(
-            top: 30,
-            bottom: getProportionateScreenHeight(30),
-            right:30, left: 5),
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/images/tractor.png",),
-                scale: 2,
-              alignment: Alignment.bottomCenter,
-                ),
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(color: Colors.grey[200], blurRadius: 2, spreadRadius: 2)
-            ]),
-        child: Container(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 10, top: 10),
-                child: CompanyName(
-                  textColor: Colors.grey,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10, right: 20),
-                child: Text(
-                  'Introducing John Deere 5E Series tractors',
-                  style: GoogleFonts.poppins(
-                      color: Colors.grey[700],
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class LatestDemo extends StatelessWidget {
-  const LatestDemo({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width/1.3,
-      height: 200,
+Widget LatestProductLaunch(BuildContext context, LaunchListParser lauchOBJ) {
+  return GestureDetector(
+    child: Container(
+      padding: EdgeInsets.all(13),
+      width: MediaQuery.of(context).size.width / 1.3,
+      margin: EdgeInsets.only(
+          top: 30,
+          bottom: getProportionateScreenHeight(30),
+          right: 30,
+          left: 5),
       decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(lauchOBJ.bigthumb_url ?? ""),
+            fit: BoxFit.fill,
+            scale: 2,
+            alignment: Alignment.bottomCenter,
+          ),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
           boxShadow: [
-            BoxShadow(
-              color: Colors.grey[300],
-              blurRadius: 3.0,
-              spreadRadius: 2.5,
+            BoxShadow(color: Colors.grey[200], blurRadius: 2, spreadRadius: 2)
+          ]),
+      child: Container(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 10, top: 10),
+              child: CompanyName(
+                smallthumb_url: lauchOBJ.smallthumb_url,
+                organisation_name: lauchOBJ.organisation_name,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10, right: 20),
+              child: Text(
+                lauchOBJ.description,
+                style: GoogleFonts.poppins(
+                    color: Colors.grey[700],
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
             )
           ],
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(15),
-          bottomRight: Radius.circular(15),
         ),
       ),
-      margin: EdgeInsets.only(
-          top: 20,
-          bottom: 10,
-          right: 10,left: 5),
-      child: Column(
-        children: [
-          Expanded(
-              child: Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.green[700],
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(15),
-                    topLeft: Radius.circular(15),
-                  ),
-                    image: DecorationImage(
-                        image: AssetImage(""),
-                        fit: BoxFit.cover),),
+    ),
+  );
+}
+
+Widget LatestDemo(BuildContext context, DemoListParser demoOBJ) {
+  return Container(
+    width: MediaQuery.of(context).size.width / 1.3,
+    height: 200,
+    decoration: BoxDecoration(
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey[300],
+          blurRadius: 3.0,
+          spreadRadius: 2.5,
+        )
+      ],
+      borderRadius: BorderRadius.only(
+        bottomLeft: Radius.circular(15),
+        bottomRight: Radius.circular(15),
+      ),
+    ),
+    margin: EdgeInsets.only(top: 20, bottom: 10, right: 10, left: 5),
+    child: Column(
+      children: [
+        Expanded(
+            child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.green[700],
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(15),
+                  topLeft: Radius.circular(15),
+                ),
+                image: DecorationImage(
+                    image: NetworkImage(demoOBJ.bigthumb_url ?? ""),
+                    fit: BoxFit.fill),
               ),
-              Center(
-                child: Opacity(
-                  opacity: 0.7,
-                  child: Icon(
-                    Icons.play_circle_fill,
-                    color: Colors.white,
-                    size: 50,
+            ),
+            Center(
+              child: Opacity(
+                opacity: 0.7,
+                child: Icon(
+                  Icons.play_circle_fill,
+                  color: Colors.white,
+                  size: 50,
+                ),
+              ),
+            )
+          ],
+        )),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 9),
+          height: getProportionateScreenHeight(80),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(15),
+                bottomLeft: Radius.circular(15)),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CompanyName(
+                  smallthumb_url: demoOBJ.smallthumb_url,
+                  organisation_name: demoOBJ.organisation_name,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  demoOBJ.description,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    color: Colors.grey[700],
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              )
-            ],
-          )),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 9),
-            height: getProportionateScreenHeight(80),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(15),
-                  bottomLeft: Radius.circular(15)),
+              ],
             ),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Column(
+          ),
+        )
+      ],
+    ),
+  );
+}
+
+Widget WebinarTile(BuildContext context, EventListParser eventOBJ) {
+  return Container(
+    width: MediaQuery.of(context).size.width / 1.5,
+    margin: EdgeInsets.only(
+        top: getProportionateScreenHeight(20),
+        bottom: getProportionateScreenHeight(20),
+        right: getProportionateScreenWidth(20)),
+    decoration: BoxDecoration(boxShadow: [
+      BoxShadow(
+        color: Colors.grey[300],
+        blurRadius: 5.0,
+        spreadRadius: 1.0,
+      )
+    ]),
+    child: Column(
+      children: [
+        Expanded(
+            child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.green[700],
+                  image: DecorationImage(
+                      image: NetworkImage(eventOBJ.image_path_medium ?? ""),
+                      fit: BoxFit.fill),
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(15),
+                      topLeft: Radius.circular(15))),
+            ),
+            Positioned(
+              bottom: 10,
+              left: 10,
+              child: CompanyName(
+                smallthumb_url: eventOBJ.image_smallthumb_url,
+                organisation_name: eventOBJ.organisation_name,
+              ),
+            )
+          ],
+        )),
+        Container(
+          padding: EdgeInsets.all(6),
+          width: double.infinity,
+          height: 80,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(15),
+                bottomLeft: Radius.circular(15)),
+          ),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 10,
+              ),
+              Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.yellowAccent),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      eventOBJ.scheduled_date
+                          .substring(eventOBJ.scheduled_date.length - 2),
+                      style: TextStyle(
+                          fontSize: 20,
+                          height: 1.3,
+                          fontFamily: 'Poppins Bold'),
+                    ),
+                    Text(
+                      DateFormat.MMMM()
+                          .format(DateTime.parse(eventOBJ.scheduled_date))
+                          .toString(),
+                      style:
+                          TextStyle(fontSize: 12, fontFamily: 'Poppins Bold'),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CompanyName(
-                    textColor: Colors.black,
-                  ),
-                  SizedBox(height: 5,),
-                  Text(
-                    "Importance of nutrition in raising",
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.poppins(fontSize: 14,
-                      color: Colors.grey[700],
-                      fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 1.5 / 1.9,
+                      child: Text(
+                        eventOBJ.title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            color: Colors.grey[700],
+                            fontWeight: FontWeight.w700),
+                      ),
                     ),
                   ),
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class LatestOfferTile extends StatelessWidget {
-  const LatestOfferTile({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15), color: Color(0xFF08A796),
-      ),
-
-      margin: EdgeInsets.only(
-          top: getProportionateScreenHeight(20),
-          right: getProportionateScreenHeight(20),
-          bottom: getProportionateScreenHeight(20)),
-      width: getProportionateScreenWidth(172),
-      child: Stack(
-        children: [
-          Positioned(top: 10, left: 10, child: CompanyName()),
-          Center(
-            child: Container(
-                width: getProportionateScreenWidth(125),
-                child: Image.asset("assets/images/tractor.png")),
-          ),
-          Positioned(
-            bottom: 10,
-            left: 10,
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "10%",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 35,
-                        fontFamily: 'Poppins Bold'),
+                  SizedBox(
+                    height: 5,
                   ),
                   Text(
-                    "Discount",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontFamily: 'Poppins Bold'),
-                  )
+                    DateFormat.EEEE()
+                            .format(DateTime.parse(eventOBJ.scheduled_date))
+                            .toString() +
+                        ", " +
+                        (DateFormat.jm().format(DateFormat("hh:mm:ss")
+                                .parse(eventOBJ.scheduled_time)))
+                            .toString(),
+                    overflow: TextOverflow.ellipsis,
+                    style:
+                        GoogleFonts.poppins(fontSize: 10, color: Colors.black),
+                  ),
                 ],
               ),
-            ),
+              SizedBox(
+                width: 10,
+              ),
+            ],
           ),
-        ],
-      ),
-    );
-  }
+        )
+      ],
+    ),
+  );
 }
 
-class FeaturesWebinar extends StatelessWidget {
-  const FeaturesWebinar({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width/1.25,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.green[500],
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey,
-              offset: const Offset(
-                2.0,
-                2.0,
-              ),
-              blurRadius: 3.0,
-              spreadRadius: 1.0,
-            )
-          ],
-          image: DecorationImage(
-              image: AssetImage(""), fit: BoxFit.cover)),
-      margin: EdgeInsets.only(
-        top: getProportionateScreenHeight(20),
-        bottom: getProportionateScreenHeight(20),
-        right: getProportionateScreenWidth(20),
-      ),
-      child: Stack(
-        children: [
-          Container(
-            width: getProportionateScreenWidth(79),
-            height: getProportionateScreenHeight(41),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20)),
-              color: Color(COLOR_BACKGROUND),
-            ),
-            child: Text(
-              "16 DEC",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Poppins Bold',
-                  fontSize: 14),
+Widget FeaturesWebinar(BuildContext context, EventListParser eventOBJ) {
+  return Container(
+    width: MediaQuery.of(context).size.width / 1.25,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(20),
+      color: Colors.green[500],
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey,
+          offset: const Offset(
+            2.0,
+            2.0,
+          ),
+          blurRadius: 3.0,
+          spreadRadius: 1.0,
+        )
+      ],
+      image: DecorationImage(
+          image: NetworkImage(eventOBJ.image_path_medium ?? ""),
+          fit: BoxFit.fill),
+    ),
+    margin: EdgeInsets.only(
+      top: getProportionateScreenHeight(20),
+      bottom: getProportionateScreenHeight(20),
+      right: getProportionateScreenWidth(20),
+    ),
+    child: Stack(
+      children: [
+        Container(
+          width: getProportionateScreenWidth(79),
+          height: getProportionateScreenHeight(41),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+            color: Color(COLOR_BACKGROUND),
+          ),
+          child: Text(
+            DateFormat.d()
+                    .format(DateTime.parse(eventOBJ.scheduled_date))
+                    .toString() +
+                " " +
+                DateFormat.MMMM()
+                    .format(DateTime.parse(eventOBJ.scheduled_date))
+                    .toString(),
+            style: TextStyle(
+                color: Colors.white, fontFamily: 'Poppins Bold', fontSize: 14),
+          ),
+        ),
+        Positioned(
+          bottom: 20,
+          left: 20,
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CompanyName(
+                  smallthumb_url: eventOBJ.image_smallthumb_url,
+                  organisation_name: eventOBJ.organisation_name,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  eventOBJ.title,
+                  style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
+                )
+              ],
             ),
           ),
-          Positioned(
-            bottom: 20,
-            left: 20,
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CompanyName(),
-                  SizedBox(height: 10,),
-                  Text(
-                    "Importance of nutrition in raising healthy\nCattle and animals.",
-                    style: GoogleFonts.poppins(
-                        color: Colors.white,fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  )
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
+        )
+      ],
+    ),
+  );
 }
 
 class CompanyName extends StatelessWidget {
   const CompanyName({
     Key key,
-    this.textColor,
+    this.smallthumb_url,
+    this.organisation_name,
+    this.onPressed,
   }) : super(key: key);
 
-  final Color textColor;
+  final String smallthumb_url, organisation_name;
+  final Function onPressed;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Container(
-          width: 30,
-          height: 30,
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
+            width: 30,
+            height: 30,
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(5)),
               color: Colors.yellowAccent,
               boxShadow: [
                 BoxShadow(
@@ -838,174 +1068,16 @@ class CompanyName extends StatelessWidget {
                 )
               ],
               image: DecorationImage(
-                  image:
-                      AssetImage("assets/images/sample_featured_brands.png"))),
-        ),
+                  image: NetworkImage(smallthumb_url ?? ""), fit: BoxFit.fill),
+            )),
         SizedBox(
           width: 10,
         ),
         Text(
-          "Company Name",
+          organisation_name,
           style: GoogleFonts.poppins(
-              fontSize: 12,
-              color: textColor ?? Colors.white,),
-        )
-      ],
-    );
-  }
-}
-
-class WebinarTile extends StatelessWidget {
-  const WebinarTile({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width/1.5,
-      margin: EdgeInsets.only(
-          top: getProportionateScreenHeight(20),
-          bottom: getProportionateScreenHeight(20),
-          right: getProportionateScreenWidth(20)),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey[300],
-            blurRadius: 5.0,
-            spreadRadius: 1.0,
-          )
-        ]
-      ),
-      child: Column(
-        children: [
-          Expanded(
-              child: Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.green[700],
-                    image: DecorationImage(
-                        image: AssetImage(""),
-                        fit: BoxFit.cover),
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(15),
-                        topLeft: Radius.circular(15))),
-              ),
-              Positioned(
-                bottom: 10,
-                left: 10,
-                child: CompanyName(),
-              )
-            ],
-          )),
-          Container(
-            padding: EdgeInsets.all(6),
-            width: double.infinity,
-            height: 80,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(15),
-                  bottomLeft: Radius.circular(15)),
-            ),
-            child: Row(
-              children: [
-                SizedBox(width: 10,),
-                Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.yellowAccent),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "16",
-                        style: TextStyle(
-                            fontSize: 20,
-                            height: 1.3,
-                            fontFamily: 'Poppins Bold'),
-                      ),
-                      Text(
-                        "Dec",
-                        style:
-                            TextStyle(fontSize: 12, fontFamily: 'Poppins Bold'),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width/1.5/1.9,
-                        child: Text(
-                          "Importance of nutrition in Cattle Raising",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style:
-                              GoogleFonts.poppins(fontSize: 14,color: Colors.grey[700],fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "Tuesday, 11:30 am",
-                      overflow: TextOverflow.ellipsis,
-                      style:
-                      GoogleFonts.poppins(fontSize: 10,color: Colors.grey),
-                    ),
-                  ],
-                ),
-                SizedBox(width: 10,),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class AdTile extends StatelessWidget {
-  const AdTile({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          height: SizeConfig.screenWidth,
-          decoration: BoxDecoration(
-            color: Colors.grey,
-              image: DecorationImage(
-                  image: AssetImage(""),
-                  fit: BoxFit.cover)),
-        ),
-        Positioned(
-          top: 10,
-          right: 10,
-          child: Container(
-            width: getProportionateScreenWidth(35),
-            height: getProportionateScreenHeight(25),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(10)),
-            child: Text("AD"),
+            fontSize: 12,
+            color: Colors.white,
           ),
         )
       ],
@@ -1013,17 +1085,58 @@ class AdTile extends StatelessWidget {
   }
 }
 
-class FeaturedBrands extends StatelessWidget {
+Widget AdTile(BuildContext context, int index) {
+  final providerListener = Provider.of<CustomViewModel>(context);
+
+  return Stack(children: [
+    Container(
+      height: SizeConfig.screenWidth,
+      decoration: BoxDecoration(
+          color: Colors.grey,
+          image: DecorationImage(
+              image: providerListener.adsList.length > 0
+                  ? NetworkImage(providerListener.adsList[index].bigthumb_url)
+                  : AssetImage(""),
+              fit: BoxFit.cover)),
+    ),
+    Positioned(
+      top: 10,
+      right: 10,
+      child: Container(
+        width: getProportionateScreenWidth(35),
+        height: getProportionateScreenHeight(25),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.3),
+            borderRadius: BorderRadius.circular(10)),
+        child: Text("AD"),
+      ),
+    ),
+  ]);
+}
+
+class FeaturedBrands extends StatefulWidget {
   const FeaturedBrands({
     Key key,
+    this.organisation_name,
+    this.image,
+    this.onPressed,
   }) : super(key: key);
 
+  final String organisation_name, image;
+  final Function onPressed;
+
+  @override
+  _FeaturedBrandsState createState() => _FeaturedBrandsState();
+}
+
+class _FeaturedBrandsState extends State<FeaturedBrands> {
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-          top: getProportionateScreenHeight(10),
-          bottom: getProportionateScreenHeight(10),
+        top: getProportionateScreenHeight(10),
+        bottom: getProportionateScreenHeight(10),
       ),
       padding: EdgeInsets.all(getProportionateScreenWidth(10)),
       child: Column(
@@ -1035,23 +1148,28 @@ class FeaturedBrands extends StatelessWidget {
               height: getProportionateScreenHeight(85),
             ),
             child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                primary: Colors.white,
-                elevation: 3,
-                shadowColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25)),
-              ),
-              child: Image.asset("assets/images/sample_featured_brands.png"),
-            ),
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.white,
+                  elevation: 3,
+                  shadowColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25)),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(widget.image ?? ""),
+                        fit: BoxFit.fill),
+                  ),
+                )),
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           Text(
-            "Deutz Fahr",
-            style: GoogleFonts.poppins(
-                fontSize: 14,
-                color: Colors.grey),
+            widget.organisation_name,
+            style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey),
           )
         ],
       ),
@@ -1064,7 +1182,8 @@ class FeaturedProducts extends StatefulWidget {
     Key key,
     this.name,
     this.desc,
-    this.image, this.onPressed,
+    this.image,
+    this.onPressed,
   }) : super(key: key);
 
   final String name, desc, image;
@@ -1081,33 +1200,28 @@ class _FeaturedProductsState extends State<FeaturedProducts> {
       onTap: widget.onPressed,
       child: Container(
         width: 150,
-        height: 230,
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey[200],
-              offset: const Offset(
-                1.0,
-                1.0,
-              ),
-              blurRadius: 3.0,
-              spreadRadius: 1.0,
-            )
-          ]
-        ),
-        margin: EdgeInsets.only(
-            top: 40,
-            bottom: 40,
-            right: 20),
+        height: 300,
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(
+            color: Colors.grey[200],
+            offset: const Offset(
+              1.0,
+              1.0,
+            ),
+            blurRadius: 3.0,
+            spreadRadius: 1.0,
+          )
+        ]),
+        margin: EdgeInsets.only(top: 40, bottom: 40, right: 20),
         child: Column(
           children: [
             Expanded(
                 flex: 3,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.green,
+                      color: Colors.green,
                       image: DecorationImage(
-                          image: AssetImage(widget.image ?? ""),
+                          image: NetworkImage(widget.image ?? ""),
                           fit: BoxFit.cover),
                       borderRadius: BorderRadius.only(
                           topRight: Radius.circular(15),
@@ -1115,7 +1229,7 @@ class _FeaturedProductsState extends State<FeaturedProducts> {
                 )),
             Expanded(
                 child: Container(
-                  width: MediaQuery.of(context).size.width,
+              width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(6),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -1130,7 +1244,9 @@ class _FeaturedProductsState extends State<FeaturedProducts> {
                     widget.name,
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.poppins(
-                        fontSize: 12, fontWeight: FontWeight.w600, color: Colors.grey[700]),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey[700]),
                   ),
                   Text(
                     widget.desc,
@@ -1147,43 +1263,36 @@ class _FeaturedProductsState extends State<FeaturedProducts> {
   }
 }
 
-class CategoryTiles extends StatelessWidget {
-  const CategoryTiles({
-    Key key,
-    this.iconPath,
-    this.imagePath,
-    this.onPressed,
-  }) : super(key: key);
-
-  final IconData iconPath;
-  final String imagePath;
-  final Function onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 0, left: 20, top: 20, bottom: 20),
-      child: Container(
-        child: ConstrainedBox(
-          constraints: BoxConstraints.tightFor(
-            width: 100,
-            height: 100,
+Widget CategoryTiles(BuildContext context, CategoryListParser categoryOBJ) {
+  return Padding(
+    padding: const EdgeInsets.only(right: 0, left: 20, top: 20, bottom: 20),
+    child: Container(
+      child: ConstrainedBox(
+        constraints: BoxConstraints.tightFor(
+          width: 100,
+          height: 100,
+        ),
+        child: ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            primary: Colors.white,
+            elevation: 1,
+            shadowColor: Colors.grey[100],
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
           ),
-          child: ElevatedButton(
-            onPressed: onPressed,
-            style: ElevatedButton.styleFrom(
-              primary: Colors.white,
-              elevation: 1,
-              shadowColor: Colors.grey[100],
-              shape:
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.green,
+              image: DecorationImage(
+                  image: NetworkImage(categoryOBJ.c_image_url ?? ""),
+                  fit: BoxFit.fill),
             ),
-            child: Image.asset("assets/images/sample_featured_brands.png"),
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
 }
 
 class SubCatTitles extends StatelessWidget {
@@ -1210,15 +1319,18 @@ class SubCatTitles extends StatelessWidget {
                 title,
                 style: GoogleFonts.poppins(
                     color: Color(COLOR_BACKGROUND),
-                    fontSize: 20,fontWeight: FontWeight.bold
-                ),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 width: getProportionateScreenWidth(3),
               ),
-              SizedBox(width: 5,),
+              SizedBox(
+                width: 5,
+              ),
               Container(
-                  height: 20,width: 20,
+                  height: 20,
+                  width: 20,
                   child: Image.asset("assets/images/star.png")),
             ],
           ),
@@ -1261,7 +1373,7 @@ class _ImageSliderState extends State<ImageSlider> {
                 builder: (BuildContext context) {
                   return Container(
                     width: getProportionateScreenWidth(378),
-                    margin: EdgeInsets.symmetric(horizontal: 8,vertical: 20),
+                    margin: EdgeInsets.symmetric(horizontal: 8, vertical: 20),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         image: DecorationImage(
@@ -1290,12 +1402,13 @@ class _ImageSliderState extends State<ImageSlider> {
               alignment: Alignment.bottomCenter,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: ['1','2','3','4','5'].map((url) {
-                  int index = ['1','2','3','4','5'].indexOf(url);
+                children: ['1', '2', '3', '4', '5'].map((url) {
+                  int index = ['1', '2', '3', '4', '5'].indexOf(url);
                   return Container(
                     width: 8.0,
                     height: 8.0,
-                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                    margin:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: currentS == index

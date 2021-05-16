@@ -59,7 +59,6 @@ class _SplashPageViewBuilderState extends State<SplashPageViewBuilder> {
         backgroundColor: Colors.white,
         body: Stack(
           children: [
-
             Container(
               height: MediaQuery.of(context).size.height,
               child: CarouselSlider.builder(
@@ -91,7 +90,7 @@ class _SplashPageViewBuilderState extends State<SplashPageViewBuilder> {
                         }
                       }
                   ),
-                itemBuilder: (BuildContext context, int itemIndex) =>
+                itemBuilder: (BuildContext context, int itemIndex, int x) =>
                     itemIndex == 0 ? SplashOne() : itemIndex == 1 ? SplashTwo() : itemIndex == 2 ? SplashThree() : SplashFour(),
               ),
             ),

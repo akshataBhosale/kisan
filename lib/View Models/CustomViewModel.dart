@@ -5,6 +5,14 @@ import 'package:flutter/material.dart';
 import "package:async/async.dart";
 import 'package:kisan/Models/UserDataParser.dart';
 import 'package:kisan/Models/UserProfileParser.dart';
+import 'package:kisan/Models/AdsListParser.dart';
+import 'package:kisan/Models/ProductListParser.dart';
+import 'package:kisan/Models/CompaniesListParser.dart';
+import 'package:kisan/Models/OfferListParser.dart';
+import 'package:kisan/Models/DemoListParser.dart';
+import 'package:kisan/Models/EventListParser.dart';
+import 'package:kisan/Models/LaunchListParser.dart';
+import 'package:kisan/Models/CategoryListParser.dart';
 import 'package:kisan/services/web_service.dart';
 import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
@@ -15,6 +23,23 @@ class CustomViewModel extends ChangeNotifier {
   UserDataParser userData;
   UserProfileParser userprofileData;
   String image_url, image_bigthumb_url, image_smallthumb_url;
+
+  List<AdsListParser> adsList = [];
+
+  List<ProductListParser> productsList = [];
+  List<ProductListParser> featuredproductsList = [];
+
+  List<CompaniesListParser> companiesList = [];
+
+  List<OfferListParser> offersList = [];
+
+  List<DemoListParser> demosList = [];
+  List<LaunchListParser> launchList = [];
+
+  List<EventListParser> eventList = [];
+  List<EventListParser> featuredeventList = [];
+
+  List<CategoryListParser> categoryList = [];
 
   Future sendOTP(String phoneNumber, String OPT) async {
     final response = await WebService().sendOTP(phoneNumber, OPT);
@@ -295,6 +320,289 @@ class CustomViewModel extends ChangeNotifier {
             responseDecoded['data']['user_profile']['is_dnd'],
             responseDecoded['data']['user_profile']['whatsapp_opt_in_status'],
             responseDecoded['data']['user_profile']['user']);
+        notifyListeners();
+        return "success";
+      } else {
+        notifyListeners();
+        return "error";
+      }
+    } else {
+      print("***error");
+      notifyListeners();
+      return "error";
+    }
+  }
+
+  Future GetAds() async {
+    final response = await WebService().GetAds();
+
+    if (response != "error") {
+      this.adsList.clear();
+      var responseDecoded = jsonDecode(response.body);
+      var responseDecodedSuccess = responseDecoded['success'];
+      var responseDecodedMsg = responseDecoded['message'].toString();
+
+      if (responseDecodedSuccess == "false") {
+        notifyListeners();
+        return responseDecodedMsg;
+      } else if (responseDecodedSuccess == "true") {
+        print("response" + responseDecodedMsg.toString());
+
+        final data = responseDecoded['data']['records'];
+
+        for (Map i in data) {
+          adsList.add(AdsListParser.fromJson(i));
+        }
+
+        notifyListeners();
+        return "success";
+      } else {
+        notifyListeners();
+        return "error";
+      }
+    } else {
+      print("***error");
+      notifyListeners();
+      return "error";
+    }
+  }
+
+  Future GetProducts() async {
+    final response = await WebService().GetProducts();
+
+    if (response != "error") {
+      this.productsList.clear();
+      this.featuredproductsList.clear();
+      var responseDecoded = jsonDecode(response.body);
+      var responseDecodedSuccess = responseDecoded['success'];
+      var responseDecodedMsg = responseDecoded['message'].toString();
+
+      if (responseDecodedSuccess == "false") {
+        notifyListeners();
+        return responseDecodedMsg;
+      } else if (responseDecodedSuccess == "true") {
+        print("response" + responseDecodedMsg.toString());
+
+        final data = responseDecoded['data']['list'];
+
+        for (Map i in data) {
+          productsList.add(ProductListParser.fromJson(i));
+
+          if (ProductListParser.fromJson(i).featured == true) {
+            featuredproductsList.add(ProductListParser.fromJson(i));
+          }
+        }
+
+        notifyListeners();
+        return "success";
+      } else {
+        notifyListeners();
+        return "error";
+      }
+    } else {
+      print("***error");
+      notifyListeners();
+      return "error";
+    }
+  }
+
+  Future GetCompanies() async {
+    final response = await WebService().GetCompanies();
+
+    if (response != "error") {
+      this.companiesList.clear();
+      var responseDecoded = jsonDecode(response.body);
+      var responseDecodedSuccess = responseDecoded['success'];
+      var responseDecodedMsg = responseDecoded['message'].toString();
+
+      if (responseDecodedSuccess == "false") {
+        notifyListeners();
+        return responseDecodedMsg;
+      } else if (responseDecodedSuccess == "true") {
+        print("response" + responseDecodedMsg.toString());
+
+        final data = responseDecoded['data']['list'];
+
+        for (Map i in data) {
+          companiesList.add(CompaniesListParser.fromJson(i));
+        }
+
+        notifyListeners();
+        return "success";
+      } else {
+        notifyListeners();
+        return "error";
+      }
+    } else {
+      print("***error");
+      notifyListeners();
+      return "error";
+    }
+  }
+
+  Future GetOffers() async {
+    final response = await WebService().GetOffers();
+
+    if (response != "error") {
+      this.offersList.clear();
+      var responseDecoded = jsonDecode(response.body);
+      var responseDecodedSuccess = responseDecoded['success'];
+      var responseDecodedMsg = responseDecoded['message'].toString();
+
+      if (responseDecodedSuccess == "false") {
+        notifyListeners();
+        return responseDecodedMsg;
+      } else if (responseDecodedSuccess == "true") {
+        print("response" + responseDecodedMsg.toString());
+
+        final data = responseDecoded['data'];
+
+        for (Map i in data) {
+          offersList.add(OfferListParser.fromJson(i));
+        }
+
+        notifyListeners();
+        return "success";
+      } else {
+        notifyListeners();
+        return "error";
+      }
+    } else {
+      print("***error");
+      notifyListeners();
+      return "error";
+    }
+  }
+
+  Future GetDemos() async {
+    final response = await WebService().GetDemos();
+
+    if (response != "error") {
+      this.demosList.clear();
+      var responseDecoded = jsonDecode(response.body);
+      var responseDecodedSuccess = responseDecoded['success'];
+      var responseDecodedMsg = responseDecoded['message'].toString();
+
+      if (responseDecodedSuccess == "false") {
+        notifyListeners();
+        return responseDecodedMsg;
+      } else if (responseDecodedSuccess == "true") {
+        print("response" + responseDecodedMsg.toString());
+
+        final data = responseDecoded['data'];
+
+        for (Map i in data) {
+          demosList.add(DemoListParser.fromJson(i));
+        }
+
+        notifyListeners();
+        return "success";
+      } else {
+        notifyListeners();
+        return "error";
+      }
+    } else {
+      print("***error");
+      notifyListeners();
+      return "error";
+    }
+  }
+
+  Future GetLatestLaunch() async {
+    final response = await WebService().GetLatestLaunch();
+
+    if (response != "error") {
+      this.launchList.clear();
+      var responseDecoded = jsonDecode(response.body);
+      var responseDecodedSuccess = responseDecoded['success'];
+      var responseDecodedMsg = responseDecoded['message'].toString();
+
+      if (responseDecodedSuccess == "false") {
+        notifyListeners();
+        return responseDecodedMsg;
+      } else if (responseDecodedSuccess == "true") {
+        print("response" + responseDecodedMsg.toString());
+
+        final data = responseDecoded['data'];
+
+        for (Map i in data) {
+          launchList.add(LaunchListParser.fromJson(i));
+        }
+
+        notifyListeners();
+        return "success";
+      } else {
+        notifyListeners();
+        return "error";
+      }
+    } else {
+      print("***error");
+      notifyListeners();
+      return "error";
+    }
+  }
+
+  Future GetEvents() async {
+    final response = await WebService().GetEvents();
+
+    if (response != "error") {
+      this.eventList.clear();
+      this.featuredeventList.clear();
+      var responseDecoded = jsonDecode(response.body);
+      var responseDecodedSuccess = responseDecoded['success'];
+      var responseDecodedMsg = responseDecoded['message'].toString();
+
+      if (responseDecodedSuccess == "false") {
+        notifyListeners();
+        return responseDecodedMsg;
+      } else if (responseDecodedSuccess == "true") {
+        print("response" + responseDecodedMsg.toString());
+
+        final data = responseDecoded['data'];
+
+        for (Map i in data) {
+          eventList.add(EventListParser.fromJson(i));
+
+          //TODO: change featured==1, i have done this as no featured items on server
+          if (EventListParser.fromJson(i).featured == 0) {
+            featuredeventList.add(EventListParser.fromJson(i));
+          }
+        }
+
+        notifyListeners();
+        return "success";
+      } else {
+        notifyListeners();
+        return "error";
+      }
+    } else {
+      print("***error");
+      notifyListeners();
+      return "error";
+    }
+  }
+
+  Future GetCategories() async {
+    final response = await WebService().GetCategories();
+
+    if (response != "error") {
+      this.categoryList.clear();
+      var responseDecoded = jsonDecode(response.body);
+      var responseDecodedSuccess = responseDecoded['success'];
+      var responseDecodedMsg = responseDecoded['message'].toString();
+
+      if (responseDecodedSuccess == false) {
+        notifyListeners();
+        return responseDecodedMsg;
+      } else if (responseDecodedSuccess == true) {
+        print("response" + responseDecodedMsg.toString());
+
+        final data = responseDecoded['category_list'];
+
+        for (Map i in data) {
+          categoryList.add(CategoryListParser.fromJson(i));
+        }
+
         notifyListeners();
         return "success";
       } else {
