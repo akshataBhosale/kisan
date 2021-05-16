@@ -129,7 +129,7 @@ class _SuccessOTPState extends State<SuccessOTP> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
                     child: Text(
-                      "Please wait",
+                      "Please wait...",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
                         fontSize: 22,
