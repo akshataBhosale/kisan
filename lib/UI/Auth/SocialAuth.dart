@@ -257,7 +257,7 @@ class _SocialAuthState extends State<SocialAuth> {
                                 child: Center(
                                   child: Container(
                                       height: 30,width: 30,
-                                      child: Image.asset(images.appleLogo)),),
+                                      child: Image.asset("assets/images/apple-logo.png")),),
                               ),
                               SizedBox(width: 20,),
                               Text("Sign up with Apple",

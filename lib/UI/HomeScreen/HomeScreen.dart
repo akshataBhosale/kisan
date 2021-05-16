@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kisan/Helpers/constants.dart';
+import 'package:kisan/Helpers/helper.dart';
 import 'package:kisan/Helpers/size_config.dart';
 import 'package:kisan/UI/HomeScreen/Widgets/bottom_tabs.dart';
+import 'package:kisan/UI/NotficationScreen/Notifications.dart';
+import 'package:kisan/UI/SearchScreen/SearchScreen.dart';
 import 'package:kisan/UI/Tabs/HomeTab.dart';
 import 'package:kisan/UI/Tabs/ShortListedTab.dart';
 
@@ -66,14 +69,18 @@ class _HomeScreenState extends State<HomeScreen> {
               child: IconButton(
                 icon: Icon(Icons.search,size: 30,),
                 color: Colors.black,
-                onPressed: (){},
+                onPressed: (){
+                  push(context, SearchScreen());
+                },
               ),
             ),
             SizedBox(width: getProportionateScreenWidth(10),),
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: IconButton(
-                onPressed: (){},
+                onPressed: (){
+                  push(context, NotificationScreen());
+                },
                 icon: Icon(Icons.notifications,size: 30,),
                 color: Colors.black,
               ),

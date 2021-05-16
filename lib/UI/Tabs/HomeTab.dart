@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kisan/Helpers/constants.dart';
+import 'package:kisan/Helpers/helper.dart';
 import 'package:kisan/Helpers/size_config.dart';
+import 'package:kisan/UI/DetailedScreens/DetailedFeaturdProducts.dart';
 import 'package:kisan/UI/HomeScreen/Widgets/SubTile.dart';
 
 class HomeTab extends StatefulWidget {
@@ -62,6 +64,9 @@ class _HomeTabState extends State<HomeTab> {
                               return FeaturedProducts(
                                 name: "Great Indian Farms",
                                 desc: "Sonalika Tractors",
+                                onPressed: (){
+                                  push(context, DetailedFeaturedProducts());
+                                },
                               );
                             }),
                       ),
