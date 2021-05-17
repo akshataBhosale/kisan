@@ -16,7 +16,6 @@ class _SocialAuthState extends State<SocialAuth> {
   var googleEmail;
   var googleName;
   var googleAuthId;
-
   var server_key =
       "379951119240-tkmkpj996t81g2kqn9qbvdblbht3c8n9.apps.googleusercontent.com";
 
