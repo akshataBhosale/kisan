@@ -8,6 +8,8 @@ import 'package:kisan/Helpers/constants.dart';
 import 'package:kisan/Helpers/helper.dart';
 import 'package:kisan/Helpers/size_config.dart';
 import 'package:kisan/UI/Auth/SuccessOTP.dart';
+import 'package:kisan/UI/HomeScreen/HomeScreen.dart';
+import 'package:kisan/UI/HomeScreen/HomeScreenShreyas.dart';
 import 'package:kisan/UI/Widgets/ScreenHeader.dart';
 import 'package:kisan/UI/Widgets/countdown_timer_widget.dart';
 import 'package:kisan/View%20Models/CustomViewModel.dart';
@@ -40,27 +42,31 @@ class _EnterOTPState extends State<EnterOTP> {
   FocusNode focus5 = FocusNode();
   FocusNode focus6 = FocusNode();
 
-  void _onCountryChange(CountryCode countryCode) {
-    //TODO : manipulate the selected country code here
-    print("New Country selected: " + countryCode.toString());
-    setState(() {
-      this.countryCode = countryCode.toString();
-    });
-  }
+  TextEditingController oneController = TextEditingController();
+  TextEditingController twoController = TextEditingController();
+  TextEditingController threeController = TextEditingController();
+  TextEditingController fourController = TextEditingController();
+  TextEditingController fiveController = TextEditingController();
+  TextEditingController sixController = TextEditingController();
 
-  Future<void> _sendOTP() async {
+  Future<void> _verifyOTP() async {
     Provider.of<CustomViewModel>(context, listen: false)
-        .sendOTP(this.countryCode + this.phoneNo, _isChecked ? "OTP_IN" : "OTP_OUT")
+        .verifyOTP(oneController.text +
+        twoController.text +
+        threeController.text +
+        fourController.text +
+        fiveController.text +
+        sixController.text)
         .then((value) {
       setState(() {
         if (value == "error") {
           //for unexpected error
-          errorMessage = value;
-        } else if (value == "Verification code sent") {
-          //for code 200
-          errorMessage = value;
-          //can be use to push to next screen
-          push(context, LoginWithOTPVerfy());
+          errorMessage = "Check internet or try after sometime";
+        } else if (value == "This is signup.") {
+          pushReplacement(context, SuccessOTP());
+        } else if (value == "User authenticated successfully.") {
+          pop(context);
+          pushReplacement(context, HomeScreen());
         } else {
           //for expected errors
           errorMessage = value;
@@ -411,7 +417,8 @@ class _EnterOTPState extends State<EnterOTP> {
                         height: getProportionateScreenHeight(60)),
                     child: ElevatedButton(
                       onPressed: () {
-                        push(context, SuccessOTP());
+                        _verifyOTP();
+                        //push(context, SuccessOTP());
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Color(0xFFFFE44E),

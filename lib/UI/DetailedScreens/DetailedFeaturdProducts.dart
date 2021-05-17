@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kisan/Helpers/helper.dart';
 import 'package:kisan/Helpers/size_config.dart';
 import 'package:kisan/UI/CompanyProfile/CompanyProfile.dart';
-import 'package:kisan/UI/Tabs/HomeTab.dart';
+import 'package:kisan/UI/Tabs/HomeTabShreyas.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class DetailedFeaturedProducts extends StatefulWidget {
@@ -42,6 +42,27 @@ class _DetailedFeaturedProductsState extends State<DetailedFeaturedProducts> {
                       Container(
                         height: SizeConfig.screenWidth,
                         color: Colors.green,
+                      ),
+                      Positioned(
+                        top: SizeConfig.screenWidth/1.1,
+                        left: 0, right: 0,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: ['1','2','3','4','5'].map((url) {
+                            int index = ['1','2','3','4','5'].indexOf(url);
+                            return Container(
+                              width: 30.0,
+                              height: 5.0,
+                              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                color: currentS == index
+                                    ? Colors.white
+                                    : Colors.black.withOpacity(0.3),
+                              ),
+                            );
+                          }).toList(),
+                        ),
                       ),
                       Positioned(
                         left: 10,
@@ -965,10 +986,10 @@ class CompanyLink extends StatelessWidget {
                 ),
                 Text(
                   title,
-                  style: TextStyle(
-                      color: Color(0xFF044BB0),
-                      fontSize: 15,
-                      fontFamily: 'Poppins Bold'),
+                  style: GoogleFonts.poppins(
+                      color : Color(0xFF5C5C5C),
+                      fontSize: 15, fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
             ),

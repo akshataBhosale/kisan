@@ -14,9 +14,9 @@ class SuccessOTP extends StatefulWidget {
 
 class _SuccessOTPState extends State<SuccessOTP> {
 
-  jumpScreen(){
-    Future.delayed(const Duration(seconds: 2),(){
-      push(context, BasicProfile());
+  jumpScreen() {
+    Future.delayed(const Duration(seconds: 2), () {
+      pushReplacement(context, BasicProfile("", "", "", "", null, null, null));
     });
   }
 

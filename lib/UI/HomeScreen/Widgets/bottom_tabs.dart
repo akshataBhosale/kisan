@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kisan/Helpers/constants.dart';
 import 'package:kisan/Helpers/size_config.dart';
-import 'package:kisan/UI/Tabs/HomeTab.dart';
+import 'package:kisan/UI/Tabs/HomeTabShreyas.dart';
 import 'package:popup_menu/popup_menu.dart';
 
 class BottomTabs extends StatefulWidget {

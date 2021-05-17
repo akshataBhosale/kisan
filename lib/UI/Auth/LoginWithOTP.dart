@@ -39,19 +39,16 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
 
   Future<void> _sendOTP() async {
     Provider.of<CustomViewModel>(context, listen: false)
-        .sendOTP(this.countryCode + this.phoneNo, _isChecked ? "OTP_IN" : "OTP_OUT")
+        .sendOTP(this.countryCode + phoneController.text.toString(),
+        _isChecked ? "OTP_IN" : "OTP_OUT")
         .then((value) {
       setState(() {
         if (value == "error") {
           //for unexpected error
-          errorMessage = value;
+          errorMessage = "Check internet or try after sometime";
         } else if (value == "Verification code sent") {
-          //for code 200
-          errorMessage = value;
-          //can be use to push to next screen
-          push(context, LoginWithOTPVerfy());
+          push(context, EnterOTP(phoneController.text.toString()));
         } else {
-          //for expected errors
           errorMessage = value;
         }
       });
@@ -241,17 +238,22 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
                         height: getProportionateScreenHeight(60)),
                     child: ElevatedButton(
                       onPressed: () {
-                      if(phoneController.text.toString() == ""){
-                        Fluttertoast.showToast(msg: 'Phone number is required!',
-                          backgroundColor: Colors.white,
-                          textColor: Colors.red[800],);
-                      }else if(phoneController.text.length > 10 || phoneController.text.length < 10){
-                        Fluttertoast.showToast(msg: 'Phone number must be 10 digits!',
-                          backgroundColor: Colors.white,
-                          textColor: Colors.red[800],);
-                      }else{
-                        push(context, EnterOTP(phoneController.text.toString()));
-                      }
+                        if (phoneController.text.toString() == "") {
+                          Fluttertoast.showToast(
+                            msg: 'Phone number is required!',
+                            backgroundColor: Colors.white,
+                            textColor: Colors.red[800],
+                          );
+                        } else if (phoneController.text.length > 10 ||
+                            phoneController.text.length < 10) {
+                          Fluttertoast.showToast(
+                            msg: 'Phone number must be 10 digits!',
+                            backgroundColor: Colors.white,
+                            textColor: Colors.red[800],
+                          );
+                        } else {
+                          _sendOTP();
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Color(0xFFFFE44E),

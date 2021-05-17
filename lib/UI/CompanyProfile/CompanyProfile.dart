@@ -8,7 +8,7 @@ import 'package:kisan/UI/CompanyProfile/Tabs/ProductsTab.dart';
 import 'package:kisan/UI/CompanyProfile/Tabs/VideoTab.dart';
 import 'package:kisan/UI/CompanyProfile/Widgets/CompanyTabs.dart';
 import 'package:kisan/UI/DetailedScreens/DetailedFeaturdProducts.dart';
-import 'package:kisan/UI/Tabs/HomeTab.dart';
+import 'package:kisan/UI/Tabs/HomeTabShreyas.dart';
 
 class CompanyDetails extends StatefulWidget {
   @override
