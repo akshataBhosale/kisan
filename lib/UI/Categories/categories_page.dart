@@ -10,6 +10,10 @@ import 'package:kisan/View%20Models/CustomViewModel.dart';
 import 'package:provider/provider.dart';
 
 class CategoriesPage extends StatefulWidget {
+  final title, id;
+
+  CategoriesPage(this.title, this.id);
+
   @override
   _CategoriesPageState createState() => _CategoriesPageState();
 }
@@ -17,10 +21,27 @@ class CategoriesPage extends StatefulWidget {
 class _CategoriesPageState extends State<CategoriesPage> {
   bool _isloaded = false;
 
+  Future<void> initTask() async {
+    Provider.of<CustomViewModel>(context, listen: false)
+        .GetSubCategories(widget.id)
+        .then((value) {
+      setState(() {
+        if (value == "error") {
+          pop(context);
+        } else if (value == "success") {
+          _isloaded = true;
+        } else {
+          pop(context);
+        }
+      });
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    initTask();
   }
 
   @override
@@ -55,14 +76,22 @@ class _CategoriesPageState extends State<CategoriesPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Machinery &Tools",
+                                widget.title.toString(),
                                 style: GoogleFonts.poppins(
                                     color: Colors.black,
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                "214 Products | 104 companies",
+                                (providerListener.subcategoryCouts.products ??
+                                            0)
+                                        .toString() +
+                                    " Products | " +
+                                    (providerListener
+                                                .subcategoryCouts.companies ??
+                                            0)
+                                        .toString() +
+                                    " companies",
                                 style: GoogleFonts.poppins(
                                   color: Colors.black,
                                   fontSize: 12,
@@ -76,11 +105,13 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: ImageSlider(),
-                  ),
-                  providerListener.categoryList.length > 0
+                  providerListener.subcategoryList.length > 0
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: ImageSlider(),
+                        )
+                      : SizedBox(height: 1),
+                  providerListener.subcategoryList.length > 0
                       ? Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: buildCategoryList(context),
@@ -107,11 +138,13 @@ class _CategoriesPageState extends State<CategoriesPage> {
   buildCategoryList(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
+    final providerListener = Provider.of<CustomViewModel>(context);
+
     return ListView.builder(
         scrollDirection: Axis.vertical,
         primary: false,
         shrinkWrap: true,
-        itemCount: 20,
+        itemCount: providerListener.subcategoryList.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
@@ -121,7 +154,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
               padding: const EdgeInsets.only(bottom: 15),
               child: Container(
                 width: screenWidth,
-                height: 100,
+                height: 60,
                 decoration: BoxDecoration(
                   color: Color(0xffF0F8F3),
                   borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -147,7 +180,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       ),
                       child: Center(
                         child: Text(
-                          "Category " + (index + 1).toString(),
+                          providerListener.subcategoryList[index].name +
+                              " Please fix this Please fix thisPlease fix this",
                           style: GoogleFonts.poppins(
                             color: Color(0xff2DB571),
                             fontWeight: FontWeight.bold,
@@ -242,6 +276,8 @@ class ImageSlider extends StatefulWidget {
 class _ImageSliderState extends State<ImageSlider> {
   @override
   Widget build(BuildContext context) {
+    final providerListener = Provider.of<CustomViewModel>(context);
+
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: Stack(
@@ -258,7 +294,7 @@ class _ImageSliderState extends State<ImageSlider> {
                 autoPlay: true,
                 viewportFraction: 1,
                 autoPlayAnimationDuration: Duration(milliseconds: 700)),
-            items: [1, 2, 3, 4, 5].map((i) {
+            items: providerListener.subcategoryImages.map((item) {
               return Builder(
                 builder: (BuildContext context) {
                   return GestureDetector(
@@ -268,9 +304,8 @@ class _ImageSliderState extends State<ImageSlider> {
                       margin: EdgeInsets.symmetric(horizontal: 8, vertical: 20),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-//                          image: DecorationImage(
-//                              image: AssetImage("assets/images/subtitle.png"),
-//                              fit: BoxFit.cover),
+                          image: DecorationImage(
+                              image: NetworkImage(item), fit: BoxFit.cover),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey[200],
@@ -295,8 +330,8 @@ class _ImageSliderState extends State<ImageSlider> {
               alignment: Alignment.bottomCenter,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: ['1', '2', '3', '4', '5'].map((url) {
-                  int index = ['1', '2', '3', '4', '5'].indexOf(url);
+                children: providerListener.subcategoryImages.map((url) {
+                  int index = providerListener.subcategoryImages.indexOf(url);
                   return Container(
                     width: 8.0,
                     height: 8.0,

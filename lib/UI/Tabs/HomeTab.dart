@@ -1312,11 +1312,11 @@ Widget CategoryTiles(BuildContext context, CategoryListParser categoryOBJ) {
       child: ConstrainedBox(
         constraints: BoxConstraints.tightFor(
           width: 100,
-          height: 100,
+          height: 80,
         ),
         child: ElevatedButton(
           onPressed: () {
-            push(context, CategoriesPage());
+            push(context, CategoriesPage(categoryOBJ.name, categoryOBJ.id));
           },
           style: ElevatedButton.styleFrom(
             primary: Colors.white,
@@ -1327,9 +1327,8 @@ Widget CategoryTiles(BuildContext context, CategoryListParser categoryOBJ) {
           ),
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.green,
               image: DecorationImage(
-                  image: NetworkImage(categoryOBJ.c_image_url ?? ""),
+                  image: NetworkImage(categoryOBJ.app_image_url ?? ""),
                   fit: BoxFit.fill),
             ),
           ),

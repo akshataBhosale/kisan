@@ -37,7 +37,7 @@ class _HomeTabShreyasState extends State<HomeTabShreyas> {
               ImageSlider(),
               GestureDetector(
                 onTap: (){
-                  push(context, CategoriesPage());
+                 // push(context, CategoriesPage());
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(

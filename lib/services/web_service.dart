@@ -408,19 +408,8 @@ class WebService {
   }
 
   Future GetCategories() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
     try {
-      Map data = {"client_id": client_id, "client_secret": client_secret};
-
-      var body = json.encode(data);
-
-      final response = await http.post(Uri.parse(geteventfilters),
-          headers: {
-            "Content-Type": "application/json",
-            'Authorization': 'Bearer ' + prefs.getString("token"),
-          },
-          body: body);
+      final response = await http.get(Uri.parse(pavilions));
 
       if (response.statusCode == 200) {
         return response;

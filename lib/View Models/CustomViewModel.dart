@@ -42,6 +42,8 @@ class CustomViewModel extends ChangeNotifier {
 
   List<CategoryListParser> categoryList = [];
   List<SubCategoryListParser> subcategoryList = [];
+  SubCategoryListParser subcategoryCouts; // comapnies and products ounts
+  List<String> subcategoryImages = []; // images for slider in category page
 
   Future sendOTP(String phoneNumber, String OPT) async {
     final response = await WebService().sendOTP(phoneNumber, OPT);
@@ -593,13 +595,13 @@ class CustomViewModel extends ChangeNotifier {
       var responseDecodedSuccess = responseDecoded['success'];
       var responseDecodedMsg = responseDecoded['message'].toString();
 
-      if (responseDecodedSuccess == false) {
+      if (responseDecodedSuccess == "false") {
         notifyListeners();
         return responseDecodedMsg;
-      } else if (responseDecodedSuccess == true) {
+      } else if (responseDecodedSuccess == "true") {
         print("response" + responseDecodedMsg.toString());
 
-        final data = responseDecoded['category_list'];
+        final data = responseDecoded['data'];
 
         for (Map i in data) {
           categoryList.add(CategoryListParser.fromJson(i));
@@ -623,6 +625,8 @@ class CustomViewModel extends ChangeNotifier {
 
     if (response != "error") {
       this.subcategoryList.clear();
+      this.subcategoryImages.clear();
+
       var responseDecoded = jsonDecode(response.body);
       var responseDecodedSuccess = responseDecoded['success'];
       var responseDecodedMsg = responseDecoded['message'].toString();
@@ -633,12 +637,14 @@ class CustomViewModel extends ChangeNotifier {
       } else if (responseDecodedSuccess == "true") {
         print("response" + responseDecodedMsg.toString());
 
-        SubCategoryListParser.forcounts(responseDecoded['data']['companies'],
+        subcategoryCouts = SubCategoryListParser.forcounts(
+            responseDecoded['data']['companies'],
             responseDecoded['data']['products']);
 
         final data = responseDecoded['data']['list'];
         for (Map i in data) {
           subcategoryList.add(SubCategoryListParser.fromJson(i));
+          subcategoryImages.add(SubCategoryListParser.fromJson(i).image);
         }
 
         notifyListeners();
