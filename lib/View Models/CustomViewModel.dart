@@ -64,7 +64,7 @@ class CustomViewModel extends ChangeNotifier {
   Future verifyOTP(String verification_code) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final response =
-        await WebService().verifyOTP(verification_token, verification_code);
+    await WebService().verifyOTP(verification_token, verification_code);
 
     var responseDecoded = jsonDecode(response.body);
     var responseDecodedSuccess = responseDecoded['success'];

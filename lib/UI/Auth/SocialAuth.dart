@@ -22,8 +22,11 @@ class _SocialAuthState extends State<SocialAuth> {
   var googleAuthId;
   var server_key =
       "379951119240-tkmkpj996t81g2kqn9qbvdblbht3c8n9.apps.googleusercontent.com";
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> shreyas
 
   GoogleSignIn googleSignIn = GoogleSignIn(
     scopes: <String>[
@@ -345,10 +348,15 @@ class _SocialAuthState extends State<SocialAuth> {
                                 color: Colors.white,
                                 child: Center(
                                   child: Container(
+<<<<<<< HEAD
                                       height: 30,
                                       width: 30,
                                       child: Image.asset(images.appleLogo)),
                                 ),
+=======
+                                      height: 30,width: 30,
+                                      child: Image.asset("assets/images/apple-logo.png")),),
+>>>>>>> shreyas
                               ),
                               SizedBox(
                                 width: 20,

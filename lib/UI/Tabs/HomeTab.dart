@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:kisan/Helpers/constants.dart';
 import 'package:kisan/Helpers/size_config.dart';
 import 'package:kisan/UI/HomeScreen/Widgets/SubTile.dart';
@@ -12,7 +13,10 @@ import 'package:kisan/Models/LaunchListParser.dart';
 import 'package:kisan/Models/EventListParser.dart';
 import 'package:kisan/Models/CategoryListParser.dart';
 import 'package:provider/provider.dart';
+<<<<<<< HEAD
 import 'package:intl/intl.dart';
+=======
+>>>>>>> shreyas
 
 class HomeTab extends StatefulWidget {
   @override
