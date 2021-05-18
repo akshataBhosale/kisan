@@ -48,6 +48,7 @@ const demos = apiUrl + "/visitor/demos";
 const launch = apiUrl + "/visitor/launch";
 const eventlist = apiUrl + "/samvaad/eventlist/";
 const geteventfilters = apiUrl + "/samvaad/geteventfilters/";
+const pavilion_category = apiUrl + "/visitor/pavilion_category/";
 
 List<Map<String, String>> imgSlider = [
   {

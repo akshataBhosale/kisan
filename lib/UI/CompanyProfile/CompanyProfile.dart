@@ -2,12 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kisan/Helpers/helper.dart';
 import 'package:kisan/Helpers/size_config.dart';
 import 'package:kisan/UI/CompanyProfile/Tabs/AboutTab.dart';
 import 'package:kisan/UI/CompanyProfile/Tabs/ProductsTab.dart';
 import 'package:kisan/UI/CompanyProfile/Tabs/VideoTab.dart';
 import 'package:kisan/UI/CompanyProfile/Widgets/CompanyTabs.dart';
-import 'package:kisan/UI/DetailedScreens/DetailedFeaturdProducts.dart';
+import 'package:kisan/UI/DetailedScreens/DetailedProducts.dart';
 import 'package:kisan/UI/Tabs/HomeTabShreyas.dart';
 
 class CompanyDetails extends StatefulWidget {
@@ -36,15 +37,15 @@ class _CompanyDetailsState extends State<CompanyDetails> {
     SizeConfig().init(context);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(90),
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 15),
-          child: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            title: Row(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 20),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 BackButton(),
@@ -127,7 +128,10 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                           ),
                           Row(
                             children: [
-                              SvgPicture.asset("assets/icons/leaf.svg",width: 11,),
+                              SvgPicture.asset(
+                                "assets/icons/leaf.svg",
+                                width: 11,
+                              ),
                               SizedBox(
                                 width: 10,
                               ),
@@ -167,11 +171,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                     _selectedTab = num;
                   });
                 },
-                children: [
-                  AboutTab(),
-                  ProductsTab(),
-                  VideosTab()
-                ],
+                children: [AboutTab(), ProductsTab(), VideosTab()],
               ),
             ),
           ],
@@ -230,7 +230,7 @@ class BackButton extends StatelessWidget {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15))),
         onPressed: () {
-          //pop(context);
+          pop(context);
         },
         child: Icon(
           Icons.arrow_back_ios,

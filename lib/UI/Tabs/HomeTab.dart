@@ -4,8 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:kisan/Helpers/constants.dart';
+import 'package:kisan/Helpers/helper.dart';
 import 'package:kisan/Helpers/size_config.dart';
+import 'package:kisan/UI/BannerEvents/event_page.dart';
+import 'package:kisan/UI/Categories/categories_page.dart';
+import 'package:kisan/UI/CompanyProfile/CompanyProfile.dart';
+import 'package:kisan/UI/DemosAndLaunches/DemoLaunch.dart';
+import 'package:kisan/UI/DetailedScreens/DetailedProducts.dart';
 import 'package:kisan/UI/HomeScreen/Widgets/SubTile.dart';
+import 'package:kisan/UI/Offers/offer_page.dart';
+import 'package:kisan/UI/Webinars/webinar_main_screen.dart';
 import 'package:kisan/View%20Models/CustomViewModel.dart';
 import 'package:kisan/Models/DemoListParser.dart';
 import 'package:kisan/Models/OfferListParser.dart';
@@ -13,7 +21,6 @@ import 'package:kisan/Models/LaunchListParser.dart';
 import 'package:kisan/Models/EventListParser.dart';
 import 'package:kisan/Models/CategoryListParser.dart';
 import 'package:provider/provider.dart';
-
 
 class HomeTab extends StatefulWidget {
   @override
@@ -89,6 +96,9 @@ class _HomeTabState extends State<HomeTab> {
                                       image: providerListener
                                           .featuredproductsList[index]
                                           .bigthumb_url,
+                                      onPressed: () {
+                                        push(context, DetailedProducts());
+                                      },
                                     );
                                   }),
                             ),
@@ -169,6 +179,9 @@ class _HomeTabState extends State<HomeTab> {
                                         .productsList[index].desc_english,
                                     image: providerListener
                                         .productsList[index].bigthumb_url,
+                                    onPressed: () {
+                                      push(context, DetailedProducts());
+                                    },
                                   );
                                 }),
                           ),
@@ -457,62 +470,67 @@ class _HomeTabState extends State<HomeTab> {
   }
 
   Widget LatestOfferTile(OfferListParser offerOBJ) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: Color(0xFF08A796),
-      ),
-      margin: EdgeInsets.only(
-          top: getProportionateScreenHeight(20),
-          right: getProportionateScreenHeight(20),
-          bottom: getProportionateScreenHeight(20)),
-      width: getProportionateScreenWidth(172),
-      child: Stack(
-        children: [
-          Center(
-            child: Container(
-                child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                image: DecorationImage(
-                    image: NetworkImage(offerOBJ.bigthumb_url ?? ""),
-                    fit: BoxFit.fill),
-              ),
-            )),
-          ),
-          Positioned(
-              top: 10,
-              left: 10,
-              child: CompanyName(
-                smallthumb_url: offerOBJ.smallthumb_url,
-                organisation_name: offerOBJ.organisation_name,
+    return GestureDetector(
+      onTap: () {
+        push(context, OfferPage());
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: Color(0xFF08A796),
+        ),
+        margin: EdgeInsets.only(
+            top: getProportionateScreenHeight(20),
+            right: getProportionateScreenHeight(20),
+            bottom: getProportionateScreenHeight(20)),
+        width: getProportionateScreenWidth(172),
+        child: Stack(
+          children: [
+            Center(
+              child: Container(
+                  child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  image: DecorationImage(
+                      image: NetworkImage(offerOBJ.bigthumb_url ?? ""),
+                      fit: BoxFit.fill),
+                ),
               )),
-          Positioned(
-            bottom: 10,
-            left: 10,
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    (offerOBJ.percentage_discount ?? "0") + "%",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 35,
-                        fontFamily: 'Poppins Bold'),
-                  ),
-                  Text(
-                    "Discount",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontFamily: 'Poppins Bold'),
-                  )
-                ],
+            ),
+            Positioned(
+                top: 10,
+                left: 10,
+                child: CompanyName(
+                  smallthumb_url: offerOBJ.smallthumb_url,
+                  organisation_name: offerOBJ.organisation_name,
+                )),
+            Positioned(
+              bottom: 10,
+              left: 10,
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      (offerOBJ.percentage_discount ?? "0") + "%",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 35,
+                          fontFamily: 'Poppins Bold'),
+                    ),
+                    Text(
+                      "Discount",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontFamily: 'Poppins Bold'),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -694,6 +712,9 @@ class CustomDivider extends StatelessWidget {
 
 Widget LatestProductLaunch(BuildContext context, LaunchListParser lauchOBJ) {
   return GestureDetector(
+    onTap: () {
+      push(context, DemoLaunch());
+    },
     child: Container(
       padding: EdgeInsets.all(13),
       width: MediaQuery.of(context).size.width / 1.3,
@@ -742,299 +763,317 @@ Widget LatestProductLaunch(BuildContext context, LaunchListParser lauchOBJ) {
 }
 
 Widget LatestDemo(BuildContext context, DemoListParser demoOBJ) {
-  return Container(
-    width: MediaQuery.of(context).size.width / 1.3,
-    height: 200,
-    decoration: BoxDecoration(
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey[300],
-          blurRadius: 3.0,
-          spreadRadius: 2.5,
-        )
-      ],
-      borderRadius: BorderRadius.only(
-        bottomLeft: Radius.circular(15),
-        bottomRight: Radius.circular(15),
+  return GestureDetector(
+    onTap: () {
+      push(context, DemoLaunch());
+    },
+    child: Container(
+      width: MediaQuery.of(context).size.width / 1.3,
+      height: 200,
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey[300],
+            blurRadius: 3.0,
+            spreadRadius: 2.5,
+          )
+        ],
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(15),
+          bottomRight: Radius.circular(15),
+        ),
       ),
-    ),
-    margin: EdgeInsets.only(top: 20, bottom: 10, right: 10, left: 5),
-    child: Column(
-      children: [
-        Expanded(
-            child: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.green[700],
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(15),
-                  topLeft: Radius.circular(15),
-                ),
-                image: DecorationImage(
-                    image: NetworkImage(demoOBJ.bigthumb_url ?? ""),
-                    fit: BoxFit.fill),
-              ),
-            ),
-            Center(
-              child: Opacity(
-                opacity: 0.7,
-                child: Icon(
-                  Icons.play_circle_fill,
-                  color: Colors.white,
-                  size: 50,
+      margin: EdgeInsets.only(top: 20, bottom: 10, right: 10, left: 5),
+      child: Column(
+        children: [
+          Expanded(
+              child: Stack(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.green[700],
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(15),
+                    topLeft: Radius.circular(15),
+                  ),
+                  image: DecorationImage(
+                      image: NetworkImage(demoOBJ.bigthumb_url ?? ""),
+                      fit: BoxFit.fill),
                 ),
               ),
-            )
-          ],
-        )),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 9),
-          height: getProportionateScreenHeight(80),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(15),
-                bottomLeft: Radius.circular(15)),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CompanyName(
-                  smallthumb_url: demoOBJ.smallthumb_url,
-                  organisation_name: demoOBJ.organisation_name,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  demoOBJ.description,
-                  overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.poppins(
-                    fontSize: 14,
-                    color: Colors.grey[700],
-                    fontWeight: FontWeight.bold,
+              Center(
+                child: Opacity(
+                  opacity: 0.7,
+                  child: Icon(
+                    Icons.play_circle_fill,
+                    color: Colors.white,
+                    size: 50,
                   ),
                 ),
-              ],
+              )
+            ],
+          )),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 9),
+            height: getProportionateScreenHeight(80),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(15),
+                  bottomLeft: Radius.circular(15)),
             ),
-          ),
-        )
-      ],
-    ),
-  );
-}
-
-Widget WebinarTile(BuildContext context, EventListParser eventOBJ) {
-  return Container(
-    width: MediaQuery.of(context).size.width / 1.5,
-    margin: EdgeInsets.only(
-        top: getProportionateScreenHeight(20),
-        bottom: getProportionateScreenHeight(20),
-        right: getProportionateScreenWidth(20)),
-    decoration: BoxDecoration(boxShadow: [
-      BoxShadow(
-        color: Colors.grey[300],
-        blurRadius: 5.0,
-        spreadRadius: 1.0,
-      )
-    ]),
-    child: Column(
-      children: [
-        Expanded(
-            child: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.green[700],
-                  image: DecorationImage(
-                      image: NetworkImage(eventOBJ.image_path_medium ?? ""),
-                      fit: BoxFit.fill),
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(15),
-                      topLeft: Radius.circular(15))),
-            ),
-            Positioned(
-              bottom: 10,
-              left: 10,
-              child: CompanyName(
-                smallthumb_url: eventOBJ.image_smallthumb_url,
-                organisation_name: eventOBJ.organisation_name,
-              ),
-            )
-          ],
-        )),
-        Container(
-          padding: EdgeInsets.all(6),
-          width: double.infinity,
-          height: 80,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(15),
-                bottomLeft: Radius.circular(15)),
-          ),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 10,
-              ),
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.yellowAccent),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      eventOBJ.scheduled_date
-                          .substring(eventOBJ.scheduled_date.length - 2),
-                      style: TextStyle(
-                          fontSize: 20,
-                          height: 1.3,
-                          fontFamily: 'Poppins Bold'),
-                    ),
-                    Text(
-                      DateFormat.MMMM()
-                          .format(DateTime.parse(eventOBJ.scheduled_date))
-                          .toString(),
-                      style:
-                          TextStyle(fontSize: 12, fontFamily: 'Poppins Bold'),
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Column(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width / 1.5 / 1.9,
-                      child: Text(
-                        eventOBJ.title,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            color: Colors.grey[700],
-                            fontWeight: FontWeight.w700),
-                      ),
-                    ),
+                  CompanyName(
+                    smallthumb_url: demoOBJ.smallthumb_url,
+                    organisation_name: demoOBJ.organisation_name,
                   ),
                   SizedBox(
                     height: 5,
                   ),
                   Text(
-                    DateFormat.EEEE()
-                            .format(DateTime.parse(eventOBJ.scheduled_date))
-                            .toString() +
-                        ", " +
-                        (DateFormat.jm().format(DateFormat("hh:mm:ss")
-                                .parse(eventOBJ.scheduled_time)))
-                            .toString(),
+                    demoOBJ.description,
                     overflow: TextOverflow.ellipsis,
-                    style:
-                        GoogleFonts.poppins(fontSize: 10, color: Colors.black),
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      color: Colors.grey[700],
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
-              SizedBox(
-                width: 10,
-              ),
-            ],
-          ),
+            ),
+          )
+        ],
+      ),
+    ),
+  );
+}
+
+Widget WebinarTile(BuildContext context, EventListParser eventOBJ) {
+  return GestureDetector(
+    onTap: () {
+      push(context, WebinarMainScreen());
+    },
+    child: Container(
+      width: MediaQuery.of(context).size.width / 1.5,
+      margin: EdgeInsets.only(
+          top: getProportionateScreenHeight(20),
+          bottom: getProportionateScreenHeight(20),
+          right: getProportionateScreenWidth(20)),
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(
+          color: Colors.grey[300],
+          blurRadius: 5.0,
+          spreadRadius: 1.0,
         )
-      ],
+      ]),
+      child: Column(
+        children: [
+          Expanded(
+              child: Stack(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.green[700],
+                    image: DecorationImage(
+                        image: NetworkImage(eventOBJ.image_path_medium ?? ""),
+                        fit: BoxFit.fill),
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(15),
+                        topLeft: Radius.circular(15))),
+              ),
+              Positioned(
+                bottom: 10,
+                left: 10,
+                child: CompanyName(
+                  smallthumb_url: eventOBJ.image_smallthumb_url,
+                  organisation_name: eventOBJ.organisation_name,
+                ),
+              )
+            ],
+          )),
+          Container(
+            padding: EdgeInsets.all(6),
+            width: double.infinity,
+            height: 80,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(15),
+                  bottomLeft: Radius.circular(15)),
+            ),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 10,
+                ),
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.yellowAccent),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        eventOBJ.scheduled_date
+                            .substring(eventOBJ.scheduled_date.length - 2),
+                        style: TextStyle(
+                            fontSize: 20,
+                            height: 1.3,
+                            fontFamily: 'Poppins Bold'),
+                      ),
+                      Text(
+                        DateFormat.MMMM()
+                            .format(DateTime.parse(eventOBJ.scheduled_date))
+                            .toString(),
+                        style:
+                            TextStyle(fontSize: 12, fontFamily: 'Poppins Bold'),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 1.5 / 1.9,
+                        child: Text(
+                          eventOBJ.title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              color: Colors.grey[700],
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      DateFormat.EEEE()
+                              .format(DateTime.parse(eventOBJ.scheduled_date))
+                              .toString() +
+                          ", " +
+                          (DateFormat.jm().format(DateFormat("hh:mm:ss")
+                                  .parse(eventOBJ.scheduled_time)))
+                              .toString(),
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.poppins(
+                          fontSize: 10, color: Colors.black),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     ),
   );
 }
 
 Widget FeaturesWebinar(BuildContext context, EventListParser eventOBJ) {
-  return Container(
-    width: MediaQuery.of(context).size.width / 1.25,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(20),
-      color: Colors.green[500],
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey,
-          offset: const Offset(
-            2.0,
-            2.0,
-          ),
-          blurRadius: 3.0,
-          spreadRadius: 1.0,
-        )
-      ],
-      image: DecorationImage(
-          image: NetworkImage(eventOBJ.image_path_medium ?? ""),
-          fit: BoxFit.fill),
-    ),
-    margin: EdgeInsets.only(
-      top: getProportionateScreenHeight(20),
-      bottom: getProportionateScreenHeight(20),
-      right: getProportionateScreenWidth(20),
-    ),
-    child: Stack(
-      children: [
-        Container(
-          width: getProportionateScreenWidth(79),
-          height: getProportionateScreenHeight(41),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
-            color: Color(COLOR_BACKGROUND),
-          ),
-          child: Text(
-            DateFormat.d()
-                    .format(DateTime.parse(eventOBJ.scheduled_date))
-                    .toString() +
-                " " +
-                DateFormat.MMMM()
-                    .format(DateTime.parse(eventOBJ.scheduled_date))
-                    .toString(),
-            style: TextStyle(
-                color: Colors.white, fontFamily: 'Poppins Bold', fontSize: 14),
-          ),
-        ),
-        Positioned(
-          bottom: 20,
-          left: 20,
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CompanyName(
-                  smallthumb_url: eventOBJ.image_smallthumb_url,
-                  organisation_name: eventOBJ.organisation_name,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  eventOBJ.title,
-                  style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),
-                )
-              ],
+  return GestureDetector(
+    onTap: () {
+      push(context, WebinarMainScreen());
+    },
+    child: Container(
+      width: MediaQuery.of(context).size.width / 1.25,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.green[500],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey,
+            offset: const Offset(
+              2.0,
+              2.0,
+            ),
+            blurRadius: 3.0,
+            spreadRadius: 1.0,
+          )
+        ],
+        image: DecorationImage(
+            image: NetworkImage(eventOBJ.image_path_medium ?? ""),
+            fit: BoxFit.fill),
+      ),
+      margin: EdgeInsets.only(
+        top: getProportionateScreenHeight(20),
+        bottom: getProportionateScreenHeight(20),
+        right: getProportionateScreenWidth(20),
+      ),
+      child: Stack(
+        children: [
+          Container(
+            width: getProportionateScreenWidth(79),
+            height: getProportionateScreenHeight(41),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20)),
+              color: Color(COLOR_BACKGROUND),
+            ),
+            child: Text(
+              DateFormat.d()
+                      .format(DateTime.parse(eventOBJ.scheduled_date))
+                      .toString() +
+                  " " +
+                  DateFormat.MMMM()
+                      .format(DateTime.parse(eventOBJ.scheduled_date))
+                      .toString(),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'Poppins Bold',
+                  fontSize: 14),
             ),
           ),
-        )
-      ],
+          Positioned(
+            bottom: 20,
+            left: 20,
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CompanyName(
+                    smallthumb_url: eventOBJ.image_smallthumb_url,
+                    organisation_name: eventOBJ.organisation_name,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    eventOBJ.title,
+                    style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
     ),
   );
 }
@@ -1149,7 +1188,9 @@ class _FeaturedBrandsState extends State<FeaturedBrands> {
               height: getProportionateScreenHeight(85),
             ),
             child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  push(context, CompanyDetails());
+                },
                 style: ElevatedButton.styleFrom(
                   primary: Colors.white,
                   elevation: 3,
@@ -1274,7 +1315,9 @@ Widget CategoryTiles(BuildContext context, CategoryListParser categoryOBJ) {
           height: 100,
         ),
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            push(context, CategoriesPage());
+          },
           style: ElevatedButton.styleFrom(
             primary: Colors.white,
             elevation: 1,
@@ -1372,26 +1415,31 @@ class _ImageSliderState extends State<ImageSlider> {
             items: [1, 2, 3, 4, 5].map((i) {
               return Builder(
                 builder: (BuildContext context) {
-                  return Container(
-                    width: getProportionateScreenWidth(378),
-                    margin: EdgeInsets.symmetric(horizontal: 8, vertical: 20),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        image: DecorationImage(
-                            image: AssetImage("assets/images/subtitle.png"),
-                            fit: BoxFit.cover),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey[200],
-                            offset: const Offset(
-                              2.0,
-                              3.0,
-                            ),
-                            blurRadius: 5.0,
-                            spreadRadius: 2.0,
-                          )
-                        ],
-                        color: Colors.amber),
+                  return GestureDetector(
+                    onTap: () {
+                      push(context, BannerEventPage());
+                    },
+                    child: Container(
+                      width: getProportionateScreenWidth(378),
+                      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          image: DecorationImage(
+                              image: AssetImage("assets/images/subtitle.png"),
+                              fit: BoxFit.cover),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey[200],
+                              offset: const Offset(
+                                2.0,
+                                3.0,
+                              ),
+                              blurRadius: 5.0,
+                              spreadRadius: 2.0,
+                            )
+                          ],
+                          color: Colors.amber),
+                    ),
                   );
                 },
               );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kisan/UI/CompanyProfile/CompanyProfile.dart';
-import 'package:kisan/UI/DetailedScreens/DetailedFeaturdProducts.dart';
+import 'package:kisan/UI/DetailedScreens/DetailedProducts.dart';
 
 class AboutTab extends StatelessWidget {
   const AboutTab({

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kisan/Helpers/helper.dart';
 import 'package:kisan/UI/CompanyProfile/CompanyProfile.dart';
-import 'package:kisan/UI/DetailedScreens/DetailedFeaturdProducts.dart';
+import 'package:kisan/UI/DetailedScreens/DetailedProducts.dart';
 import 'package:video_player/video_player.dart';
 
 class DemoLaunch extends StatefulWidget {
@@ -163,7 +163,7 @@ class BackButton extends StatelessWidget {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15))),
         onPressed: () {
-          //pop(context);
+          pop(context);
         },
         child: Icon(
           Icons.arrow_back_ios,

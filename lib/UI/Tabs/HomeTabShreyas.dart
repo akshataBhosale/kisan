@@ -9,7 +9,7 @@ import 'package:kisan/UI/BannerEvents/event_page.dart';
 import 'package:kisan/UI/Categories/categories_page.dart';
 import 'package:kisan/UI/CompanyProfile/CompanyProfile.dart';
 import 'package:kisan/UI/DemosAndLaunches/DemoLaunch.dart';
-import 'package:kisan/UI/DetailedScreens/DetailedFeaturdProducts.dart';
+import 'package:kisan/UI/DetailedScreens/DetailedProducts.dart';
 import 'package:kisan/UI/HomeScreen/Widgets/SubTile.dart';
 import 'package:kisan/UI/Offers/offer_page.dart';
 import 'package:kisan/UI/Webinars/webinar_main_screen.dart';
@@ -77,7 +77,7 @@ class _HomeTabShreyasState extends State<HomeTabShreyas> {
                                 name: "Great Indian Farms",
                                 desc: "Sonalika Tractors",
                                 onPressed: (){
-                                  push(context, DetailedFeaturedProducts());
+                                  push(context, DetailedProducts());
                                 },
                               );
                             }),
@@ -140,7 +140,7 @@ class _HomeTabShreyasState extends State<HomeTabShreyas> {
                               name: "ST-7845TB12",
                               desc: "Sonalika Tractors",
                               onPressed: (){
-                                push(context, DetailedFeaturedProducts());
+                                push(context, DetailedProducts());
                               },
                             );
                           }),

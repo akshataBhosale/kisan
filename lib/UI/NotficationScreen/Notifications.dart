@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kisan/Helpers/helper.dart';
 class NotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -63,6 +64,7 @@ class BackButton extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15))),
           onPressed: () {
+            pop(context);
           },
           child: Icon(
             Icons.arrow_back_ios,

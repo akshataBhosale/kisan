@@ -7,7 +7,9 @@ import 'package:kisan/Helpers/size_config.dart';
 import 'package:kisan/Models/UserDataParser.dart';
 import 'package:kisan/UI/HomeScreen/Widgets/bottom_tabs.dart';
 import 'package:kisan/UI/Intro/InitialScreen.dart';
+import 'package:kisan/UI/NotficationScreen/Notifications.dart';
 import 'package:kisan/UI/Profile/BasicProfile.dart';
+import 'package:kisan/UI/SearchScreen/SearchScreen.dart';
 import 'package:kisan/UI/Tabs/HomeTab.dart';
 import 'package:kisan/UI/Tabs/HomeTabShreyas.dart';
 import 'package:kisan/UI/Tabs/ShortListedTab.dart';
@@ -116,7 +118,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         size: 30,
                       ),
                       color: Colors.black,
-                      onPressed: () {},
+                      onPressed: () {
+                        push(context, SearchScreen());
+                      },
                     ),
                   ),
                   SizedBox(
@@ -125,7 +129,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        push(context, NotificationScreen());
+                      },
                       icon: Icon(
                         Icons.notifications,
                         size: 30,

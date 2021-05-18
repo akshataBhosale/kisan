@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kisan/UI/DetailedScreens/DetailedFeaturdProducts.dart';
+import 'package:kisan/UI/DetailedScreens/DetailedProducts.dart';
 
 class ProductsTab extends StatelessWidget {
   const ProductsTab({

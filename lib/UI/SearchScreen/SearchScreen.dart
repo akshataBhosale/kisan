@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kisan/Helpers/size_config.dart';
 import 'package:kisan/Helpers/constants.dart';
-import 'package:kisan/UI/DetailedScreens/DetailedFeaturdProducts.dart';
+import 'package:kisan/UI/DetailedScreens/DetailedProducts.dart';
 import 'package:kisan/UI/Tabs/HomeTabShreyas.dart';
 
 bool searchResultsProduct = false;

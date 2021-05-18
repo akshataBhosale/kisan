@@ -431,4 +431,26 @@ class WebService {
       print("exception" + Exception.toString());
     }
   }
+
+  Future GetSubCategories(int pavilion_id) async {
+    try {
+      Map data = {"pavilion_id": pavilion_id};
+
+      var body = json.encode(data);
+
+      final response = await http.post(Uri.parse(pavilion_category),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: body);
+
+      if (response.statusCode == 200) {
+        return response;
+      } else {
+        return "error";
+      }
+    } catch (Exception) {
+      print("exception" + Exception.toString());
+    }
+  }
 }

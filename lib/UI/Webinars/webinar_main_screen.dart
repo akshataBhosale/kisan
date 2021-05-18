@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kisan/Helpers/helper.dart';
 import 'package:kisan/UI/CompanyProfile/CompanyProfile.dart';
-import 'package:kisan/UI/DetailedScreens/DetailedFeaturdProducts.dart';
+import 'package:kisan/UI/DetailedScreens/DetailedProducts.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class WebinarMainScreen extends StatefulWidget {
@@ -11,7 +11,6 @@ class WebinarMainScreen extends StatefulWidget {
 }
 
 class _WebinarMainScreenState extends State<WebinarMainScreen> {
-
   PanelController _pc1 = new PanelController();
   final _visibility = ValueNotifier(false);
 
@@ -61,7 +60,8 @@ class _WebinarMainScreenState extends State<WebinarMainScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                    padding:
+                        const EdgeInsets.only(top: 20, left: 20, right: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,13 +70,15 @@ class _WebinarMainScreenState extends State<WebinarMainScreen> {
                           child: Text(
                             "Importance of nutrition in raising healthy animals.",
                             style: GoogleFonts.poppins(
-                                color: Color(0xff5C5C5C),
-                                fontSize: 20, fontWeight: FontWeight.bold,
+                              color: Color(0xff5C5C5C),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
                         Container(
-                          height: 50, width: 50,
+                          height: 50,
+                          width: 50,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(5)),
                             color: Color(0xff08763F),
@@ -86,13 +88,15 @@ class _WebinarMainScreenState extends State<WebinarMainScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text("म",
+                                Text(
+                                  "म",
                                   style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontSize: 18,
                                   ),
                                 ),
-                                Text("मराठी",
+                                Text(
+                                  "मराठी",
                                   style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontSize: 8,
@@ -106,22 +110,29 @@ class _WebinarMainScreenState extends State<WebinarMainScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                    padding:
+                        const EdgeInsets.only(top: 20, left: 20, right: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          height: 50, width: 50,
+                          height: 50,
+                          width: 50,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(5)),
                             color: Color(0xffB7B7B7),
                           ),
                           child: Center(
-                            child: Icon(Icons.calendar_today, color: Colors.grey[700],),
+                            child: Icon(
+                              Icons.calendar_today,
+                              color: Colors.grey[700],
+                            ),
                           ),
                         ),
-                        SizedBox(width: 10,),
+                        SizedBox(
+                          width: 10,
+                        ),
                         Flexible(
                           child: Text(
                             "Tuesday, 16 December 2021\n11:30 am - 12:30 pm IST",
@@ -135,17 +146,20 @@ class _WebinarMainScreenState extends State<WebinarMainScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                    padding:
+                        const EdgeInsets.only(top: 20, left: 20, right: 20),
                     child: Text(
                       "About the Event",
                       style: GoogleFonts.poppins(
                         color: Color(0xff5C5C5C),
-                        fontSize: 18, fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                    padding:
+                        const EdgeInsets.only(top: 20, left: 20, right: 20),
                     child: Text(
                       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis. Iaculis urna id volutpat lacus laoreet. Mauris vitae ultricies leo integer malesuada. Ac odio tempor orci dapibus ultrices in. Egestas diam in arcu cursus",
                       style: GoogleFonts.poppins(
@@ -161,21 +175,23 @@ class _WebinarMainScreenState extends State<WebinarMainScreen> {
                       child: CompanyLink(
                         title: "Green Lake",
                         imagePath: "assets/images/sample_featured_brands.png",
-                        onPressed: (){
+                        onPressed: () {
                           push(context, CompanyDetails());
                           print("Company link Pressed : To Company Profile");
                         },
                       ),
                     ),
                   ),
-                  SizedBox(height: 30,),
+                  SizedBox(
+                    height: 30,
+                  ),
                 ],
               ),
             ),
           ),
           ValueListenableBuilder(
             valueListenable: _visibility,
-            builder:(context,value,_)=> SlidingUpPanel(
+            builder: (context, value, _) => SlidingUpPanel(
               controller: _pc1,
               isDraggable: true,
               borderRadius: radius,
@@ -190,15 +206,14 @@ class _WebinarMainScreenState extends State<WebinarMainScreen> {
                 });
               },
               panel: Container(
-                height: MediaQuery.of(context).size.height*2,
+                height: MediaQuery.of(context).size.height * 2,
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.only(left: 20, right: 20),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    )
-                ),
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                )),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -217,17 +232,23 @@ class _WebinarMainScreenState extends State<WebinarMainScreen> {
                     SizedBox(
                       height: 20,
                     ),
-                    Text("Your mobile number and profile details\nmay be shared with John Deere.",
+                    Text(
+                      "Your mobile number and profile details\nmay be shared with John Deere.",
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(fontSize: 18),),
+                      style: GoogleFonts.poppins(fontSize: 18),
+                    ),
                     SizedBox(
                       height: 20,
                     ),
-                    Text("Please answer the following\nQuestions to register for this webinar.",
+                    Text(
+                      "Please answer the following\nQuestions to register for this webinar.",
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(fontSize: 18,
-                        color: Color(0xff008940),fontWeight: FontWeight.bold,
-                      ),),
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        color: Color(0xff008940),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     SizedBox(
                       height: 20,
                     ),
@@ -235,9 +256,11 @@ class _WebinarMainScreenState extends State<WebinarMainScreen> {
                       padding: const EdgeInsets.only(left: 10),
                       child: Align(
                         alignment: Alignment.centerLeft,
-                        child: Text("1 - Do you have a Tractor ?",
+                        child: Text(
+                          "1 - Do you have a Tractor ?",
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(fontSize: 18),),
+                          style: GoogleFonts.poppins(fontSize: 18),
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -256,34 +279,46 @@ class _WebinarMainScreenState extends State<WebinarMainScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
-                                  height: 20, width: 20,
+                                  height: 20,
+                                  width: 20,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                                    border: Border.all(color: Colors.grey)
-                                  ),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(50)),
+                                      border: Border.all(color: Colors.grey)),
                                 ),
-                                SizedBox(width: 10,),
-                                Text("Yes",
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  "Yes",
                                   textAlign: TextAlign.center,
-                                  style: GoogleFonts.poppins(fontSize: 18),),
+                                  style: GoogleFonts.poppins(fontSize: 18),
+                                ),
                               ],
                             ),
-                            SizedBox(height: 10,),
+                            SizedBox(
+                              height: 10,
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
-                                  height: 20, width: 20,
+                                  height: 20,
+                                  width: 20,
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                                      border: Border.all(color: Colors.grey)
-                                  ),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(50)),
+                                      border: Border.all(color: Colors.grey)),
                                 ),
-                                SizedBox(width: 10,),
-                                Text("No",
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  "No",
                                   textAlign: TextAlign.center,
-                                  style: GoogleFonts.poppins(fontSize: 18),),
+                                  style: GoogleFonts.poppins(fontSize: 18),
+                                ),
                               ],
                             ),
                           ],
@@ -297,9 +332,11 @@ class _WebinarMainScreenState extends State<WebinarMainScreen> {
                       padding: const EdgeInsets.only(left: 10, right: 10),
                       child: Align(
                         alignment: Alignment.centerLeft,
-                        child: Text("2 - What machine do you use for spraying?",
+                        child: Text(
+                          "2 - What machine do you use for spraying?",
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(fontSize: 18),),
+                          style: GoogleFonts.poppins(fontSize: 18),
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -318,47 +355,63 @@ class _WebinarMainScreenState extends State<WebinarMainScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
-                                  height: 20, width: 20,
+                                  height: 20,
+                                  width: 20,
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                                      border: Border.all(color: Colors.grey)
-                                  ),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(50)),
+                                      border: Border.all(color: Colors.grey)),
                                 ),
-                                SizedBox(width: 10,),
-                                Text("Knapsack Sprayer.",
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  "Knapsack Sprayer.",
                                   textAlign: TextAlign.center,
-                                  style: GoogleFonts.poppins(fontSize: 18),),
+                                  style: GoogleFonts.poppins(fontSize: 18),
+                                ),
                               ],
                             ),
-                            SizedBox(height: 10,),
+                            SizedBox(
+                              height: 10,
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
-                                  height: 20, width: 20,
+                                  height: 20,
+                                  width: 20,
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                                      border: Border.all(color: Colors.grey)
-                                  ),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(50)),
+                                      border: Border.all(color: Colors.grey)),
                                 ),
-                                SizedBox(width: 10,),
-                                Text("Portable Power Sprayer.",
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  "Portable Power Sprayer.",
                                   textAlign: TextAlign.center,
-                                  style: GoogleFonts.poppins(fontSize: 18),),
+                                  style: GoogleFonts.poppins(fontSize: 18),
+                                ),
                               ],
                             ),
-                            SizedBox(height: 30,),
+                            SizedBox(
+                              height: 30,
+                            ),
                             ConstrainedBox(
-                              constraints:
-                              BoxConstraints.tightFor(width: MediaQuery.of(context).size.width, height: 65),
+                              constraints: BoxConstraints.tightFor(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 65),
                               child: ElevatedButton(
-                                  onPressed: (){},
+                                  onPressed: () {},
                                   style: ElevatedButton.styleFrom(
                                       primary: Color(0xFF08763F),
                                       elevation: 1,
                                       shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10))),
+                                          borderRadius:
+                                              BorderRadius.circular(10))),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -366,7 +419,8 @@ class _WebinarMainScreenState extends State<WebinarMainScreen> {
                                         "Register for free",
                                         style: GoogleFonts.poppins(
                                             letterSpacing: 1,
-                                            fontSize: 20,fontWeight: FontWeight.bold),
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
                                       )
                                     ],
                                   )),
@@ -384,7 +438,8 @@ class _WebinarMainScreenState extends State<WebinarMainScreen> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                        topLeft: Radius.circular(15),
+                        topRight: Radius.circular(15)),
                     boxShadow: [
                       BoxShadow(
                           color: Colors.black.withOpacity(0.1),
@@ -435,7 +490,7 @@ class BackButton extends StatelessWidget {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15))),
         onPressed: () {
-          //pop(context);
+          pop(context);
         },
         child: Icon(
           Icons.arrow_back_ios,
@@ -448,7 +503,8 @@ class BackButton extends StatelessWidget {
 
 class FavButton extends StatelessWidget {
   const FavButton({
-    Key key, this.onPressed,
+    Key key,
+    this.onPressed,
   }) : super(key: key);
 
   final Function onPressed;
@@ -456,8 +512,7 @@ class FavButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-        constraints:
-        BoxConstraints.tightFor(width: 65, height: 65),
+        constraints: BoxConstraints.tightFor(width: 65, height: 65),
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
                 primary: Colors.yellow[300],
@@ -474,7 +529,8 @@ class FavButton extends StatelessWidget {
 
 class ContactButton extends StatelessWidget {
   const ContactButton({
-    Key key, this.onPressed,
+    Key key,
+    this.onPressed,
   }) : super(key: key);
 
   final Function onPressed;
@@ -482,8 +538,7 @@ class ContactButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints:
-      BoxConstraints.tightFor(width: 285, height: 65),
+      constraints: BoxConstraints.tightFor(width: 285, height: 65),
       child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
@@ -497,8 +552,9 @@ class ContactButton extends StatelessWidget {
               Text(
                 "Register for free",
                 style: GoogleFonts.poppins(
-                  letterSpacing: 1,
-                    fontSize: 20,fontWeight: FontWeight.bold),
+                    letterSpacing: 1,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
               )
             ],
           )),

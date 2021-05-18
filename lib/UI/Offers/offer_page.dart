@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kisan/Helpers/helper.dart';
 
 class OfferPage extends StatefulWidget {
   @override
@@ -49,7 +50,7 @@ class _OfferPageState extends State<OfferPage> {
             Stack(
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.width/1.1,
+                  height: MediaQuery.of(context).size.width / 1.1,
                   decoration: BoxDecoration(
                     color: Color(0xff094FA9),
                     // image: DecorationImage()
@@ -57,16 +58,20 @@ class _OfferPageState extends State<OfferPage> {
                 ),
                 Positioned(
                   bottom: 0,
-                  left: 0, right: 0,
+                  left: 0,
+                  right: 0,
                   child: Container(
-                    height: MediaQuery.of(context).size.width/3/1.1,
+                    height: MediaQuery.of(context).size.width / 3 / 1.1,
                     decoration: BoxDecoration(
                         gradient: LinearGradient(
                             begin: Alignment.bottomCenter,
                             end: Alignment.topCenter,
-                            colors: [Colors.black.withOpacity(0.5), Colors.transparent])
-                      // image: DecorationImage()
-                    ),
+                            colors: [
+                          Colors.black.withOpacity(0.5),
+                          Colors.transparent
+                        ])
+                        // image: DecorationImage()
+                        ),
                   ),
                 ),
                 Positioned(
@@ -80,15 +85,15 @@ class _OfferPageState extends State<OfferPage> {
                           "10%",
                           style: GoogleFonts.poppins(
                               color: Colors.white,
-                              fontSize: 45, fontWeight: FontWeight.bold
-                          ),
+                              fontSize: 45,
+                              fontWeight: FontWeight.bold),
                         ),
                         Text(
                           "Discount",
                           style: GoogleFonts.poppins(
                               color: Colors.white,
-                              fontSize: 30, fontWeight: FontWeight.bold
-                          ),
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold),
                         )
                       ],
                     ),
@@ -96,10 +101,13 @@ class _OfferPageState extends State<OfferPage> {
                 ),
               ],
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),
-              child: Text("Product details",
+              child: Text(
+                "Product details",
                 style: GoogleFonts.poppins(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -107,7 +115,9 @@ class _OfferPageState extends State<OfferPage> {
                 ),
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
               child: Stack(
@@ -119,7 +129,10 @@ class _OfferPageState extends State<OfferPage> {
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       boxShadow: [
-                        BoxShadow(color: Colors.grey[200], blurRadius: 1, spreadRadius: 1)
+                        BoxShadow(
+                            color: Colors.grey[200],
+                            blurRadius: 1,
+                            spreadRadius: 1)
                       ],
                     ),
                     child: Row(
@@ -130,25 +143,30 @@ class _OfferPageState extends State<OfferPage> {
                           height: 100,
                           width: 125,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
                               bottomLeft: Radius.circular(10),
                             ),
                             color: Colors.red[900],
                           ),
                         ),
-                        SizedBox(width: 20,),
+                        SizedBox(
+                          width: 20,
+                        ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Sonalika",
+                            Text(
+                              "Sonalika",
                               style: GoogleFonts.poppins(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                               ),
                             ),
-                            Text("Tiger 26 series",
+                            Text(
+                              "Tiger 26 series",
                               style: GoogleFonts.poppins(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
@@ -164,15 +182,21 @@ class _OfferPageState extends State<OfferPage> {
                     padding: const EdgeInsets.only(right: 20, top: 40),
                     child: Align(
                         alignment: Alignment.centerRight,
-                        child: Icon(Icons.arrow_forward_ios, color: Colors.grey,)),
+                        child: Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.grey,
+                        )),
                   )
                 ],
               ),
             ),
-            SizedBox(height: 40,),
+            SizedBox(
+              height: 40,
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),
-              child: Text("What’s the offer?",
+              child: Text(
+                "What’s the offer?",
                 style: GoogleFonts.poppins(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -180,20 +204,26 @@ class _OfferPageState extends State<OfferPage> {
                 ),
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),
-              child: Text("Get 10% off on Tiger 26 tractor if you book it during KISAN exhibition i.e. 16-20 Dec.",
+              child: Text(
+                "Get 10% off on Tiger 26 tractor if you book it during KISAN exhibition i.e. 16-20 Dec.",
                 style: GoogleFonts.poppins(
                   color: Colors.grey[700],
                   fontSize: 18,
                 ),
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Padding(
-              padding: const EdgeInsets.only(left: 20,right: 20),
-              child: Text("How to redeem?",
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: Text(
+                "How to redeem?",
                 style: GoogleFonts.poppins(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -201,20 +231,26 @@ class _OfferPageState extends State<OfferPage> {
                 ),
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),
-              child: Text("- Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor \n\n- incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis. \n\n- Iaculis urna id volutpat lacus laoreet. Mauris vitae ultricies leo integer malesuada. Ac odio tempor orci dapibus ultrices in. Egestas diam in arcu cursus",
+              child: Text(
+                "- Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor \n\n- incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis. \n\n- Iaculis urna id volutpat lacus laoreet. Mauris vitae ultricies leo integer malesuada. Ac odio tempor orci dapibus ultrices in. Egestas diam in arcu cursus",
                 style: GoogleFonts.poppins(
                   color: Colors.grey[700],
                   fontSize: 18,
                 ),
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Padding(
-              padding: const EdgeInsets.only(left: 20,right: 20),
-              child: Text("Disclaimer",
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: Text(
+                "Disclaimer",
                 style: GoogleFonts.poppins(
                   color: Color(0xffB56A6A),
                   fontWeight: FontWeight.bold,
@@ -222,24 +258,28 @@ class _OfferPageState extends State<OfferPage> {
                 ),
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Padding(
-              padding: const EdgeInsets.only(left: 20,right: 20),
-              child: Text("Offers are provided by the companies/participants. KISAN is only responsible for connecting the farmers and companies. KISAN does not have any responsibility, legal or otherwise, with respect to the transactions that may happen outside this platform.",
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: Text(
+                "Offers are provided by the companies/participants. KISAN is only responsible for connecting the farmers and companies. KISAN does not have any responsibility, legal or otherwise, with respect to the transactions that may happen outside this platform.",
                 style: GoogleFonts.poppins(
                   color: Color(0xffB56A6A),
                   fontSize: 16,
                 ),
               ),
             ),
-            SizedBox(height: 40,),
+            SizedBox(
+              height: 40,
+            ),
           ],
         ),
       ),
     );
   }
 }
-
 
 class BackButton extends StatelessWidget {
   const BackButton({
@@ -262,7 +302,7 @@ class BackButton extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15))),
             onPressed: () {
-              //pop(context);
+              pop(context);
             },
             child: Icon(
               Icons.arrow_back_ios,
@@ -270,8 +310,11 @@ class BackButton extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(width: 20,),
-        Text("Sonalika Tractors",
+        SizedBox(
+          width: 20,
+        ),
+        Text(
+          "Sonalika Tractors",
           style: GoogleFonts.poppins(
             color: Colors.white,
             fontSize: 20,
@@ -284,7 +327,8 @@ class BackButton extends StatelessWidget {
 
 class FavButton extends StatelessWidget {
   const FavButton({
-    Key key, this.onPressed,
+    Key key,
+    this.onPressed,
   }) : super(key: key);
 
   final Function onPressed;
@@ -292,8 +336,7 @@ class FavButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-        constraints:
-        BoxConstraints.tightFor(width: 65, height: 65),
+        constraints: BoxConstraints.tightFor(width: 65, height: 65),
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
                 primary: Colors.yellow[300],
@@ -310,7 +353,8 @@ class FavButton extends StatelessWidget {
 
 class ContactButton extends StatelessWidget {
   const ContactButton({
-    Key key, this.onPressed,
+    Key key,
+    this.onPressed,
   }) : super(key: key);
 
   final Function onPressed;
@@ -318,11 +362,13 @@ class ContactButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width, height: 65,
+      width: MediaQuery.of(context).size.width,
+      height: 65,
       child: Stack(
         children: [
           Container(
-            width: MediaQuery.of(context).size.width, height: 65,
+            width: MediaQuery.of(context).size.width,
+            height: 65,
             child: ElevatedButton(
                 onPressed: onPressed,
                 style: ElevatedButton.styleFrom(
@@ -336,8 +382,10 @@ class ContactButton extends StatelessWidget {
                     Text(
                       "Get this offer",
                       style: GoogleFonts.poppins(
-                          letterSpacing: 1,color: Color(0xff414141),
-                          fontSize: 20,fontWeight: FontWeight.bold),
+                          letterSpacing: 1,
+                          color: Color(0xff414141),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
                     )
                   ],
                 )),
@@ -346,7 +394,10 @@ class ContactButton extends StatelessWidget {
             padding: const EdgeInsets.only(right: 20),
             child: Align(
                 alignment: Alignment.centerRight,
-                child: Icon(Icons.arrow_forward, color: Color(0xff414141),)),
+                child: Icon(
+                  Icons.arrow_forward,
+                  color: Color(0xff414141),
+                )),
           )
         ],
       ),

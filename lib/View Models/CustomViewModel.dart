@@ -13,6 +13,7 @@ import 'package:kisan/Models/DemoListParser.dart';
 import 'package:kisan/Models/EventListParser.dart';
 import 'package:kisan/Models/LaunchListParser.dart';
 import 'package:kisan/Models/CategoryListParser.dart';
+import 'package:kisan/Models/SubCategoryListParser.dart';
 import 'package:kisan/services/web_service.dart';
 import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
@@ -40,6 +41,7 @@ class CustomViewModel extends ChangeNotifier {
   List<EventListParser> featuredeventList = [];
 
   List<CategoryListParser> categoryList = [];
+  List<SubCategoryListParser> subcategoryList = [];
 
   Future sendOTP(String phoneNumber, String OPT) async {
     final response = await WebService().sendOTP(phoneNumber, OPT);
@@ -64,7 +66,7 @@ class CustomViewModel extends ChangeNotifier {
   Future verifyOTP(String verification_code) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final response =
-    await WebService().verifyOTP(verification_token, verification_code);
+        await WebService().verifyOTP(verification_token, verification_code);
 
     var responseDecoded = jsonDecode(response.body);
     var responseDecodedSuccess = responseDecoded['success'];
@@ -601,6 +603,42 @@ class CustomViewModel extends ChangeNotifier {
 
         for (Map i in data) {
           categoryList.add(CategoryListParser.fromJson(i));
+        }
+
+        notifyListeners();
+        return "success";
+      } else {
+        notifyListeners();
+        return "error";
+      }
+    } else {
+      print("***error");
+      notifyListeners();
+      return "error";
+    }
+  }
+
+  Future GetSubCategories(int pavilion_id) async {
+    final response = await WebService().GetSubCategories(pavilion_id);
+
+    if (response != "error") {
+      this.subcategoryList.clear();
+      var responseDecoded = jsonDecode(response.body);
+      var responseDecodedSuccess = responseDecoded['success'];
+      var responseDecodedMsg = responseDecoded['message'].toString();
+
+      if (responseDecodedSuccess == "false") {
+        notifyListeners();
+        return responseDecodedMsg;
+      } else if (responseDecodedSuccess == "true") {
+        print("response" + responseDecodedMsg.toString());
+
+        SubCategoryListParser.forcounts(responseDecoded['data']['companies'],
+            responseDecoded['data']['products']);
+
+        final data = responseDecoded['data']['list'];
+        for (Map i in data) {
+          subcategoryList.add(SubCategoryListParser.fromJson(i));
         }
 
         notifyListeners();
