@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kisan/Helpers/helper.dart';
 import 'package:kisan/Helpers/size_config.dart';
 import 'package:kisan/UI/CompanyProfile/CompanyProfile.dart';
 import 'package:kisan/UI/Tabs/HomeTabShreyas.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+
+import '../../Helpers/constants.dart';
 
 class DetailedProducts extends StatefulWidget {
 
@@ -17,7 +20,19 @@ class DetailedProducts extends StatefulWidget {
 class _DetailedProductsState extends State<DetailedProducts> {
 
   PanelController _pc1 = new PanelController();
-  final _visibility = ValueNotifier(false);
+  bool _visible1 = true;
+
+  PanelController _pc2 = new PanelController();
+  bool _visible2 = false;
+
+  PanelController _pc3 = new PanelController();
+  bool _visible3 = false;
+
+  PanelController _pc4 = new PanelController();
+  bool _visible4 = false;
+
+  bool _innerVisible = false;
+  bool _isChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -323,127 +338,664 @@ class _DetailedProductsState extends State<DetailedProducts> {
             ),
           ),
           //Slide Up Panel Starts from here
-          ValueListenableBuilder(
-            valueListenable: _visibility,
-            builder:(context,value,_)=> SlidingUpPanel(
-              controller: _pc1,
-              isDraggable: true,
-              minHeight: 105,
-              maxHeight: 550,
-              borderRadius: radius,
-              onPanelClosed: () {
-                setState(() {
-                  _visibility.value = false;
-                });
-              },
-              onPanelOpened: () {
-                setState(() {
-                  _visibility.value = true;
-                });
-              },
-              panel: Visibility(
-                visible: value,
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(horizontal: 33, vertical: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 76,
-                            height: 8,
-                            decoration: BoxDecoration(
-                                color: Colors.grey.shade400,
-                                borderRadius: BorderRadius.circular(20)),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Text("Sonalika Tiger 26",style: GoogleFonts.poppins(fontSize: 13),),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Container(
-                        height: 44,
-                        child: Text(
-                          "Your mobile number & profile details will be "
-                              "shared with Sonalika Tractors.",
-                          style: GoogleFonts.poppins(fontSize: 15,fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: 300,
-                        child: ListView.builder(
-                            itemCount: 8,
-                            itemBuilder: (context, index) {
-                              return RepInformation();
-                            }),
-                      ),
-                      SizedBox(height: 7,),
-                      Container(
-                        child: Column(
-                          children: [
-                            Text("Get a call from the company",style: GoogleFonts.poppins(
-                              fontSize: 13
-                            ),),
-                            SizedBox(height: 7,),
-                            CallMeButton()
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              collapsed: Container(
-                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 90),
-                      child: Text(
-                        "10 representative are online",
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontFamily: 'Poppins Regular',
-                            fontSize: 12),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 7,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Visibility(
+                visible: _visible1,
+                maintainState: true,
+                maintainAnimation: true,
+                child: SlidingUpPanel(
+                  controller: _pc1,
+                  minHeight: 105,
+                  maxHeight: 550,
+                  borderRadius: radius,
+                  onPanelOpened: () {
+                    setState(() {
+                      _innerVisible = true;
+                    });
+                  },
+                  onPanelClosed: () {
+                    setState(() {
+                      _innerVisible = false;
+                    });
+                  },
+                  panel: Visibility(
+                    visible: _innerVisible,
+                    child: Column(
                       children: [
-                        FavButton(
-                          onPressed: () {},
-                        ),
-                        ContactButton(
-                          onPressed: () {
-                            _pc1.isPanelOpen ? _pc1.close() : _pc1.open();
-                            setState(() {
-                              _visibility.value = true;
-                            });
-                          },
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 33, vertical: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: 76,
+                                    height: 8,
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey.shade400,
+                                        borderRadius:
+                                        BorderRadius.circular(20)),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Text(
+                                "Sonalika Tiger 26",
+                                style: GoogleFonts.poppins(fontSize: 13),
+                              ),
+                              SizedBox(
+                                height: 16,
+                              ),
+                              Container(
+                                height: 44,
+                                child: Text(
+                                  "Your mobile number & profile details will be "
+                                      "shared with Sonalika Tractors.",
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                height: 300,
+                                child: ListView.builder(
+                                    itemCount: 8,
+                                    itemBuilder: (context, index) {
+                                      return RepInformation(
+                                        onWhatAppPressed: () {
+                                          _pc1.close();
+                                          _visible1 = false;
+                                          setState(() {
+                                            _pc3.open();
+                                            _visible3 = true;
+                                          });
+                                        },
+                                      );
+                                    }),
+                              ),
+                              SizedBox(
+                                height: 7,
+                              ),
+                              Container(
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "Get a call from the company",
+                                      style: GoogleFonts.poppins(fontSize: 13),
+                                    ),
+                                    SizedBox(
+                                      height: 7,
+                                    ),
+                                    CallMeButton(
+                                      onPressed: () {
+                                        _pc1.close();
+                                        _visible1 = false;
+                                        _visible2 = true;
+                                        setState(() {
+                                          _pc2.open();
+                                        });
+                                      },
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                  ],
+                  ),
+                  collapsed: Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: getProportionateScreenWidth(25),
+                        vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 90),
+                          child: Text(
+                            "10 representative are online",
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontFamily: 'Poppins Regular',
+                                fontSize: 12),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 7,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            FavButton(
+                              onPressed: () {},
+                            ),
+                            Spacer(),
+                            ContactButton(
+                              onPressed: () {
+                                _pc1.open();
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
+              Visibility(
+                maintainState: true,
+                maintainAnimation: true,
+                visible: _visible2,
+                child: CallMeSlide(
+                  radius: radius,
+                  panelController: _pc2,
+                  closePressed: () {
+                    _pc2.close();
+                    _visible2 = false;
+                    _visible1 = true;
+                    setState(() {
+                      _pc1.open();
+                    });
+                  },
+                  isChecked: _isChecked,
+                  checkBoxChanged: (value) {
+                    setState(() {
+                      _isChecked = !_isChecked;
+                    });
+                  },
+                ),
+              ),
+              Visibility(
+                maintainState: true,
+                maintainAnimation: true,
+                visible: _visible3,
+                child: SaveContact(
+                  radius: radius,
+                  panelController: _pc3,
+                  closePressed: () {
+                    _pc3.close();
+                    _visible3 = false;
+                    _visible1 = true;
+                    setState(() {
+                      _pc1.open();
+                    });
+                  },
+                  saveContactPressed: () {
+                    _pc3.close();
+                    _visible3 = false;
+                    setState(() {
+                      _pc4.open();
+                      _visible4 = true;
+                    });
+                  },
+                ),
+              ),
+              Visibility(
+                maintainState: true,
+                maintainAnimation: true,
+                visible: _visible4,
+                child: WhatsAppReqSent(
+                  radius: radius,
+                  panelController: _pc4,
+                  closePressed: () {
+                    _pc4.close();
+                    _visible4 = false;
+                    _visible1 = true;
+                    setState(() {
+                      _pc1.open();
+                    });
+                  },
+                  whatsAppPressed: () {
+                    _pc4.close();
+                    _visible4 = false;
+                    _visible1 = true;
+                    setState(() {
+                      _pc1.open();
+                    });
+                  },
+                ),
+              ),
+            ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class CallMeSlide extends StatelessWidget {
+  const CallMeSlide({
+    Key key,
+    @required this.radius,
+    this.panelController,
+    this.closePressed,
+    this.saveContactPressed, this.checkBoxChanged, this.isChecked,
+  }) : super(key: key);
+
+  final BorderRadiusGeometry radius;
+  final PanelController panelController;
+  final Function closePressed, saveContactPressed,checkBoxChanged;
+  final bool isChecked;
+
+  @override
+  Widget build(BuildContext context) {
+    return SlidingUpPanel(
+      controller: panelController,
+      maxHeight: 550,
+      borderRadius: radius,
+      panel: Container(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Container(
+              width: 55,
+              height: 55,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.grey[200],
+              ),
+              child: IconButton(
+                onPressed: closePressed,
+                icon: Icon(Icons.close),
+                iconSize: 40,
+                color: Colors.grey,
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Sonalika Tiger 26",
+              style: GoogleFonts.poppins(fontSize: 13),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Container(
+              height: 44,
+              child: Text(
+                "Your mobile number & profile details will be "
+                    "shared with Sonalika Tractors.",
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                    fontSize: 16, fontWeight: FontWeight.w500),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Sonalika Tiger 26",
+              style: GoogleFonts.poppins(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF3E3E3E)),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "You should receive a call from them.",
+              style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF8E8E8E)),
+            ),
+            SizedBox(
+              height: 19,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  radius: 45,
+                ),
+                SizedBox(
+                  width: 14,
+                ),
+                FaIcon(
+                  FontAwesomeIcons.share,
+                  color: Colors.green,
+                  size: 22,
+                ),
+                SizedBox(
+                  width: 14,
+                ),
+                CircleAvatar(
+                  radius: 45,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 23,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Checkbox(
+                    activeColor: Color(COLOR_BACKGROUND),
+                    checkColor: Colors.white,
+                    value: isChecked,
+                    onChanged: checkBoxChanged
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  "Do not show this message again.",
+                  style: GoogleFonts.poppins(
+                    color: Color(0xFF8E8E8E),
+                    fontSize: 13,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.tightFor(
+                      height: 65,
+                    ),
+                    child: ElevatedButton(
+                        onPressed: closePressed,
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.transparent,
+                            onPrimary: Colors.black,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15))),
+                        child: Text(
+                          "Cancel",
+                          style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w300, fontSize: 20),
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.tightFor(height: 65),
+                    child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                            primary: Color(0xFF008940),
+                            onPrimary: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15))),
+                        child: Text(
+                          "Okay",
+                          style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        )),
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SaveContact extends StatelessWidget {
+  const SaveContact({
+    Key key,
+    @required this.radius,
+    this.panelController,
+    this.closePressed,
+    this.saveContactPressed,
+  }) : super(key: key);
+
+  final PanelController panelController;
+  final Function closePressed, saveContactPressed;
+
+  final BorderRadiusGeometry radius;
+
+  @override
+  Widget build(BuildContext context) {
+    return SlidingUpPanel(
+      controller: panelController,
+      maxHeight: 550,
+      borderRadius: radius,
+      panel: Container(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: [
+            CloseButton(
+              onPressed: closePressed,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            CircleAvatar(
+              radius: 50,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Pravin Kumar",
+              style: GoogleFonts.poppins(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF3E3E3E)),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Sonalika Tiger 26",
+              style: GoogleFonts.poppins(fontSize: 16),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Flexible(
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                    text:
+                    "Save this contact In your phone to send messages & make video calls on",
+                    style:
+                    GoogleFonts.poppins(fontSize: 18, color: Colors.black),
+                    children: [
+                      WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 5),
+                            child: Image.asset(
+                              "assets/images/whatsapp.png",
+                              height: 18,
+                            ),
+                          )),
+                      TextSpan(
+                          text: "WhatsApp.",
+                          style: GoogleFonts.poppins(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF58C12A)))
+                    ]),
+              ),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Text(
+              "We will also send a request to Pravin to save your number in his/her contacts.",
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey),
+            ),
+            Spacer(),
+            ConstrainedBox(
+              constraints:
+              BoxConstraints.tightFor(height: 65, width: double.infinity),
+              child: ElevatedButton(
+                  onPressed: saveContactPressed,
+                  style: ElevatedButton.styleFrom(
+                      primary: Color(COLOR_BACKGROUND),
+                      onPrimary: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15))),
+                  child: Text(
+                    "Save Contact",
+                    style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.bold, fontSize: 20),
+                  )),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class WhatsAppReqSent extends StatelessWidget {
+  const WhatsAppReqSent({
+    Key key,
+    @required this.radius,
+    this.panelController,
+    this.closePressed,
+    this.whatsAppPressed,
+  }) : super(key: key);
+
+  final BorderRadiusGeometry radius;
+  final PanelController panelController;
+  final Function closePressed, whatsAppPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SlidingUpPanel(
+      controller: panelController,
+      maxHeight: 550,
+      borderRadius: radius,
+      panel: Container(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: [
+            CloseButton(
+              onPressed: closePressed,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            CircleAvatar(
+              radius: 50,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Pravin Kumar",
+              style: GoogleFonts.poppins(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF3E3E3E)),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Sonalika Tiger 26",
+              style: GoogleFonts.poppins(fontSize: 16),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Icon(
+              Icons.check,
+              color: Color(0xFF47AF1A),
+              size: 80,
+            ),
+            Text(
+              "We have sent a request to Pravin to save your number "
+                  "in his/her contacts. You will be able to connect "
+                  "on WhatsApp once he accepts it.",
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey),
+            ),
+            Spacer(),
+            ConstrainedBox(
+              constraints:
+              BoxConstraints.tightFor(height: 65, width: double.infinity),
+              child: ElevatedButton(
+                  onPressed: whatsAppPressed,
+                  style: ElevatedButton.styleFrom(
+                      primary: Color(0xFFF1FFEB),
+                      onPrimary: Color(0xFF47AF1A),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15))),
+                  child: RichText(
+                    text: TextSpan(children: [
+                      WidgetSpan(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 5),
+                            child: Image.asset(
+                              "assets/images/whatsapp.png",
+                              height: 20,
+                            ),
+                          )),
+                      TextSpan(
+                          text: "WhatsApp.",
+                          style: GoogleFonts.poppins(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF58C12A)))
+                    ]),
+                  )),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CloseButton extends StatelessWidget {
+  const CloseButton({
+    Key key,
+    this.onPressed,
+  }) : super(key: key);
+  final Function onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 55,
+      height: 55,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: Colors.grey[200],
+      ),
+      child: IconButton(
+        onPressed: onPressed,
+        icon: Icon(Icons.close),
+        iconSize: 40,
+        color: Colors.grey,
       ),
     );
   }
@@ -452,52 +1004,54 @@ class _DetailedProductsState extends State<DetailedProducts> {
 class CallMeButton extends StatelessWidget {
   const CallMeButton({
     Key key,
+    this.onPressed,
   }) : super(key: key);
+
+  final Function onPressed;
 
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints.tightFor(
-          width: 365, height: 65),
+      constraints: BoxConstraints.tightFor(width: 365, height: 65),
       child: ElevatedButton(
-        onPressed: (){
-          print("Call me pressed");
-        },
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
             primary: Color(0xFFFFE867),
             onPrimary: Colors.black,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15)
-            ),
-            textStyle: GoogleFonts.poppins(
-                fontSize: 20,
-                fontWeight: FontWeight.bold
-            )
-        ),
+            shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            textStyle:
+            GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.call),
-            SizedBox(width: 10,),
+            SizedBox(
+              width: 10,
+            ),
             Text("Call me")
           ],
         ),
-      ),);
+      ),
+    );
   }
 }
 
 class RepInformation extends StatelessWidget {
   const RepInformation({
     Key key,
+    this.onWhatAppPressed,
+    this.onCallPressed,
   }) : super(key: key);
+
+  final Function onWhatAppPressed, onCallPressed;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(bottom: 20),
       child: Row(
-        mainAxisAlignment:
-        MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
@@ -509,8 +1063,7 @@ class RepInformation extends StatelessWidget {
                 width: 15,
               ),
               Column(
-                crossAxisAlignment:
-                CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "name",
@@ -525,12 +1078,11 @@ class RepInformation extends StatelessWidget {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          borderRadius:
-                          BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(5),
                           color: Color(0xFFF9FFCC),
                         ),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 3),
+                        padding:
+                        EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                         child: Text("lang 1",
                             style: TextStyle(
                               fontSize: 9,
@@ -541,12 +1093,11 @@ class RepInformation extends StatelessWidget {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          borderRadius:
-                          BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(5),
                           color: Color(0xFFF9FFCC),
                         ),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 3),
+                        padding:
+                        EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                         child: Text("language 2",
                             style: TextStyle(
                               fontSize: 9,
@@ -561,9 +1112,7 @@ class RepInformation extends StatelessWidget {
           Row(
             children: [
               InkWell(
-                onTap: (){
-                  print("call Icon Pressed");
-                },
+                onTap: onCallPressed,
                 child: CircleAvatar(
                   backgroundColor: Colors.green.shade100,
                   child: Icon(
@@ -578,14 +1127,15 @@ class RepInformation extends StatelessWidget {
                 width: 10,
               ),
               InkWell(
-                onTap: (){
-                  print("whatsapp icon pressed");
-                },
+                onTap: onWhatAppPressed,
                 child: CircleAvatar(
                   backgroundColor: Colors.green.shade100,
                   //have to change this to SVG as there are 3 colors assigned to this :
                   //"not Added" :grey , "Requested" : yellow , "Added" : "green"
-                  child: Image.asset("assets/images/whatsapp.png",width: 15,),
+                  child: Image.asset(
+                    "assets/images/whatsapp.png",
+                    width: 15,
+                  ),
                   radius: 15,
                 ),
               )
