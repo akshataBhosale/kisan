@@ -19,9 +19,9 @@ class _InitialScreenState extends State<InitialScreen> {
 
       String token = prefs.getString('token') ?? "";
       if (token != "") {
-        push(context, HomeScreen());
+        pushReplacement(context, HomeScreen());
       } else {
-        push(context, LanguageScreen());
+        pushReplacement(context, LanguageScreen());
       }
     });
   }
