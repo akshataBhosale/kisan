@@ -9,10 +9,7 @@ import 'package:kisan/Helpers/helper.dart';
 import 'package:kisan/Helpers/size_config.dart';
 import 'package:kisan/UI/Auth/SuccessOTP.dart';
 import 'package:kisan/UI/HomeScreen/HomeScreen.dart';
-<<<<<<< HEAD
-=======
 import 'package:kisan/UI/HomeScreen/HomeScreenShreyas.dart';
->>>>>>> shreyas
 import 'package:kisan/UI/Widgets/ScreenHeader.dart';
 import 'package:kisan/UI/Widgets/countdown_timer_widget.dart';
 import 'package:kisan/View%20Models/CustomViewModel.dart';
@@ -54,19 +51,11 @@ class _EnterOTPState extends State<EnterOTP> {
   Future<void> _verifyOTP() async {
     Provider.of<CustomViewModel>(context, listen: false)
         .verifyOTP(oneController.text +
-<<<<<<< HEAD
-            twoController.text +
-            threeController.text +
-            fourController.text +
-            fiveController.text +
-            sixController.text)
-=======
         twoController.text +
         threeController.text +
         fourController.text +
         fiveController.text +
         sixController.text)
->>>>>>> shreyas
         .then((value) {
       setState(() {
         if (value == "error") {

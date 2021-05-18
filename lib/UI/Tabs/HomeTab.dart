@@ -13,10 +13,7 @@ import 'package:kisan/Models/LaunchListParser.dart';
 import 'package:kisan/Models/EventListParser.dart';
 import 'package:kisan/Models/CategoryListParser.dart';
 import 'package:provider/provider.dart';
-<<<<<<< HEAD
-import 'package:intl/intl.dart';
-=======
->>>>>>> shreyas
+
 
 class HomeTab extends StatefulWidget {
   @override

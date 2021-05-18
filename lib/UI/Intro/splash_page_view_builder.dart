@@ -22,8 +22,8 @@ class SplashPageViewBuilder extends StatefulWidget {
 }
 
 class _SplashPageViewBuilderState extends State<SplashPageViewBuilder> {
-
   List<Slide> slides = new List();
+
   void onDonePress() {}
 
   @override
@@ -63,7 +63,7 @@ class _SplashPageViewBuilderState extends State<SplashPageViewBuilder> {
               height: MediaQuery.of(context).size.height,
               child: CarouselSlider.builder(
                 itemCount: 4,
-                  options: CarouselOptions(
+                options: CarouselOptions(
                     viewportFraction: 1,
                     height: MediaQuery.of(context).size.height,
                     initialPage: 0,
@@ -75,23 +75,28 @@ class _SplashPageViewBuilderState extends State<SplashPageViewBuilder> {
                     autoPlayCurve: Curves.fastOutSlowIn,
                     enlargeCenterPage: true,
                     scrollDirection: Axis.horizontal,
-                      onPageChanged: (index, reason) {
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        current = index;
+                      });
+                      if (index == 2) {
                         setState(() {
-                          current = index;
+                          showSkip = false;
                         });
-                        if(index == 2){
-                          setState(() {
-                            showSkip = false;
-                          });
-                        }else if(index == 0 || index == 1){
-                          setState(() {
-                            showSkip = true;
-                          });
-                        }
+                      } else if (index == 0 || index == 1) {
+                        setState(() {
+                          showSkip = true;
+                        });
                       }
-                  ),
-                itemBuilder: (BuildContext context, int itemIndex, int x) =>
-                    itemIndex == 0 ? SplashOne() : itemIndex == 1 ? SplashTwo() : itemIndex == 2 ? SplashThree() : SplashFour(),
+                    }),
+                itemBuilder: (BuildContext context, int itemIndex) =>
+                    itemIndex == 0
+                        ? SplashOne()
+                        : itemIndex == 1
+                            ? SplashTwo()
+                            : itemIndex == 2
+                                ? SplashThree()
+                                : SplashFour(),
               ),
             ),
             Padding(
@@ -105,7 +110,8 @@ class _SplashPageViewBuilderState extends State<SplashPageViewBuilder> {
                     return Container(
                       width: 8.0,
                       height: 8.0,
-                      margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 3.0),
+                      margin:
+                          EdgeInsets.symmetric(vertical: 10.0, horizontal: 3.0),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: current == index
@@ -122,5 +128,4 @@ class _SplashPageViewBuilderState extends State<SplashPageViewBuilder> {
       ),
     );
   }
-
 }

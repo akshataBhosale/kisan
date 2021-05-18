@@ -37,11 +37,7 @@ class _LoginWithOTPState extends State<LoginWithOTP> {
   Future<void> _sendOTP() async {
     Provider.of<CustomViewModel>(context, listen: false)
         .sendOTP(this.countryCode + phoneController.text.toString(),
-<<<<<<< HEAD
             _isChecked ? "OTP_IN" : "OTP_OUT")
-=======
-        _isChecked ? "OTP_IN" : "OTP_OUT")
->>>>>>> shreyas
         .then((value) {
       setState(() {
         if (value == "error") {

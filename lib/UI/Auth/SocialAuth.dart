@@ -22,11 +22,6 @@ class _SocialAuthState extends State<SocialAuth> {
   var googleAuthId;
   var server_key =
       "379951119240-tkmkpj996t81g2kqn9qbvdblbht3c8n9.apps.googleusercontent.com";
-<<<<<<< HEAD
-
-
-=======
->>>>>>> shreyas
 
   GoogleSignIn googleSignIn = GoogleSignIn(
     scopes: <String>[
@@ -58,7 +53,7 @@ class _SocialAuthState extends State<SocialAuth> {
       _handleSignOut();
     }
 
-   /* GoogleOAuth2Client client = GoogleOAuth2Client(
+    /* GoogleOAuth2Client client = GoogleOAuth2Client(
       customUriScheme: 'my.test.app', //Must correspond to the AndroidManifest's "android:scheme" attribute
       redirectUri: 'my.test.app:/oauth2redirect', //Can be any URI, but the scheme part must correspond to the customeUriScheme
     );
@@ -70,7 +65,6 @@ class _SocialAuthState extends State<SocialAuth> {
         scopes: ['https://www.googleapis.com/auth/drive.readonly']);
 
     print(oauth2Helper.getToken());*/
-
   }
 
   Future<void> _handleSignOut() => googleSignIn.disconnect();
@@ -348,15 +342,11 @@ class _SocialAuthState extends State<SocialAuth> {
                                 color: Colors.white,
                                 child: Center(
                                   child: Container(
-<<<<<<< HEAD
                                       height: 30,
                                       width: 30,
-                                      child: Image.asset(images.appleLogo)),
+                                      child: Image.asset(
+                                          "assets/images/apple-logo.png")),
                                 ),
-=======
-                                      height: 30,width: 30,
-                                      child: Image.asset("assets/images/apple-logo.png")),),
->>>>>>> shreyas
                               ),
                               SizedBox(
                                 width: 20,
